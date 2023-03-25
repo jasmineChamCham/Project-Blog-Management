@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_options"
+        android:title="Options"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        app:showAsAction="ifRoom"
+        >
+        <menu>
+            <item
+                android:id="@+id/item_profile"
+                android:title="Profile"
+                android:icon="@drawable/ic_baseline_person_24"
+                app:showAsAction="always"
+                ></item>
+            <item
+                android:id="@+id/item_logout"
+                android:title="Logout"
+                android:icon="@drawable/ic_baseline_logout_24"
+                app:showAsAction="always"
+                ></item>
+        </menu>
+    </item>
+</menu>
