@@ -100,8 +100,32 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_blogs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             ></androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:elevation="5dp"
+            android:layout_marginBottom="5dp">
 
+            <Button
+                android:id="@+id/btn_read"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:text="Read" />
+            <Button
+                android:id="@+id/btn_write"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:background="@android:color/transparent"
+                android:layout_weight="1"
+                android:text="Write" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

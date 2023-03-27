@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:elevation="5dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:elevation="10dp">
 
             <Button
                 android:id="@+id/btn_published"
@@ -46,7 +46,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_blogs"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1">
         </androidx.recyclerview.widget.RecyclerView>
 

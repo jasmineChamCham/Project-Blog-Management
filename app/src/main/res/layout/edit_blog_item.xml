@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginVertical="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:elevation="10dp"
             android:layout_margin="5dp">
             <TextView
                 android:id="@+id/tv_title"
@@ -38,15 +42,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btn_like"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:drawableLeft="@drawable/ic_baseline_star_outline_24"
-                    android:background="@android:color/transparent"
-                    android:text="Like" />
                 <Button
                     android:id="@+id/btn_edit"
                     android:layout_width="0dp"
