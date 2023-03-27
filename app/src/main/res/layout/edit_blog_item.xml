@@ -10,6 +10,7 @@
             android:elevation="10dp"
             android:layout_margin="5dp">
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Title"
@@ -19,6 +20,7 @@
                 android:textStyle="bold">
             </TextView>
             <TextView
+                android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
@@ -26,6 +28,7 @@
                 android:text="Content">
             </TextView>
             <TextView
+                android:id="@+id/tv_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"

@@ -23,7 +23,7 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/girl"
+                    android:src="@drawable/ic_baseline_person_24"
                     android:scaleType="fitXY"
                     app:shapeAppearanceOverlay="@style/circleImageView"
                     ></com.google.android.material.imageview.ShapeableImageView>
