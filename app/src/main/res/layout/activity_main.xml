@@ -1,88 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="user" type="com.example.blogapp.model.User"/>
+    </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        >
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="50dp"
-            android:src="@drawable/blog_logo"
-            ></ImageView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Blog App"
-            android:textColor="@color/main_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:fontFamily="serif"
-            android:layout_marginLeft="8dp"
-            ></TextView>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        >
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/main_color"
-            android:text="Statistics"
-            android:textColor="@color/white"
-            app:strokeColor="@color/main_color"
-            app:strokeWidth="1dp"
-            android:layout_marginHorizontal="5dp"
-            ></com.google.android.material.button.MaterialButton>
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:text="Explored"
-            android:textColor="@color/main_color"
-            app:strokeColor="@color/main_color"
-            app:strokeWidth="1dp"
-            android:layout_marginHorizontal="5dp"
-            ></com.google.android.material.button.MaterialButton>
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:text="My posts"
-            android:textColor="@color/main_color"
-            app:strokeColor="@color/main_color"
-            app:strokeWidth="1dp"
-            android:layout_marginHorizontal="5dp"
-            ></com.google.android.material.button.MaterialButton>
-    ></LinearLayout>
-    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="@color/white"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
-        android:elevation="10dp"
-        >
-        <TextView
+        android:orientation="vertical"
+        tools:context=".view.MainActivity">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            >
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/person_avatar"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                ></com.google.android.material.imageview.ShapeableImageView>
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{user.name}"
+                android:textColor="@color/main_color"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:layout_marginLeft="8dp"
+                ></TextView>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Today's Statistics"
-            android:textColor="@color/black"
-            android:layout_margin="10dp"
-            ></TextView>
-    </androidx.cardview.widget.CardView>
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tab_following"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/main_color"
+                android:text="Following"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                app:strokeColor="@color/main_color"
+                app:strokeWidth="1dp"
+                ></com.google.android.material.button.MaterialButton>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tab_explore"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="Explore"
+                android:textColor="@color/main_color"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                app:strokeColor="@color/main_color"
+                app:strokeWidth="1dp"
+                ></com.google.android.material.button.MaterialButton>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tab_likes"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="Likes"
+                android:textColor="@color/main_color"
+                android:textSize="17sp"
+                android:textAllCaps="false"
+                app:strokeColor="@color/main_color"
+                app:strokeWidth="1dp"
+                ></com.google.android.material.button.MaterialButton>
+            ></LinearLayout>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:drawableLeft="@drawable/ic_baseline_filter_list_24"
+            android:text="Filter"
+            android:textColor="@color/main_color"
+            android:textAllCaps="false"
+            ></Button>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_blogs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+</layout>

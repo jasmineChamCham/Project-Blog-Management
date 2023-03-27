@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable name="blog" type="com.example.blogapp.model.Blog"/>
+        <variable name="user" type="com.example.blogapp.model.User"/>
+    </data>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,57 +19,109 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="15dp"
             >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginBottom="15dp"
                 >
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_baseline_person_24"
-                    android:scaleType="fitXY"
+
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/person_avatar"
+                    android:scaleType="centerCrop"
                     app:shapeAppearanceOverlay="@style/circleImageView"
                     ></com.google.android.material.imageview.ShapeableImageView>
                 <TextView
+                    android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Username"
+                    android:layout_gravity="center"
+                    android:text="@{user.name}"
                     android:textColor="@color/black"
-                    android:textSize="30sp"
+                    android:textSize="13sp"
                     android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
                     ></TextView>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_follow"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/white"
+                    app:cornerRadius="15dp"
+                    android:text="Following"
+                    android:textSize="11sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/main_color"
+                    app:strokeColor="@color/main_color"
+                    app:strokeWidth="1dp"
+                    android:layout_marginLeft="10dp"
+                    ></com.google.android.material.button.MaterialButton>
             </LinearLayout>
+
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title"
-                android:textSize="30sp"
+                android:text="@{blog.title}"
+                android:textColor="@color/black"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="7dp"
                 ></TextView>
+
             <TextView
+                android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Content"
-                android:textSize="30sp"
+                android:text="@{blog.content}"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="7dp"
                 ></TextView>
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="20dp"
                 >
-                <Button
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_like"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:backgroundTint="@color/white"
+                    android:drawableLeft="@drawable/ic_baseline_thumb_up_off_alt_24"
                     android:text="Like"
-                    ></Button>
-                <Button
+                    android:textColor="@color/main_color"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    app:strokeColor="@color/main_color"
+                    app:strokeWidth="0dp"
+                    app:cornerRadius="10dp"
+                    android:layout_marginRight="20dp"
+                    ></com.google.android.material.button.MaterialButton>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_comment"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:backgroundTint="@color/white"
+                    android:drawableLeft="@drawable/ic_baseline_chat_bubble_outline_24"
                     android:text="Comment"
-                    ></Button>
+                    android:textColor="@color/main_color"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    app:strokeColor="@color/main_color"
+                    app:strokeWidth="0dp"
+                    app:cornerRadius="10dp"
+                    ></com.google.android.material.button.MaterialButton>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 </layout>
