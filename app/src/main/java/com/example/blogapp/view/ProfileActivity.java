@@ -24,6 +24,14 @@ public class ProfileActivity extends AppCompatActivity {
         Button butChangePw = findViewById(R.id.but_change_pw);
         Button butLogout = findViewById(R.id.but_logout);
 
+        butStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, StatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         butChangePw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

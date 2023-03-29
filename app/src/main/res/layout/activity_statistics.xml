@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.StatisticsActivity">
+    tools:context=".view.StatisticsActivity"
+    android:layout_margin="30dp">
 
+    <LinearLayout
+        android:id="@+id/section_follow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+            <Button
+                android:id="@+id/but_daily"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:text="Daily"/>
+            <Button
+                android:id="@+id/but_monthly"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:text="Monthly"/>
+            <Button
+                android:id="@+id/but_annually"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:text="Annually"/>
+    </LinearLayout>
 
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bc_follow"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:visibility="gone"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lc_follower"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"/>
+</LinearLayout>
