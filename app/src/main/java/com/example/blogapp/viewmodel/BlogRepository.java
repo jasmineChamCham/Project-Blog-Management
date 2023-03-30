@@ -27,17 +27,6 @@ public class BlogRepository {
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("jasmine@gmail.com", "jasmine123")
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Log.d("DEBUG", "login successful");
-                        } else {
-                            Log.d("DEBUG", "login failed");
-                        }
-                    }
-                });
     }
 
     public void addNote(String title, String content, String createTime, String userID, int likeNumber, int viewNumber, String category, String status) {

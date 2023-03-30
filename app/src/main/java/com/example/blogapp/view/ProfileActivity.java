@@ -36,20 +36,18 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         // Test with jasmine user
-        if (BlogRepository.mAuth == null){
-            BlogRepository.mAuth = FirebaseAuth.getInstance();
-            BlogRepository.mAuth.signInWithEmailAndPassword("jasmine@gmail.com", "jasmine123")
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()){
-                                Log.d("DEBUG", "login successful");
-                            } else {
-                                Log.d("DEBUG", "login failed");
-                            }
+        BlogRepository.mAuth = FirebaseAuth.getInstance();
+        BlogRepository.mAuth.signInWithEmailAndPassword("jasminebkdn@gmail.com", "jasminebkdn123")
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Log.d("DEBUG", "login successful");
+                        } else {
+                            Log.d("DEBUG", "login failed");
                         }
-                    });
-        }
+                    }
+                });
         user = BlogRepository.mAuth.getCurrentUser();
 
         tvName = findViewById(R.id.tv_name);
