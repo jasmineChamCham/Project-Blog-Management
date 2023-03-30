@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
 //    private ArrayList<User> userList;
 //    private BlogAdapter blogAdapter;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,25 +66,36 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.fragment_home, container, false);
-        View view = binding.getRoot();
-
-        dbHelper = new DBHelper(view.getContext());
+        View viewRoot = binding.getRoot();
+        dbHelper = new DBHelper(viewRoot.getContext());
         reload(dbHelper.optionAll);
-//        dbHelper.addUser("HoaiAnh", "hoaianh@gmail.com", "123456", "10/1/2000");
-
-        return view;
+        return viewRoot;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 //        dbHelper.addUser("U00001", "HoaiAnh", "hoaianh@gmail.com", "123456", "10/1/2000");
 
 //        blogList = new ArrayList<Blog>();
 //        userList = new ArrayList<User>();
 //        blogAdapter = new BlogAdapter(blogList, userList);
 //        binding.rvBlogs.setAdapter(blogAdapter);
+        binding.rvBlogs.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//
+//        // Test data
+        User user1 = new User("001", "HoaiAnh",
+                "anh@gmail.com", "123", "17/11/2002");
+//        User user2 = new User("002", "Alex",
+//                "alex@gmail.com", "123", "20/12/2002");
+//        Blog blog = new Blog("1", "Hello", "My name is Alex",
+//                "26/03/2023", "002", 0, 0,
+//                "Short story", "Draft");
+        binding.setUser(user1);
+//        blogList.add(blog);
+//        userList.add(user2);
+//        blogAdapter.notifyDataSetChanged();
 //        binding.rvBlogs.setLayoutManager(new LinearLayoutManager(getContext()));
 //
 //
@@ -99,7 +111,6 @@ public class HomeFragment extends Fragment {
 //        blogList.add(blog);
 //        userList.add(user2);
 //        blogAdapter.notifyDataSetChanged();
-        binding.rvBlogs.setLayoutManager(new LinearLayoutManager(getContext()));
 
 //        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(dbHelper.op) {
 //            @NonNull
@@ -181,58 +192,29 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+    public void reload(FirebaseRecyclerOptions<Blog> options){
+        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(options) {
+            @NonNull
+            @Override
+            public BlogHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                ViewBlogItemBinding binding =
+                        DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                                R.layout.view_blog_item,
+                                parent,
+                                false);
+                return new BlogHolder(binding);
+            }
 
-//    public static class BlogHolder extends RecyclerView.ViewHolder {
-//
-//        public ShapeableImageView ivAvatar;
-//        public TextView tvUsername;
-//        public TextView tvTime;
-//        public TextView tvTitle;
-//        public TextView tvContent;
-//
-//        public BlogHolder(View view) {
-//            super(view);
-//            ivAvatar = view.findViewById(R.id.iv_avatar);
-//            tvUsername = view.findViewById(R.id.tv_username);
-//            tvTime = view.findViewById(R.id.tv_time);
-//            tvTitle = view.findViewById(R.id.tv_title);
-//            tvContent = view.findViewById(R.id.tv_content);
-//        }
-//    }
-public void reload(FirebaseRecyclerOptions<Blog> options){
-    FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, HomeFragment.BlogHolder>(options) {
-        @NonNull
-        @Override
-        public HomeFragment.BlogHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ViewBlogItemBinding binding =
-                    DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                            R.layout.view_blog_item,
-                            parent,
-                            false);
-            Log.d("DEBUG", "OK1");
-            return new HomeFragment.BlogHolder(binding);
-
-        }
-
-        @Override
-        protected void onBindViewHolder(@NonNull HomeFragment.BlogHolder holder, int position, @NonNull Blog model) {
-//            holder.binding.tvTitle.setText(model.getTitle());
-//            holder.binding.tvContent.setText(model.getContent());
-//            holder.binding.tvTime.setText(model.getCreatedTime());
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-////                    Bundle bundle = new Bundle();
-////                    bundle.putSerializable("blog", model);
-////                    Navigation.findNavController(binding.getRoot()).navigate(R.id.editBlogFragment,bundle);
-//                }
-//            });
-            holder.binding.setBlog(model);
-        }
-    };
-    binding.rvBlogs.setAdapter(adapter);
-    adapter.startListening();
-}
+            @Override
+            protected void onBindViewHolder(@NonNull BlogHolder holder, int position, @NonNull Blog model) {
+//                holder.binding.tvTitle.setText(model.getTitle());
+//                holder.binding.tvContent.setText(model.getContent());
+                holder.binding.setBlog(model);
+            }
+        };
+        binding.rvBlogs.setAdapter(adapter);
+        adapter.startListening();
+    }
 
     public class BlogHolder extends RecyclerView.ViewHolder {
         public ViewBlogItemBinding binding;

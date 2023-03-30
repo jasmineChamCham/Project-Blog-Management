@@ -20,16 +20,14 @@ import com.google.firebase.database.ValueEventListener;
 public class DBHelper {
     FirebaseDatabase database;
     public FirebaseRecyclerOptions<Blog> optionAll, optionPublished, optionDrafts, optionTrashed;
-    public FirebaseRecyclerOptions<User> optionUser;
-    DatabaseReference blogsRef, usersRef;
+    DatabaseReference blogsRef, userRef;
     Context context;
 
     public DBHelper(Context context) {
         this.context = context;
         database = FirebaseDatabase.getInstance();
         blogsRef = database.getReference().child("blogs");
-        usersRef = database.getReference().child("users");
-
+        userRef = database.getReference().child("users");
         optionAll = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsRef, Blog.class)
                 .build();
@@ -44,9 +42,6 @@ public class DBHelper {
                 .setQuery(blogsRef.orderByChild("status").equalTo("Trashed"), Blog.class)
                 .build();
 
-        optionUser = new FirebaseRecyclerOptions.Builder<User>()
-                .setQuery(usersRef, User.class)
-                .build();
     }
 
     public void addBlog(String title, String content, String createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
@@ -65,22 +60,20 @@ public class DBHelper {
                 });
     }
 
-    public void addUser(String name, String email, String password, String birthday) {
-
-        String userId = usersRef.push().getKey();
-        usersRef.child(userId).setValue(new User(userId, name, email, password, birthday))
+    public void addUser(String email, String name, String pass, String birthdaty) {
+        String id = userRef.push().getKey();
+        userRef.child(id).setValue(new User(id, name, email, pass, birthdaty))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d("DEBUG","success add");
+                            Log.d("DEBUG","Add user successful!");
                         } else {
-                            Log.d("DEBUG","success add");
-                        }
+
+                            Log.d("DEBUG","Add user fail!");}
                     }
                 });
     }
-
     public Blog getBlogById(String id){
         DatabaseReference getRef = database.getReference().child("blogs").child(id);
         final Blog[] data = {null};
