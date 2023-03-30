@@ -29,7 +29,7 @@
                 android:layout_marginBottom="15dp"
                 >
                 <com.google.android.material.imageview.ShapeableImageView
-
+                    android:id="@+id/iv_avatar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/person_avatar"
@@ -63,6 +63,14 @@
                     android:layout_marginLeft="10dp"
                     ></com.google.android.material.button.MaterialButton>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{blog.createdTime}"
+                android:paddingHorizontal="10dp"
+                ></TextView>
 
             <TextView
                 android:id="@+id/tv_title"

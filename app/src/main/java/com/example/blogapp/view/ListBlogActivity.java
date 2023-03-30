@@ -38,7 +38,7 @@ public class ListBlogActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                repository.addNote("Some Title", "Some Content", dateFormat.format(new Date()), "1234",0,0,"Novel","Publishes");
+                repository.addBlog("Some Title", "Some Content", dateFormat.format(new Date()), "1234",0,0,"Novel","Publishes");
             }
         });
 
