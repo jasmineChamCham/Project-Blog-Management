@@ -16,7 +16,7 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.ActivityListBlogBinding;
 import com.example.blogapp.databinding.EditBlogItemBinding;
 import com.example.blogapp.model.Blog;
-import com.example.blogapp.viewmodel.BlogRepository;
+import com.example.blogapp.viewmodel.DBHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +24,7 @@ import java.util.Date;
 
 public class ListBlogActivity extends AppCompatActivity {
     ActivityListBlogBinding binding;
-    BlogRepository repository;
+    DBHelper repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +32,13 @@ public class ListBlogActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list_blog);
         View view = binding.getRoot();
         setContentView(view);
-        repository = new BlogRepository();
+        repository = new DBHelper();
 
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                repository.addNote("Some Title", "Some Content", isoFormat.format(new Date()), "1234",0,0,"Novel","Publishes");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                repository.addNote("Some Title", "Some Content", dateFormat.format(new Date()), "1234",0,0,"Novel","Publishes");
             }
         });
 
@@ -71,7 +71,6 @@ public class ListBlogActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     public class BlogHolder extends RecyclerView.ViewHolder {

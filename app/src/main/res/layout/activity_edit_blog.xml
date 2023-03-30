@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -12,8 +13,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:elevation="10dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="8dp">
             <Button
+                android:id="@+id/btn_font_color"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -22,6 +24,7 @@
                 android:drawableLeft="@drawable/ic_baseline_format_color_fill_24"
                 android:background="@android:color/transparent"/>
             <Button
+                android:id="@+id/btn_text_bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -30,6 +33,7 @@
                 android:drawableLeft="@drawable/ic_baseline_format_bold_24"
                 android:background="@android:color/transparent"/>
             <Button
+                android:id="@+id/btn_text_italic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -38,14 +42,7 @@
                 android:drawableLeft="@drawable/ic_baseline_format_italic_24"
                 android:background="@android:color/transparent"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingHorizontal="25dp"
-                android:textColor="@color/black"
-                android:drawableLeft="@drawable/ic_baseline_format_align_center_24"
-                android:background="@android:color/transparent"/>
-            <Button
+                android:id="@+id/btn_text_underline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -53,19 +50,33 @@
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/ic_baseline_format_underlined_24"
                 android:background="@android:color/transparent"/>
+            <Button
+                android:id="@+id/btn_text_justify"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingHorizontal="25dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/ic_baseline_format_align_center_24"
+                android:background="@android:color/transparent"/>
         </LinearLayout>
         <EditText
+            android:id="@+id/et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Title"
             android:textSize="20dp"
+            android:textColor="#000000"
             android:textStyle="bold"
             android:padding="10dp">
         </EditText>
         <EditText
+            android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Content">
+            android:hint="Content"
+            android:textSize="15dp"
+            android:textColor="#000000">
         </EditText>
     </LinearLayout>
 </layout>
