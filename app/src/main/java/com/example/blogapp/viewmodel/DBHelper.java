@@ -2,10 +2,10 @@ package com.example.blogapp.viewmodel;
 
 import android.content.Context;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.example.blogapp.model.Blog;
+import com.example.blogapp.model.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,13 +16,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class BlogRepository {
+public class DBHelper {
     FirebaseDatabase database;
     public FirebaseRecyclerOptions<Blog> optionAll, optionPublished, optionDrafts, optionTrashed;
     DatabaseReference blogsRef;
     Context context;
 
-    public BlogRepository(Context context) {
+    public DBHelper(Context context) {
         this.context = context;
         database = FirebaseDatabase.getInstance();
         blogsRef = database.getReference().child("blogs");
@@ -40,10 +40,10 @@ public class BlogRepository {
                 .build();
     }
 
-    public void addNote(String title, String content, String createTime, String userID, int likeNumber, int viewNumber, String category, String status) {
+    public void addNote(String title, String content, String createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
 
         String id = blogsRef.push().getKey();
-        blogsRef.child(id).setValue(new Blog(id, title, content, createTime, userID, likeNumber, viewNumber, category, status))
+        blogsRef.child(id).setValue(new Blog(id, title, content, createdTime, userID, likeNumber, viewNumber, category, status))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

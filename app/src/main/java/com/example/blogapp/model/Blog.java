@@ -1,35 +1,24 @@
 package com.example.blogapp.model;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 public class Blog implements Serializable {
-    @SerializedName("blogId")
     private String blogId;
 
-    @SerializedName("title")
     private String title;
 
-    @SerializedName("content")
     private String content;
 
-    @SerializedName("createdTime")
     private String createdTime;
 
-    @SerializedName("userId")
     private String userId;
 
-    @SerializedName("likesNumber")
     private int likesNumber;
 
-    @SerializedName("viewsNumber")
     private int viewsNumber;
 
-    @SerializedName("category")
     private String category;
 
-    @SerializedName("status")
     private String status;
 
     public Blog() {

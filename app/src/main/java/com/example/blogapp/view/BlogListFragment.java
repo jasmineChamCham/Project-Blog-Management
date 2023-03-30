@@ -18,7 +18,7 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.EditBlogItemBinding;
 import com.example.blogapp.databinding.FragmentBlogListBinding;
 import com.example.blogapp.model.Blog;
-import com.example.blogapp.viewmodel.BlogRepository;
+import com.example.blogapp.viewmodel.DBHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat;
 
 public class BlogListFragment extends Fragment {
     FragmentBlogListBinding binding;
-    BlogRepository repository;
+    DBHelper repository;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +35,10 @@ public class BlogListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = FragmentBlogListBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        repository = new BlogRepository(view.getContext());
+        repository = new DBHelper(view.getContext());
 
         binding.rvBlogs.setLayoutManager(new LinearLayoutManager(view.getContext()));
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {

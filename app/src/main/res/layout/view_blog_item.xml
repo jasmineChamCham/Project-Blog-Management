@@ -14,6 +14,7 @@
         app:cardElevation="10dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
+        android:layout_marginBottom="10dp"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,7 +91,7 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp"
                 >
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btn_like"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -101,12 +102,10 @@
                     android:textColor="@color/main_color"
                     android:textAllCaps="false"
                     android:textSize="13sp"
-                    app:strokeColor="@color/main_color"
-                    app:strokeWidth="0dp"
                     app:cornerRadius="10dp"
                     android:layout_marginRight="20dp"
-                    ></com.google.android.material.button.MaterialButton>
-                <com.google.android.material.button.MaterialButton
+                    ></Button>
+                <Button
                     android:id="@+id/btn_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -117,10 +116,8 @@
                     android:textColor="@color/main_color"
                     android:textAllCaps="false"
                     android:textSize="13sp"
-                    app:strokeColor="@color/main_color"
-                    app:strokeWidth="0dp"
                     app:cornerRadius="10dp"
-                    ></com.google.android.material.button.MaterialButton>
+                    ></Button>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -34,7 +34,8 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentBlogListBinding;
 import com.example.blogapp.databinding.FragmentEditBlogBinding;
 import com.example.blogapp.model.Blog;
-import com.example.blogapp.viewmodel.BlogRepository;
+import com.example.blogapp.viewmodel.DBHelper;
+import com.example.blogapp.viewmodel.DBHelper;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -43,7 +44,7 @@ import java.util.Date;
 
 public class EditBlogFragment extends Fragment {
     FragmentEditBlogBinding binding;
-    BlogRepository repository;
+    DBHelper repository;
     Blog blog = null;
 
     @Override
@@ -59,7 +60,7 @@ public class EditBlogFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentEditBlogBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        repository = new BlogRepository(view.getContext());
+        repository = new DBHelper(view.getContext());
 
         if (blog != null){
             binding.etTitle.setText(blog.getTitle());
