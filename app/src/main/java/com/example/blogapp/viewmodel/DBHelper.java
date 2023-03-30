@@ -31,6 +31,7 @@ public class DBHelper {
         optionAll = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsRef, Blog.class)
                 .build();
+
         optionPublished = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsRef.orderByChild("status").equalTo("Published"), Blog.class)
                 .build();
@@ -40,22 +41,25 @@ public class DBHelper {
         optionTrashed = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsRef.orderByChild("status").equalTo("Trashed"), Blog.class)
                 .build();
+
     }
 
-    public void addNote(String title, String content, String createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
-        String id = blogsRef.push().getKey();
-        blogsRef.child(id).setValue(new Blog(id, title, content, createdTime, userID, likeNumber, viewNumber, category, status))
+    public void addBlog(String title, String content, String createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
+
+        String blogId = blogsRef.push().getKey();
+        blogsRef.child(blogId).setValue(new Blog(blogId, title, content, createdTime, userID, likeNumber, viewNumber, category, status))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(context,"Add blog successful!", Toast.LENGTH_SHORT).show();
+                            Log.d("DEBUG","success add");
                         } else {
-                            Toast.makeText(context,"Add blog fail!", Toast.LENGTH_SHORT).show();
+                            Log.d("DEBUG","success add");
                         }
                     }
                 });
     }
+
     public void addUser(String email, String name, String pass, String birthdaty) {
         String id = userRef.push().getKey();
         userRef.child(id).setValue(new User(id, name, email, pass, birthdaty))

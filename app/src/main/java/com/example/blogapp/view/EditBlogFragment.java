@@ -140,7 +140,7 @@ public class EditBlogFragment extends Fragment {
                                         category,
                                         status);
                             else
-                                repository.addNote(binding.etTitle.getText().toString(),
+                                repository.addBlog(binding.etTitle.getText().toString(),
                                         binding.etContent.getText().toString(),
                                         isoFormat.format(new Date()),
                                         "123",
