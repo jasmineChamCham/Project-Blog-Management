@@ -59,27 +59,28 @@ public class DBHelper {
                         if (task.isSuccessful()) {
                             Log.d("DEBUG","success add");
                         } else {
+                            Log.d("DEBUG","fail add");
+                        }
+                    }
+                });
+    }
+
+    public void addUser(String name, String email, String password, String birthday) {
+
+        String userId = usersRef.push().getKey();
+        usersRef.child(userId).setValue(new User(userId, name, email, password, birthday))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("DEBUG","success add");
+                        } else {
                             Log.d("DEBUG","success add");
                         }
                     }
                 });
     }
 
-    public void addUser(String userId, String name, String email, String password, String birthday) {
-
-//        String userId = usersRef.push().getKey();
-        usersRef.setValue(new User(userId, name, email, password, birthday))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(context,"Add blog successful!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context,"Add blog fail!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
     public Blog getBlogById(String id){
         DatabaseReference getRef = database.getReference().child("blogs").child(id);
         final Blog[] data = {null};

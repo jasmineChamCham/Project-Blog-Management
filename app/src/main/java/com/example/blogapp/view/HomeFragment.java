@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,11 +31,13 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.ActivityMainBinding;
 import com.example.blogapp.databinding.EditBlogItemBinding;
 import com.example.blogapp.databinding.FragmentHomeBinding;
+import com.example.blogapp.databinding.ViewBlogItemBinding;
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.BlogAdapter;
 import com.example.blogapp.viewmodel.DBHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -54,6 +57,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
         }
     }
 
@@ -64,6 +68,9 @@ public class HomeFragment extends Fragment {
         View view = binding.getRoot();
 
         dbHelper = new DBHelper(view.getContext());
+        reload(dbHelper.optionAll);
+//        dbHelper.addUser("HoaiAnh", "hoaianh@gmail.com", "123456", "10/1/2000");
+
         return view;
     }
 
@@ -71,7 +78,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dbHelper.addUser("U00001", "HoaiAnh", "hoaianh@gmail.com", "123456", "10/1/2000");
+//        dbHelper.addUser("U00001", "HoaiAnh", "hoaianh@gmail.com", "123456", "10/1/2000");
+
 //        blogList = new ArrayList<Blog>();
 //        userList = new ArrayList<User>();
 //        blogAdapter = new BlogAdapter(blogList, userList);
@@ -174,21 +182,64 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public static class BlogHolder extends RecyclerView.ViewHolder {
+//    public static class BlogHolder extends RecyclerView.ViewHolder {
+//
+//        public ShapeableImageView ivAvatar;
+//        public TextView tvUsername;
+//        public TextView tvTime;
+//        public TextView tvTitle;
+//        public TextView tvContent;
+//
+//        public BlogHolder(View view) {
+//            super(view);
+//            ivAvatar = view.findViewById(R.id.iv_avatar);
+//            tvUsername = view.findViewById(R.id.tv_username);
+//            tvTime = view.findViewById(R.id.tv_time);
+//            tvTitle = view.findViewById(R.id.tv_title);
+//            tvContent = view.findViewById(R.id.tv_content);
+//        }
+//    }
+public void reload(FirebaseRecyclerOptions<Blog> options){
+    FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, HomeFragment.BlogHolder>(options) {
+        @NonNull
+        @Override
+        public HomeFragment.BlogHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ViewBlogItemBinding binding =
+                    DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                            R.layout.view_blog_item,
+                            parent,
+                            false);
+            Log.d("DEBUG", "OK1");
+            return new HomeFragment.BlogHolder(binding);
 
-        public ShapeableImageView ivAvatar;
-        public TextView tvUsername;
-        public TextView tvTime;
-        public TextView tvTitle;
-        public TextView tvContent;
+        }
 
-        public BlogHolder(View view) {
-            super(view);
-            ivAvatar = view.findViewById(R.id.iv_avatar);
-            tvUsername = view.findViewById(R.id.tv_username);
-            tvTime = view.findViewById(R.id.tv_time);
-            tvTitle = view.findViewById(R.id.tv_title);
-            tvContent = view.findViewById(R.id.tv_content);
+        @Override
+        protected void onBindViewHolder(@NonNull HomeFragment.BlogHolder holder, int position, @NonNull Blog model) {
+//            holder.binding.tvTitle.setText(model.getTitle());
+//            holder.binding.tvContent.setText(model.getContent());
+//            holder.binding.tvTime.setText(model.getCreatedTime());
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    Bundle bundle = new Bundle();
+////                    bundle.putSerializable("blog", model);
+////                    Navigation.findNavController(binding.getRoot()).navigate(R.id.editBlogFragment,bundle);
+//                }
+//            });
+            holder.binding.setBlog(model);
+        }
+    };
+    binding.rvBlogs.setAdapter(adapter);
+    adapter.startListening();
+}
+
+    public class BlogHolder extends RecyclerView.ViewHolder {
+        public ViewBlogItemBinding binding;
+
+        BlogHolder(ViewBlogItemBinding itemsBinding) {
+            super(itemsBinding.getRoot());
+            this.binding = itemsBinding;
         }
     }
 }
