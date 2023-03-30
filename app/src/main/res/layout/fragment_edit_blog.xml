@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.EditBlogFragment">
     <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -14,6 +19,7 @@
             android:elevation="10dp"
             android:layout_marginBottom="5dp">
             <Button
+                android:id="@+id/btn_color"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -22,6 +28,7 @@
                 android:drawableLeft="@drawable/ic_baseline_format_color_fill_24"
                 android:background="@android:color/transparent"/>
             <Button
+                android:id="@+id/btn_bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -30,6 +37,7 @@
                 android:drawableLeft="@drawable/ic_baseline_format_bold_24"
                 android:background="@android:color/transparent"/>
             <Button
+                android:id="@+id/btn_italic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -38,6 +46,7 @@
                 android:drawableLeft="@drawable/ic_baseline_format_italic_24"
                 android:background="@android:color/transparent"/>
             <Button
+                android:id="@+id/btn_align"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -46,6 +55,7 @@
                 android:drawableLeft="@drawable/ic_baseline_format_align_center_24"
                 android:background="@android:color/transparent"/>
             <Button
+                android:id="@+id/btn_underline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -55,6 +65,7 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
         <EditText
+            android:id="@+id/et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Title"
@@ -63,9 +74,11 @@
             android:padding="10dp">
         </EditText>
         <EditText
+            android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Content">
         </EditText>
     </LinearLayout>
+</FrameLayout>
 </layout>
