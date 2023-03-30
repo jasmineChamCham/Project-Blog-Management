@@ -1,6 +1,7 @@
 package com.example.blogapp.viewmodel;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
@@ -19,13 +20,14 @@ import com.google.firebase.database.ValueEventListener;
 public class DBHelper {
     FirebaseDatabase database;
     public FirebaseRecyclerOptions<Blog> optionAll, optionPublished, optionDrafts, optionTrashed;
-    DatabaseReference blogsRef;
+    DatabaseReference blogsRef, userRef;
     Context context;
 
     public DBHelper(Context context) {
         this.context = context;
         database = FirebaseDatabase.getInstance();
         blogsRef = database.getReference().child("blogs");
+        userRef = database.getReference().child("users");
         optionAll = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsRef, Blog.class)
                 .build();
@@ -41,7 +43,6 @@ public class DBHelper {
     }
 
     public void addNote(String title, String content, String createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
-
         String id = blogsRef.push().getKey();
         blogsRef.child(id).setValue(new Blog(id, title, content, createdTime, userID, likeNumber, viewNumber, category, status))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -52,6 +53,20 @@ public class DBHelper {
                         } else {
                             Toast.makeText(context,"Add blog fail!", Toast.LENGTH_SHORT).show();
                         }
+                    }
+                });
+    }
+    public void addUser(String email, String name, String pass, String birthdaty) {
+        String id = userRef.push().getKey();
+        userRef.child(id).setValue(new User(id, name, email, pass, birthdaty))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("DEBUG","Add user successful!");
+                        } else {
+
+                            Log.d("DEBUG","Add user fail!");}
                     }
                 });
     }

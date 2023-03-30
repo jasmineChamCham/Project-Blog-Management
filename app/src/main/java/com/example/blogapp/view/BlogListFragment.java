@@ -52,18 +52,36 @@ public class BlogListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 reload(repository.optionPublished);
+                binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.main_color));
+                binding.btnTrashed.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnPublished.setTextColor(getResources().getColor(R.color.white));
+                binding.btnTrashed.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
             }
         });
         binding.btnDrafts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 reload(repository.optionDrafts);
+                binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnTrashed.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.main_color));
+                binding.btnPublished.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnTrashed.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnDrafts.setTextColor(getResources().getColor(R.color.white));
             }
         });
         binding.btnTrashed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 reload(repository.optionTrashed);
+                binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnTrashed.setBackgroundColor(getResources().getColor(R.color.main_color));
+                binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnPublished.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnTrashed.setTextColor(getResources().getColor(R.color.white));
+                binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
             }
         });
         reload(repository.optionPublished);
