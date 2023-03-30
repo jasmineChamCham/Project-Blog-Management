@@ -44,7 +44,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private DBHelper dbHelper = new DBHelper();
+    private DBHelper dbHelper;
 
 //    private ArrayList<Blog> blogList;
 //    private ArrayList<User> userList;
@@ -61,14 +61,17 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.fragment_home, container, false);
-        View viewRoot = binding.getRoot();
-        return viewRoot;
+        View view = binding.getRoot();
+
+        dbHelper = new DBHelper(view.getContext());
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        dbHelper.addUser("U00001", "HoaiAnh", "hoaianh@gmail.com", "123456", "10/1/2000");
 //        blogList = new ArrayList<Blog>();
 //        userList = new ArrayList<User>();
 //        blogAdapter = new BlogAdapter(blogList, userList);
@@ -90,53 +93,53 @@ public class HomeFragment extends Fragment {
 //        blogAdapter.notifyDataSetChanged();
         binding.rvBlogs.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(dbHelper.options) {
-            @NonNull
-            @Override
-            public BlogHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.view_blog_item, parent, false);
-                return new BlogHolder(view);
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull BlogHolder holder, int position, Blog blog) {
-                String userId =
-                holder.tvUsername.setText(blog.getUserId());
-                holder.tvTitle.setText(blog.getTitle());
-                holder.tvContent.setText(blog.getContent());
-                holder.
-                holder.tvDate.setText(post.getDate());
-                holder.layoutNote.setBackgroundColor(Color.parseColor(post.getColor()));
-                holder.ivAction.setOnClickListener(new View.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.M)
-                    @Override
-                    public void onClick(View view) {
-                        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                        popupMenu.setGravity(Gravity.END);
-                        popupMenu.getMenu().add("Edit").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                editNote((Post) getItem(position));
-                                String postID = ((Post) getItem(position)).getId();
-//                                System.out.println("POST ID: " + postID);
-                                return false;
-                            }
-                        });
-                        popupMenu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                deleteNote((Post) getItem(position));
-                                return false;
-                            }
-                        });
-                        popupMenu.show();
-                    }
-                });
-            }
-        };
-        binding.rvBlogs.setAdapter(adapter);
-        adapter.startListening();
+//        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(dbHelper.op) {
+//            @NonNull
+//            @Override
+//            public BlogHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                View view = LayoutInflater.from(parent.getContext())
+//                        .inflate(R.layout.view_blog_item, parent, false);
+//                return new BlogHolder(view);
+//            }
+//
+//            @Override
+//            public void onBindViewHolder(@NonNull BlogHolder holder, int position, Blog blog) {
+//                String userId =
+//                holder.tvUsername.setText(blog.getUserId());
+//                holder.tvTitle.setText(blog.getTitle());
+//                holder.tvContent.setText(blog.getContent());
+//                holder.
+//                holder.tvDate.setText(post.getDate());
+//                holder.layoutNote.setBackgroundColor(Color.parseColor(post.getColor()));
+//                holder.ivAction.setOnClickListener(new View.OnClickListener() {
+//                    @RequiresApi(api = Build.VERSION_CODES.M)
+//                    @Override
+//                    public void onClick(View view) {
+//                        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+//                        popupMenu.setGravity(Gravity.END);
+//                        popupMenu.getMenu().add("Edit").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                            @Override
+//                            public boolean onMenuItemClick(@NonNull MenuItem item) {
+//                                editNote((Post) getItem(position));
+//                                String postID = ((Post) getItem(position)).getId();
+////                                System.out.println("POST ID: " + postID);
+//                                return false;
+//                            }
+//                        });
+//                        popupMenu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                            @Override
+//                            public boolean onMenuItemClick(@NonNull MenuItem item) {
+//                                deleteNote((Post) getItem(position));
+//                                return false;
+//                            }
+//                        });
+//                        popupMenu.show();
+//                    }
+//                });
+//            }
+//        };
+//        binding.rvBlogs.setAdapter(adapter);
+//        adapter.startListening();
 
         binding.btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override

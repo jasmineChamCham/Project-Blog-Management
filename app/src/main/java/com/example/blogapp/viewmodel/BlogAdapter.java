@@ -13,7 +13,6 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.ViewBlogItemBinding;
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.User;
-import com.example.blogapp.view.ListBlogActivity;
 
 import java.util.ArrayList;
 

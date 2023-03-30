@@ -1,14 +1,24 @@
 package com.example.blogapp.model;
 
-public class Blog {
+import java.io.Serializable;
+
+public class Blog implements Serializable {
     private String blogId;
+
     private String title;
+
     private String content;
+
     private String createdTime;
+
     private String userId;
+
     private int likesNumber;
+
     private int viewsNumber;
+
     private String category;
+
     private String status;
 
     public Blog() {
