@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.BlogListFragment">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".view.ListBlogActivity">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:elevation="8dp"
+                android:layout_marginBottom="5dp"
+                >
+                <Button
+                    android:id="@+id/btn_published"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/main_color"
+                    android:text="Published"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textSize="17sp"
+                    ></Button>
+                <Button
+                    android:id="@+id/btn_drafts"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white"
+                    android:text="Drafts"
+                    android:textColor="@color/main_color"
+                    android:textAllCaps="false"
+                    android:textSize="17sp"
+                    ></Button>
+                <Button
+                    android:id="@+id/btn_trashed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white"
+                    android:text="Trash"
+                    android:textColor="@color/main_color"
+                    android:textAllCaps="false"
+                    android:textSize="17sp"
+                    ></Button>
+                ></LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_blogs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                ></androidx.recyclerview.widget.RecyclerView>
+
+            <ImageButton
+                android:id="@+id/btn_add"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_baseline_post_add_24"
+                style="@style/circularButton"
+                ></ImageButton>
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>

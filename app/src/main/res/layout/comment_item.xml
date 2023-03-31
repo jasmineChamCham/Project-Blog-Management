@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="comment" type="com.example.blogapp.model.Comment"/>
+        <variable name="user" type="com.example.blogapp.model.User"/>
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="10dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginBottom="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                >
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/person_avatar"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/circleImageView"
+                    ></com.google.android.material.imageview.ShapeableImageView>
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{user.name}"
+                    android:textColor="@color/main_color"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    ></TextView>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_comment_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{comment.createdTime}"
+                android:textSize="14sp"
+                android:layout_marginBottom="5dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/tv_comment_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{comment.commentContent}"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:layout_marginLeft="40dp"
+                ></TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

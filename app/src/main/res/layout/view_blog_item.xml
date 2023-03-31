@@ -14,6 +14,7 @@
         app:cardElevation="10dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
+        android:layout_marginBottom="10dp"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +29,7 @@
                 android:layout_marginBottom="15dp"
                 >
                 <com.google.android.material.imageview.ShapeableImageView
-
+                    android:id="@+id/iv_avatar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/person_avatar"
@@ -64,6 +65,14 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{blog.createdTime}"
+                android:paddingHorizontal="10dp"
+                ></TextView>
+
+            <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,6 +85,7 @@
 
             <TextView
                 android:id="@+id/tv_content"
+                android:maxLines="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{blog.content}"
@@ -90,7 +100,7 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp"
                 >
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btn_like"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -101,12 +111,10 @@
                     android:textColor="@color/main_color"
                     android:textAllCaps="false"
                     android:textSize="13sp"
-                    app:strokeColor="@color/main_color"
-                    app:strokeWidth="0dp"
                     app:cornerRadius="10dp"
                     android:layout_marginRight="20dp"
-                    ></com.google.android.material.button.MaterialButton>
-                <com.google.android.material.button.MaterialButton
+                    ></Button>
+                <Button
                     android:id="@+id/btn_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -117,10 +125,8 @@
                     android:textColor="@color/main_color"
                     android:textAllCaps="false"
                     android:textSize="13sp"
-                    app:strokeColor="@color/main_color"
-                    app:strokeWidth="0dp"
                     app:cornerRadius="10dp"
-                    ></com.google.android.material.button.MaterialButton>
+                    ></Button>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
