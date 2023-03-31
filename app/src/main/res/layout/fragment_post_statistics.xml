@@ -61,26 +61,29 @@
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="380dp"/>
+
         <LinearLayout
             android:id="@+id/section_follow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/but_likes"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:backgroundTint="@color/light_blue"
-                android:text="Likes"/>
+                android:text="Likes" />
+
             <Button
                 android:id="@+id/but_views"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:backgroundTint="@color/light_blue"
-                android:text="Views"/>
+                android:text="Views" />
         </LinearLayout>
 
         <LinearLayout
@@ -95,24 +98,24 @@
                 >
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Following : "
+                        android:text="Post with most likes : "
                         android:textSize="20sp"
                         android:layout_marginRight="10dp"
                         ></TextView>
                     <TextView
-                        android:text="100.000 people"
+                        android:text="Hamlet"
                         android:textSize="20sp"
                         ></TextView>
                 </TableRow>
 
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Followed by : "
+                        android:text="Post with most views : "
                         android:textSize="20sp"
                         android:layout_marginRight="10dp"
                         ></TextView>
                     <TextView
-                        android:text="100.000 people"
+                        android:text="Work from home"
                         android:textSize="20sp"
                         ></TextView>
                 </TableRow>
