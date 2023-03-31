@@ -4,13 +4,10 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -34,11 +31,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class PostStatisticsFragment extends Fragment {
 
@@ -80,9 +75,10 @@ public class PostStatisticsFragment extends Fragment {
         butFollowChosen = view.findViewById(R.id.but_follow_chosen_P);
         butPostChosen = view.findViewById(R.id.but_post_chosen_P);
 
-        butFollowChosen.setTextSize(20);
-        butPostChosen.setTextSize(25);
-        butPostChosen.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        butPostChosen.setBackgroundColor(getResources().getColor(R.color.main_color));
+        butFollowChosen.setBackgroundColor(getResources().getColor(R.color.white));
+        butPostChosen.setTextColor(getResources().getColor(R.color.white));
+        butFollowChosen.setTextColor(getResources().getColor(R.color.main_color));
 
         butFollowChosen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +87,8 @@ public class PostStatisticsFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.followStatisticsFragment, null);
             }
         });
-
         lcFollower = view.findViewById(R.id.lc_follower);
-
-
         drawInitialBarChart();
-
     }
 
     private void drawInitialBarChart(){

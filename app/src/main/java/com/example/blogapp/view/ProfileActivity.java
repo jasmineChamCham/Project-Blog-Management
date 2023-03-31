@@ -54,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvName.setText(user.getEmail());
 
         Button butStatistics = findViewById(R.id.but_statistics);
-        Button butNewfeed = findViewById(R.id.but_newfeed);
+        Button butPosts = findViewById(R.id.but_posts);
         Button butProfile = findViewById(R.id.but_profile);
         Button butChangePw = findViewById(R.id.but_change_pw);
         Button butLogout = findViewById(R.id.but_logout);

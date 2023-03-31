@@ -17,36 +17,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent">
-
+            android:layout_gravity="center"
+            android:elevation="8dp"
+            android:layout_marginBottom="5dp"
+            >
             <Button
                 android:id="@+id/but_follow_chosen"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:backgroundTint="@color/white"
-                android:text="FOLLOW"
-                android:textColor="@color/teal_200"
-                android:textSize="25sp"
-                android:textStyle="bold">
-
-            </Button>
-
+                android:layout_weight="1"
+                android:backgroundTint="@color/main_color"
+                android:text="Follows"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                ></Button>
             <Button
                 android:id="@+id/but_post_chosen"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/white"
-                android:text="POST"
-                android:textColor="@color/teal_200"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
+                android:text="Posts"
+                android:textColor="@color/main_color"
+                android:textAllCaps="false"
+                android:textSize="17sp"
+                ></Button>
+            ></LinearLayout>
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/bc_follow"

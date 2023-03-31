@@ -4,7 +4,6 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -80,14 +79,14 @@ public class FollowStatisticsFragment extends Fragment {
         butFollowChosen = view.findViewById(R.id.but_follow_chosen);
         butPostChosen = view.findViewById(R.id.but_post_chosen);
 
-        butFollowChosen.setTextSize(25);
-        butPostChosen.setTextSize(20);
-        butFollowChosen.setTypeface(butFollowChosen.getTypeface(), Typeface.BOLD);
+        butFollowChosen.setBackgroundColor(getResources().getColor(R.color.main_color));
+        butPostChosen.setBackgroundColor(getResources().getColor(R.color.white));
+        butFollowChosen.setTextColor(getResources().getColor(R.color.white));
+        butPostChosen.setTextColor(getResources().getColor(R.color.main_color));
 
         butPostChosen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Navigation.findNavController(v).navigate(R.id.postStatisticsFragment, null);
             }
         });
