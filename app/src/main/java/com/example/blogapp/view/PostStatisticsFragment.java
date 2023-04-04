@@ -83,10 +83,19 @@ public class PostStatisticsFragment extends Fragment {
         butFollowChosen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Navigation.findNavController(v).navigate(R.id.followStatisticsFragment, null);
             }
         });
+
+        butPostChosen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lcFollower.setVisibility(View.VISIBLE);
+                bcFollow.setVisibility(View.GONE);
+                drawInitialBarChart();
+            }
+        });
+
         lcFollower = view.findViewById(R.id.lc_follower);
         drawInitialBarChart();
     }

@@ -5,19 +5,21 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.blogapp.model.Blog;
+import com.example.blogapp.model.Follow;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
 public class BlogRepository {
-    FirebaseDatabase database;
+    static FirebaseDatabase database;
     public FirebaseRecyclerOptions<Blog> options;
     DatabaseReference blogsRef;
     public static FirebaseAuth mAuth;
+
 
     public BlogRepository() {
         database = FirebaseDatabase.getInstance();
@@ -44,4 +46,6 @@ public class BlogRepository {
                     }
                 });
     }
+
+
 }

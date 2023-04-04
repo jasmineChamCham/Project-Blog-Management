@@ -5,13 +5,13 @@ import java.util.Date;
 public class Follow {
     private String follower;
     private String followed;
-    private Date time;
+    private Long time;
 
     public Follow() {
 
     }
 
-    public Follow(String follower, String followed, Date time) {
+    public Follow(String follower, String followed, Long time) {
         this.follower = follower;
         this.followed = followed;
         this.time = time;
@@ -33,13 +33,20 @@ public class Follow {
         this.followed = followed;
     }
 
-    public Date getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
-
+    @Override
+    public String toString() {
+        return "Follow{" +
+                "follower='" + follower + '\'' +
+                ", followed='" + followed + '\'' +
+                ", time=" + time +
+                '}';
+    }
 }

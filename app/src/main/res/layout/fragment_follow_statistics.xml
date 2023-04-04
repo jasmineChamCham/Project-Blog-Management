@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.FollowStatisticsFragment">
+    tools:context=".view.FollowStatisticsFragment"
+    android:id="@+id/fragment_follow_statistics">
 
 
     <LinearLayout
@@ -51,14 +52,8 @@
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lc_follower"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="380dp"/>
         <LinearLayout
             android:id="@+id/section_follow"
             android:layout_width="match_parent"

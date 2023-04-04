@@ -49,121 +49,130 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/icon_statistics"></ImageView>
+                android:elevation="10dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/icon_statistics" />
 
             <Button
                 android:id="@+id/but_statistics"
                 style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:backgroundTint="@color/white"
                 android:text="STATISTICS"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                android:textColor="@color/black"
+                android:gravity="center"/>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/blog_logo"></ImageView>
+                android:elevation="10dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/blog_logo" />
 
             <Button
                 android:id="@+id/but_posts"
                 style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:backgroundTint="@color/white"
-                android:text="Posts"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                android:text="POSTS"
+                android:textColor="@color/black"
+                android:gravity="center"/>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/icon_profile"></ImageView>
+                android:elevation="10dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/icon_profile" />
 
             <Button
                 android:id="@+id/but_profile"
                 style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:backgroundTint="@color/white"
-                android:text="Profile"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                android:text="PROFILE"
+                android:textColor="@color/black"
+                android:gravity="center"/>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/icon_change_pw"></ImageView>
+                android:elevation="10dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/icon_change_pw" />
 
             <Button
                 android:id="@+id/but_change_pw"
                 style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:backgroundTint="@color/white"
-                android:text="Change password"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                android:text="CHANGE PASSWORD"
+                android:textColor="@color/black"
+                android:gravity="center"/>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_margin="10dp"
-                android:src="@drawable/icon_logout"></ImageView>
+                android:elevation="10dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/icon_logout" />
 
             <Button
                 android:id="@+id/but_logout"
                 style="@style/TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:backgroundTint="@color/white"
-                android:text="Log out"
-                android:textColor="@color/black" />
-        </LinearLayout>
-
+                android:text="LOGOUT"
+                android:textColor="@color/black"
+                android:gravity="center"/>
+        </RelativeLayout>
 
     </LinearLayout>
 

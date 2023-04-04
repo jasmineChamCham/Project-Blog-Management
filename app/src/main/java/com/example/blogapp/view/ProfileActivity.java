@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.blogapp.R;
 import com.example.blogapp.viewmodel.BlogRepository;
+import com.example.blogapp.viewmodel.FollowRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -23,6 +24,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser user;
@@ -48,7 +52,16 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+
+
         user = BlogRepository.mAuth.getCurrentUser();
+
+//        FollowRepository.addFollowInstance("Ngoc Tram", "Ngoc Linh", new GregorianCalendar(2023, 3, 2).getTime().getTime());
+//        FollowRepository.addFollowInstance("Micheal", "Ngoc Tram", new GregorianCalendar(2023, 3, 3).getTime().getTime());
+//        FollowRepository.addFollowInstance("Hoai Anh", "Ngoc Tram", new GregorianCalendar(2023, 3, 3).getTime().getTime());
+//        FollowRepository.addFollowInstance("Michelle", "Ngoc Tram", new GregorianCalendar(2023, 3, 1).getTime().getTime());
+//        FollowRepository.addFollowInstance("Minh Suong", "Ngoc Tram", new GregorianCalendar(2023, 2, 30).getTime().getTime());
 
         tvName = findViewById(R.id.tv_name);
         tvName.setText(user.getEmail());
