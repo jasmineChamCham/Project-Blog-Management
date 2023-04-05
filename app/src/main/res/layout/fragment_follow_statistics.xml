@@ -95,23 +95,23 @@
                 >
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Following : "
+                        android:text="Followed  "
                         android:textSize="20sp"
-                        android:layout_marginRight="10dp"
-                        ></TextView>
+                        android:layout_marginRight="10dp"/>
                     <TextView
+                        android:id="@+id/tv_num_followed"
                         android:text="100.000 people"
-                        android:textSize="20sp"
-                        ></TextView>
+                        android:textSize="20sp"/>
                 </TableRow>
 
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Followed by : "
+                        android:text="Follower "
                         android:textSize="20sp"
                         android:layout_marginRight="10dp"
                         ></TextView>
                     <TextView
+                        android:id="@+id/tv_num_follower"
                         android:text="100.000 people"
                         android:textSize="20sp"
                         ></TextView>

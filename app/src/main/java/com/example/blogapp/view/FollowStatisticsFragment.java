@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.blogapp.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -33,24 +34,30 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class FollowStatisticsFragment extends Fragment {
     private final DatabaseReference followRef;
+    private final String monthYearPattern = "yyyy-MM";
 
     BarChart bcFollow;
     BarDataSet bdsFollower, bdsFollowed;
     Button butDaily, butMonthly, butAnnually;
 
     Button butPostChosen, butFollowChosen;
+
+    TextView tvNumFollower, tvNumFollowed;
 
     private static String username;
 
@@ -74,6 +81,8 @@ public class FollowStatisticsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tvNumFollowed = view.findViewById(R.id.tv_num_followed);
+        tvNumFollower = view.findViewById(R.id.tv_num_follower);
 
         butFollowChosen = view.findViewById(R.id.but_follow_chosen);
         butPostChosen = view.findViewById(R.id.but_post_chosen);
@@ -109,82 +118,33 @@ public class FollowStatisticsFragment extends Fragment {
         drawBarChart("Daily");
     }
 
-    private String[] getRecentDays(){
-        String[] days = new String[7];
-        DateFormat dateFormat = new SimpleDateFormat("MM-dd");
-
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -7);
-
-        for (int i=1; i<=7; i++) {
-            cal.add(Calendar.DATE, 1);
-            Date dayD = cal.getTime();
-            String day = dateFormat.format(dayD);
-            days[i-1] = day;
-        }
-        return days;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private String[] getRecentMonths(){
-        String[] months = new String[12];
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
-        String todate = dateFormat.format(date);
-        YearMonth stop = YearMonth.parse(todate);
-        YearMonth start = stop.minusYears( 1 );
-        List<YearMonth> yearMonths = new ArrayList<>( 12 );
-        YearMonth yearMonth = start ;
-        while ( yearMonth.isBefore( stop ) ) {
-            yearMonth = yearMonth.plusMonths( 1 );
-            yearMonths.add( yearMonth ) ;  // Add each incremented YearMonth to our collection.
-        }
-
-        for (int i=0; i<12; i++) {
-            months[i] = yearMonths.get(i).getMonth().toString().substring(0,3);
-        }
-        return months;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String[] getRecentYears(){
-        String[] years = new String[7];
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
-        String todate = dateFormat.format(date);
-        YearMonth stop = YearMonth.parse(todate);
-        YearMonth start = stop.minusYears( 7 );
-        List<YearMonth> yearMonths = new ArrayList<>();
-        YearMonth yearMonth = start ;
-        while ( yearMonth.isBefore( stop ) ) {
-            yearMonth = yearMonth.plusYears( 1 );
-            yearMonths.add( yearMonth ) ;  // Add each incremented YearMonth to our collection.
-        }
-
-        for (int i=0; i<7; i++) {
-            years[i] = "" + yearMonths.get(i).getYear();
-            Log.d("month[i]", years[i]);
-        }
-        return  years;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String[] getTimeRange(String type){
-        if (type.equals("Daily")){
-            return getRecentDays();
-        } else if (type.equals("Monthly")){
-            return getRecentMonths();
-        } else if (type.equals("Annually")){
-            return getRecentYears();
-        } else return null;
-    }
-
     private Date getFromDate(String type){
         Date fromdate = null;
-        if (type.equals("Daily")){
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DATE, -7);
-            fromdate = cal.getTime();
+        switch (type) {
+            case "Daily":
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DATE, -7);
+                fromdate = cal.getTime();
+                break;
+            case "Monthly": {
+                DateFormat dateFormat = new SimpleDateFormat(monthYearPattern);
+                String now = dateFormat.format(new Date());
+                YearMonth stop = YearMonth.parse(now);
+                YearMonth start = stop.minusYears(1);
+                Log.d("start month", "" + start.getMonth().getValue());
+                fromdate = new GregorianCalendar(start.getYear(), start.getMonthValue(), 1).getTime();
+                break;
+            }
+            case "Annually": {
+                DateFormat dateFormat = new SimpleDateFormat(monthYearPattern);
+                String now = dateFormat.format(new Date());
+                YearMonth stop = YearMonth.parse(now);
+                YearMonth start = stop.minusYears(7);
+                Log.d("start year", "" + start.getYear());
+                fromdate = new GregorianCalendar(start.getYear(), 1, 1).getTime();
+                break;
+            }
         }
         return fromdate;
     }
@@ -200,114 +160,186 @@ public class FollowStatisticsFragment extends Fragment {
 
         followRef.orderByChild("time").endBefore(new Date().getTime())
                 .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Long fromdate = getFromDate(type).getTime();
-                        Set<Long> listTime = new TreeSet<>();
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Long fromdate = getFromDate(type).getTime();
+                            Set<Long> listTime = new TreeSet<>();
 
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Long time = snapshot.child("time").getValue(Long.class);
-                            String follower = snapshot.child("follower").getValue(String.class);
-                            String followed = snapshot.child("followed").getValue(String.class);
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Long time = snapshot.child("time").getValue(Long.class);
+                                String follower = snapshot.child("follower").getValue(String.class);
+                                String followed = snapshot.child("followed").getValue(String.class);
 
-                            if (username.equals(follower)){
-                                if (groupFollowers.containsKey(time)){
-                                    groupFollowers.put(time, groupFollowers.get(time) + 1);
-                                } else {
-                                    groupFollowers.put(time, 1);
+                                if (username.equals(follower)) {
+                                    if (groupFollowers.containsKey(time)) {
+                                        groupFollowers.put(time, groupFollowers.get(time) + 1);
+                                    } else {
+                                        groupFollowers.put(time, 1);
+                                    }
                                 }
+
+                                if (username.equals(followed)) {
+                                    if (groupFolloweds.containsKey(time)) {
+                                        groupFolloweds.put(time, groupFolloweds.get(time) + 1);
+                                    } else {
+                                        groupFolloweds.put(time, 1);
+                                    }
+                                }
+
                                 if (time >= fromdate) {
                                     listTime.add(time);
                                 }
                             }
 
-                            if (username.equals(followed)){
-                                if (groupFolloweds.containsKey(time)){
-                                    groupFolloweds.put(time, groupFolloweds.get(time) + 1);
-                                } else {
-                                    groupFolloweds.put(time, 1);
+                            ArrayList<String> timeArr = new ArrayList<>();
+                            int countFollower = 0;
+                            int countFollowed = 0;
+
+                            switch (type) {
+                                case "Daily": {
+                                    ArrayList<Long> timeArrLong = new ArrayList<>(listTime);
+                                    for (Long time : timeArrLong) {
+                                        timeArr.add(getDayStrFromMillis(time));
+                                    }
+                                    for (Long time : timeArrLong) {
+                                        if (groupFolloweds.containsKey(time)){
+                                            countFollowed += groupFolloweds.get(time);
+                                        }
+                                        Log.d("DEBUG", "Group Followeds " + getDayStrFromMillis(time) + " has " + countFollowed + " people.");
+                                        barEntriesFolloweds.add(new BarEntry(timeArr.indexOf(getDayStrFromMillis(time)), countFollowed));
+
+                                        if (groupFollowers.containsKey(time)){
+                                            countFollower += groupFollowers.get(time);
+                                        }
+                                        Log.d("DEBUG", "Group Followers " + getDayStrFromMillis(time) + " has " + countFollower + " people.");
+                                        barEntriesFollowers.add(new BarEntry(timeArr.indexOf(getDayStrFromMillis(time)), countFollower));
+                                    }
+                                    break;
                                 }
-                                if (time >= fromdate) {
-                                    listTime.add(time);
+
+                                case "Monthly": {
+                                    ArrayList<Integer> listMonth = new ArrayList<>();
+                                    ArrayList<Long> timeArrLong = new ArrayList<>(listTime);
+                                    for (Long time : timeArrLong) {
+                                        listMonth.add(getYearMonthFromMillis(time).getMonth().getValue());
+                                    }
+                                    listMonth = new ArrayList<>( listMonth.stream().distinct().collect(Collectors.toList()) );
+                                    for (int month : listMonth) {
+                                        timeArr.add(Month.of(month).toString().substring(0,3));
+                                        Log.d("DEBUG", "listMonth - " + month);
+                                    }
+
+                                    Log.d("DEBUG", "key group followed size = " + groupFolloweds.size());
+                                    Log.d("DEBUG", "key group follower size = " + groupFollowers.size());
+
+                                    countFollowed = 0;
+                                    countFollower = 0;
+
+                                    for (int month : listMonth){
+                                        for (Long time : groupFolloweds.keySet()){
+                                            if (getYearMonthFromMillis(time).getMonthValue() == month){
+                                                countFollowed += groupFolloweds.get(time);
+                                            }
+                                        }
+                                        barEntriesFolloweds.add(new BarEntry(listMonth.indexOf(month), countFollowed));
+                                        Log.d("DEBUG", "TOTAL followed month " + month + " : " + countFollowed);
+
+                                        for (Long time : groupFollowers.keySet()){
+                                            if (getYearMonthFromMillis(time).getMonthValue() == month){
+                                                countFollower += groupFollowers.get(time);
+                                            }
+                                        }
+                                        barEntriesFollowers.add(new BarEntry(listMonth.indexOf(month), countFollower));
+                                        Log.d("DEBUG", "TOTAL follower month " + month + " : " + countFollower);
+                                    }
+                                    break;
+                                }
+                                case "Annually": {
+                                    ArrayList<Integer> listYear = new ArrayList<>();
+                                    ArrayList<Long> timeArrLong = new ArrayList<>(listTime);
+                                    for (Long time : timeArrLong) {
+                                        listYear.add(getYearMonthFromMillis(time).getYear());
+                                    }
+                                    listYear = new ArrayList<>( listYear.stream().distinct().collect(Collectors.toList()) );
+                                    for (int year : listYear) {
+                                        timeArr.add("" + year);
+                                        Log.d("DEBUG", "listYear - " + year);
+                                    }
+
+                                    Log.d("DEBUG", "key group followed size = " + groupFolloweds.size());
+                                    Log.d("DEBUG", "key group follower size = " + groupFollowers.size());
+
+                                    countFollowed = 0;
+                                    countFollower = 0;
+
+                                    for (int year : listYear){
+                                        for (Long time : groupFolloweds.keySet()){
+                                            if (getYearMonthFromMillis(time).getYear() == year){
+                                                countFollowed += groupFolloweds.get(time);
+                                            }
+                                        }
+                                        barEntriesFolloweds.add(new BarEntry(listYear.indexOf(year), countFollowed));
+                                        Log.d("DEBUG", "TOTAL followed year " + year + " : " + countFollowed);
+
+                                        for (Long time : groupFollowers.keySet()){
+                                            if (getYearMonthFromMillis(time).getYear() == year){
+                                                countFollower += groupFollowers.get(time);
+                                            }
+                                        }
+                                        barEntriesFollowers.add(new BarEntry(listYear.indexOf(year), countFollower));
+                                        Log.d("DEBUG", "TOTAL follower year " + year + " : " + countFollower);
+                                    }
+                                    break;
                                 }
                             }
-                        }
 
-                        ArrayList<Long> timeArrLong = new ArrayList<>(listTime);
-                        ArrayList<String> timeArr = new ArrayList<>();
-                        for (Long time : timeArrLong) {
-                            timeArr.add(getDayStrFromMillis(time));
-                        }
+                            tvNumFollower.setText(":    " + countFollower + " people");
+                            tvNumFollowed.setText(":    " + countFollowed + " people");
 
-                        int count = 0;
-                        for (Long group : groupFollowers.keySet()) {
-                            count += groupFollowers.get(group);
-                            if (group >= fromdate) {
-                                Log.d("DEBUG","Group Followers " + getDayStrFromMillis(group) + " has " + count + " items.");
-                                Log.d("DEBUG", "index of group er " + (timeArr.indexOf(getDayStrFromMillis(group)) + 1));
-                                barEntriesFollowers.add (new BarEntry(timeArr.indexOf(getDayStrFromMillis(group)) , count));
+                            bdsFollower = new BarDataSet(barEntriesFollowers, "Follower");
+                            bdsFollowed = new BarDataSet(barEntriesFolloweds, "Followed");
+
+                            if (type.trim().equals("Daily")) {
+                                bdsFollower.setColor(Color.parseColor("#F18A85"));
+                                bdsFollowed.setColor(Color.parseColor("#24788F"));
+                            } else if (type.trim().equals("Monthly")) {
+                                bdsFollower.setColor(Color.parseColor("#D3885E"));
+                                bdsFollowed.setColor(Color.parseColor("#6988A3"));
+                            } else if (type.trim().equals("Annually")) {
+                                bdsFollower.setColor(Color.parseColor("#FF8849"));
+                                bdsFollowed.setColor(Color.parseColor("#69BE28"));
                             }
+
+
+                            BarData data = new BarData(bdsFollower, bdsFollowed);
+                            bcFollow.setData(data);
+
+                            bcFollow.getDescription().setEnabled(false);
+                            XAxis xAxis = bcFollow.getXAxis();
+                            xAxis.setValueFormatter(new IndexAxisValueFormatter(timeArr.toArray(new String[timeArr.size()])));
+                            xAxis.setCenterAxisLabels(true);
+                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                            xAxis.setGranularityEnabled(true);
+                            xAxis.setGranularity(1);
+                            bcFollow.setDragEnabled(true);
+                            bcFollow.setVisibleXRangeMaximum(14);
+                            bcFollow.setVisibleXRangeMinimum(timeArr.size() + 1);
+
+                            float barSpace = 0.1f;
+                            float groupSpace = 0.5f;
+                            data.setBarWidth(0.15f);
+                            bcFollow.getXAxis().setAxisMinimum(0);
+                            bcFollow.animate();
+                            bcFollow.groupBars(0, groupSpace, barSpace);
+                            bcFollow.invalidate();
+
                         }
 
-                        count = 0;
-                        for (Long group : groupFolloweds.keySet()) {
-                            count += groupFolloweds.get(group);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                            if (group >= fromdate){
-                                Log.d("DEBUG","Group Followeds " + getDayStrFromMillis(group) + " has " + count + " items.");
-                                Log.d("DEBUG", "index of group ed " + (timeArr.indexOf(getDayStrFromMillis(group)) + 1));
-                                barEntriesFolloweds.add (new BarEntry(timeArr.indexOf(getDayStrFromMillis(group)) + 1, count));
-                            }
                         }
-
-                        bdsFollower = new BarDataSet(barEntriesFollowers, "Follower");
-                        bdsFollowed = new BarDataSet(barEntriesFolloweds, "Followed");
-
-                        if (type.trim().equals("Daily")){
-                            bdsFollower.setColor(Color.parseColor("#F18A85"));
-                            bdsFollowed.setColor(Color.parseColor("#24788F"));
-                        } else if (type.trim().equals("Monthly")){
-                            bdsFollower.setColor(Color.parseColor("#D3885E"));
-                            bdsFollowed.setColor(Color.parseColor("#6988A3"));
-                        } else if (type.trim().equals("Annually")){
-                            bdsFollower.setColor(Color.parseColor("#FF8849"));
-                            bdsFollowed.setColor(Color.parseColor("#69BE28"));
-                        }
-
-
-                        BarData data = new BarData(bdsFollower, bdsFollowed);
-                        bcFollow.setData(data);
-
-                        for (String s : timeArr.toArray(new String[timeArr.size()])){
-                            Log.d("day", s);
-                        }
-
-                        bcFollow.getDescription().setEnabled(false);
-                        XAxis xAxis = bcFollow.getXAxis();
-                        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeArr.toArray(new String[timeArr.size()])));
-                        xAxis.setCenterAxisLabels(true);
-                        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                        xAxis.setGranularityEnabled(true);
-                        xAxis.setGranularity(1);
-                        bcFollow.setDragEnabled(true);
-                        bcFollow.setVisibleXRangeMaximum(12);
-
-                        float barSpace = 0.1f;
-                        float groupSpace = 0.5f;
-                        data.setBarWidth(0.15f);
-                        bcFollow.getXAxis().setAxisMinimum(0);
-                        bcFollow.animate();
-                        bcFollow.groupBars(0, groupSpace, barSpace);
-                        bcFollow.invalidate();
-                        
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-        
+                    });
     }
 
     private String getDayStrFromMillis(Long millis){
@@ -315,4 +347,10 @@ public class FollowStatisticsFragment extends Fragment {
         return dateFormat.format(new Date(millis));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private YearMonth getYearMonthFromMillis(Long millis){
+        DateFormat dateFormat = new SimpleDateFormat(monthYearPattern);
+        String timeStr = dateFormat.format(new Date(millis));
+        return YearMonth.parse(timeStr);
+    }
 }

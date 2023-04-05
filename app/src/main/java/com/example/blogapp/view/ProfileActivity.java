@@ -57,8 +57,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         user = BlogRepository.mAuth.getCurrentUser();
 
-//        FollowRepository.addFollowInstance("Ngoc Tram", "Ngoc Linh", new GregorianCalendar(2023, 3, 2).getTime().getTime());
-//        FollowRepository.addFollowInstance("Micheal", "Ngoc Tram", new GregorianCalendar(2023, 3, 3).getTime().getTime());
+//        FollowRepository.addFollowInstance("Ngoc Tram", "Ngoc Linh", new GregorianCalendar(2023, 3, 4).getTime().getTime());
+//        FollowRepository.addFollowInstance("Micheal", "Ngoc Tram", new GregorianCalendar(2023, 3, 4).getTime().getTime());
 //        FollowRepository.addFollowInstance("Hoai Anh", "Ngoc Tram", new GregorianCalendar(2023, 3, 3).getTime().getTime());
 //        FollowRepository.addFollowInstance("Michelle", "Ngoc Tram", new GregorianCalendar(2023, 3, 1).getTime().getTime());
 //        FollowRepository.addFollowInstance("Minh Suong", "Ngoc Tram", new GregorianCalendar(2023, 2, 30).getTime().getTime());
