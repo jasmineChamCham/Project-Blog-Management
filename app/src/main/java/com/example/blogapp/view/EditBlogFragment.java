@@ -44,7 +44,7 @@ import java.util.Date;
 
 public class EditBlogFragment extends Fragment {
     FragmentEditBlogBinding binding;
-    DBHelper repository;
+    DBHelper dbHelper;
     Blog blog = null;
 
     @Override
@@ -60,7 +60,7 @@ public class EditBlogFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentEditBlogBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        repository = new DBHelper(view.getContext());
+        dbHelper = new DBHelper(view.getContext());
 
         if (blog != null){
             binding.etTitle.setText(blog.getTitle());
@@ -123,14 +123,14 @@ public class EditBlogFragment extends Fragment {
                                 status = "Published";
                             }
                             int checkedCategoryId = chipGroup.getCheckedChipId();
-                            if (checkedCategoryId != 1){
+                            if (checkedCategoryId != 1) {
                                 Chip chip = dialog.findViewById(checkedCategoryId);
                                 category = chip.getText().toString();
                             }
                             else
                                 category = "None";
                             if (blog != null)
-                                repository.updateNote(blog.getBlogId(),
+                                dbHelper.updateNote(blog.getBlogId(),
                                         binding.etTitle.getText().toString(),
                                         binding.etContent.getText().toString(),
                                         isoFormat.format(new Date()),
@@ -140,7 +140,7 @@ public class EditBlogFragment extends Fragment {
                                         category,
                                         status);
                             else
-                                repository.addBlog(binding.etTitle.getText().toString(),
+                                dbHelper.addBlog(binding.etTitle.getText().toString(),
                                         binding.etContent.getText().toString(),
                                         isoFormat.format(new Date()),
                                         "123",

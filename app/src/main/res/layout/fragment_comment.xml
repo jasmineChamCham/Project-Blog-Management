@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="blog" type="com.example.blogapp.model.Blog"/>
         <variable name="user" type="com.example.blogapp.model.User"/>
     </data>
 
@@ -13,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="15dp"
         tools:context=".view.CommentFragment"
         >
         <TextView
@@ -25,65 +23,76 @@
             android:textColor="@color/main_color"
             android:textStyle="bold"
             android:fontFamily="serif"
-            android:layout_marginBottom="35dp"
+            android:padding="15dp"
+            android:layout_weight="0"
             ></TextView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             ></androidx.recyclerview.widget.RecyclerView>
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="7dp"
-                >
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/person_avatar"
-                    android:scaleType="centerCrop"
-                    app:shapeAppearanceOverlay="@style/circleImageView"
-                    ></com.google.android.material.imageview.ShapeableImageView>
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
+                android:background="#F3F3F3"
+                android:orientation="vertical"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@{user.name}"
-                    android:textColor="@color/black"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"
-                    ></TextView>
+                    android:layout_marginBottom="7dp"
+                    android:orientation="horizontal">
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/person_avatar"
+                        app:shapeAppearanceOverlay="@style/circleImageView"
+                        ></com.google.android.material.imageview.ShapeableImageView>
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="@{user.name}"
+                        android:textColor="@color/main_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        ></TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/et_comment_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="1"
+                        android:hint="Write your comment..."
+                        ></EditText>
+                    <ImageButton
+                        android:id="@+id/btn_send"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0"
+                        android:backgroundTint="@color/main_color"
+                        android:src="@drawable/ic_baseline_send_24">
+                    </ImageButton>
+                </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Write your comment..."
-                    android:layout_marginLeft="40dp"
-                    android:layout_weight="1"
-                    ></EditText>
-                <ImageButton
-                    android:id="@+id/btn_Send"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:backgroundTint="@color/main_color"
-                    android:src="@drawable/ic_baseline_send_24"
-                    android:layout_weight="0"
-                    ></ImageButton>
-            </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

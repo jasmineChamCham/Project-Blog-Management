@@ -23,53 +23,57 @@
         android:layout_gravity="center"
         app:chipSpacingHorizontal="8dp"
         app:chipSpacingVertical="8dp"
-        app:singleLine="false">
-
+        app:singleLine="false"
+        android:layout_marginBottom="10dp">
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_food"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+            style="@style/customChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Food" />
-
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_travel"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+            style="@style/customChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Travel" />
-
+            android:text="Travel"
+            />
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_life_style"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+            style="@style/customChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Life Style" />
-
+            android:text="Lifestyle" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_health"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+            style="@style/customChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Health" />
         <com.google.android.material.chip.Chip
-        android:id="@+id/chip_beauty"
-        style="@style/Widget.MaterialComponents.Chip.Choice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Beauty" />
+            android:id="@+id/chip_beauty"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beauty" />
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_fashion"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+            style="@style/customChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fashion" />
         <com.google.android.material.chip.Chip
-            android:id="@+id/chip_novel"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:id="@+id/chip_photography"
+            style="@style/customChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Novel" />
+            android:text="Photography" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_art_design"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Art and Design" />
     </com.google.android.material.chip.ChipGroup>
     <TextView
         android:layout_width="match_parent"
@@ -85,29 +89,31 @@
         android:paddingHorizontal="10dp"
         android:layout_height="wrap_content">
         <RadioButton
-            android:id="@+id/rbtn_publishes"
+            android:id="@+id/rbtn_published"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="Published">
         </RadioButton>
         <RadioButton
-            android:id="@+id/rbtn_draft"
+            android:id="@+id/rbtn_drafts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Drafts">
         </RadioButton>
         <RadioButton
-            android:id="@+id/rbtn_trashed"
+            android:id="@+id/rbtn_trash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trashed">
+            android:text="Trash">
         </RadioButton>
     </RadioGroup>
     <Button
         android:id="@+id/btn_done"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/main_color"
         android:text="Done">
     </Button>
 </LinearLayout>

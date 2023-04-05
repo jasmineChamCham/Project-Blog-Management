@@ -1,6 +1,5 @@
 package com.example.blogapp.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,7 +21,6 @@ import com.example.blogapp.viewmodel.DBHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-import java.text.SimpleDateFormat;
 
 public class BlogListFragment extends Fragment {
     FragmentBlogListBinding binding;
@@ -53,10 +51,10 @@ public class BlogListFragment extends Fragment {
             public void onClick(View v) {
                 reload(repository.optionPublished);
                 binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.main_color));
-                binding.btnTrashed.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnPublished.setTextColor(getResources().getColor(R.color.white));
-                binding.btnTrashed.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnTrash.setTextColor(getResources().getColor(R.color.main_color));
                 binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
             }
         });
@@ -65,22 +63,22 @@ public class BlogListFragment extends Fragment {
             public void onClick(View v) {
                 reload(repository.optionDrafts);
                 binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
-                binding.btnTrashed.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.main_color));
                 binding.btnPublished.setTextColor(getResources().getColor(R.color.main_color));
-                binding.btnTrashed.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnTrash.setTextColor(getResources().getColor(R.color.main_color));
                 binding.btnDrafts.setTextColor(getResources().getColor(R.color.white));
             }
         });
-        binding.btnTrashed.setOnClickListener(new View.OnClickListener() {
+        binding.btnTrash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reload(repository.optionTrashed);
+                reload(repository.optionTrash);
                 binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
-                binding.btnTrashed.setBackgroundColor(getResources().getColor(R.color.main_color));
+                binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.main_color));
                 binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnPublished.setTextColor(getResources().getColor(R.color.main_color));
-                binding.btnTrashed.setTextColor(getResources().getColor(R.color.white));
+                binding.btnTrash.setTextColor(getResources().getColor(R.color.white));
                 binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
             }
         });

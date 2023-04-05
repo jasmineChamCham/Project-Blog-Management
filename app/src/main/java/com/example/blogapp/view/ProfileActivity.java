@@ -86,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // myRef => logout
 
-                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

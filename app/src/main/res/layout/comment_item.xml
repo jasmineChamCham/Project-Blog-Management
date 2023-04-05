@@ -12,7 +12,7 @@
         app:cardElevation="10dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="7dp"
                 >
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="40dp"
@@ -32,6 +32,7 @@
                     android:src="@drawable/person_avatar"
                     android:scaleType="centerCrop"
                     app:shapeAppearanceOverlay="@style/circleImageView"
+                    android:layout_weight="0"
                     ></com.google.android.material.imageview.ShapeableImageView>
                 <TextView
                     android:id="@+id/tv_username"
@@ -39,20 +40,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@{user.name}"
-                    android:textColor="@color/main_color"
+                    android:textColor="@color/black"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    ></TextView>
+                <TextView
+                    android:id="@+id/tv_comment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{comment.createdTime}"
+                    android:textSize="13sp"
+                    android:layout_marginLeft="20dp"
                     ></TextView>
             </LinearLayout>
-            <TextView
-                android:id="@+id/tv_comment_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{comment.createdTime}"
-                android:textSize="14sp"
-                android:layout_marginBottom="5dp"
-                ></TextView>
             <TextView
                 android:id="@+id/tv_comment_content"
                 android:layout_width="match_parent"
