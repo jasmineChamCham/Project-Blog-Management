@@ -39,7 +39,7 @@ public class DBHelper {
                 .setQuery(blogsRef.orderByChild("status").equalTo("Drafts"), Blog.class)
                 .build();
         optionTrashed = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef.orderByChild("status").equalTo("Trashed"), Blog.class)
+                .setQuery(blogsRef.orderByChild("status").equalTo("Trash"), Blog.class)
                 .build();
 
     }
@@ -102,6 +102,19 @@ public class DBHelper {
                         Toast.makeText(context,"Edit blog fail!", Toast.LENGTH_SHORT).show();
                     }
                 }
+        });
+    }
+    public void deleteBlog(String id){
+        blogsRef.child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(context,"Delete blog successful!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(context,"Delete blog fail!", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 }

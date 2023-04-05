@@ -101,7 +101,7 @@
             android:id="@+id/rbtn_trashed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trashed">
+            android:text="Trash">
         </RadioButton>
     </RadioGroup>
     <Button
