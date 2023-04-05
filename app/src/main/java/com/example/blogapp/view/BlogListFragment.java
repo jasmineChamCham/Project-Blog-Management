@@ -170,7 +170,7 @@ public class BlogListFragment extends Fragment {
                                 return true;
                             }
                         });
-                        menu.add("Trash").setIcon(R.drawable.ic_baseline_delete_24)
+                        menu.add("Move to Trash").setIcon(R.drawable.ic_baseline_delete_24)
                                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(@NonNull MenuItem item) {

@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.Comment;
+import com.example.blogapp.model.Follow;
 import com.example.blogapp.model.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
@@ -34,15 +35,24 @@ public class DBHelper {
     public FirebaseRecyclerOptions<Blog> optionAll, optionPublished, optionDrafts, optionTrash,
                                         optionFollowing, optionExplore, optionLikes, optionWithCategory;
     public FirebaseRecyclerOptions<Comment> optionComment;
+    public FirebaseRecyclerOptions<Follow> followOptions;
+    private static DatabaseReference followRef;
     private DatabaseReference blogsRef, usersRef, commentsRef;
+    public static ArrayList<Follow> followList = new ArrayList<>();
     private Context context;
 
     public DBHelper(Context context) {
         this.context = context;
         database = FirebaseDatabase.getInstance();
+
         blogsRef = database.getReference().child("blogs");
         usersRef = database.getReference().child("users");
         commentsRef = database.getReference().child("comments");
+        followRef = database.getReference().child("follows");
+
+        followOptions = new FirebaseRecyclerOptions.Builder<Follow>()
+                .setQuery(followRef, Follow.class)
+                .build();
         optionAll = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsRef, Blog.class)
                 .build();
@@ -227,5 +237,62 @@ public class DBHelper {
                 }
             }
         });
+    }
+    public void ChangePassword(User user, String newPassword){
+        usersRef.child(user.getUserId()).setValue(new User(user.getUserId(),
+                user.getName(),user.getEmail(), newPassword, user.getBirthday()))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(context,"Change password successful!", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(context,"Change password fail!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public static ArrayList<Follow> getFollowList(final FollowsListCallback callback){
+        followRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            for (DataSnapshot i : snapshot.getChildren()){
+                                Follow follow = i.getValue(Follow.class);
+                                if (follow != null){
+                                    followList.add(follow);
+                                }
+                            }
+                            callback.onFollowsListReady(followList);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("TAG", "Database error: " + error.getMessage());
+                    }
+                });
+        return followList;
+    }
+
+    public static void addFollowInstance(String follower, String followed, Long time){
+        String id = followRef.push().getKey();
+        followRef.child(id).setValue(new Follow(follower, followed, time))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("DEBUG","success add follow instance");
+                        } else {
+                            Log.d("DEBUG","success add follow instance");
+                        }
+                    }
+                });
+    }
+
+
+    public interface FollowsListCallback {
+        void onFollowsListReady(ArrayList<Follow> followsList);
     }
 }

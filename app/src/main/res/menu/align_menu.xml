@@ -4,12 +4,12 @@
     <item
         android:id="@+id/align_left"
         android:icon="@drawable/ic_baseline_format_align_left_24"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom|withText"
         android:title="Left" />
     <item
         android:id="@+id/align_center"
         android:icon="@drawable/ic_baseline_format_align_center_24"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom|withText"
         android:title="Center" />
     <item
         android:id="@+id/align_right"

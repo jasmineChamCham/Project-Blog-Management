@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentHomeBinding;
+import com.example.blogapp.databinding.ViewBlogItemBinding;
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
@@ -137,7 +138,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        binding.btnPersonal.
+        binding.btnPersonal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
+                Navigation.findNavController(view).navigate(R.id.personalFragment, bundle);
+            }
+        });
     }
 
     public void handleFilter(String category) {
