@@ -215,4 +215,17 @@ public class DBHelper {
             return optionComment;
     }
 
+    public void deleteBlog(String id){
+        blogsRef.child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(context,"Delete blog successful!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(context,"Delete blog fail!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }

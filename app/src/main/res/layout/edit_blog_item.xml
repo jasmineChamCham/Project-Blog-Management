@@ -2,7 +2,15 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <data>
+        <import type="android.text.Spanned" />
+        <variable
+            name="blog"
+            type="com.example.blogapp.model.Blog" />
+        <variable
+            name="content"
+            type="Spanned" />
+    </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +32,7 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Title"
+                    android:text="@{blog.title}"
                     android:textSize="20dp"
                     android:textColor="#000000"
                     android:textStyle="bold"
@@ -32,20 +40,12 @@
                     android:maxLines="2"
                     android:layout_weight="1"
                     ></TextView>
-                <ImageButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/white"
-                    android:src="@drawable/ic_baseline_more_vert_24"
-                    android:layout_weight="0"
-                    ></ImageButton>
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Content"
+                android:text="@{content}"
                 android:textColor="#000000"
                 android:textSize="15dp"
                 android:maxLines="3"
@@ -56,18 +56,19 @@
                 android:id="@+id/tv_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Time"
+                android:text="@{blog.createdTime}"
                 android:paddingHorizontal="10dp"
                 ></TextView>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/ll_edit"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:orientation="horizontal"
                 android:layout_marginTop="15dp">
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_edit"
-                    android:layout_width="120dp"
+                    android:layout_width="0dp"
                     android:layout_height="45dp"
                     android:backgroundTint="@color/white"
                     android:drawableLeft="@drawable/ic_baseline_edit_24"
@@ -77,11 +78,68 @@
                     app:strokeColor="@color/main_color"
                     app:strokeWidth="1dp"
                     app:cornerRadius="10dp"
-                    android:layout_marginRight="55dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="5dp"
                     ></com.google.android.material.button.MaterialButton>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_modify"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:backgroundTint="@color/white"
+                    android:drawableLeft="@drawable/ic_baseline_settings_24"
+                    android:text="Modify"
+                    android:textColor="@color/main_color"
+                    android:textAllCaps="false"
+                    app:strokeColor="@color/main_color"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="10dp"
+                    android:layout_weight="1"
+                    ></com.google.android.material.button.MaterialButton>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_more"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:backgroundTint="@color/white"
+                    android:drawableLeft="@drawable/ic_baseline_more_horiz_24"
+                    android:text="More"
+                    android:textColor="@color/main_color"
+                    android:textAllCaps="false"
+                    app:strokeColor="@color/main_color"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="5dp"
+                    ></com.google.android.material.button.MaterialButton>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_trash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:layout_marginTop="15dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_restore"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:backgroundTint="@color/white"
+                    android:drawableLeft="@drawable/ic_round_restore_24"
+                    android:text="Restore"
+                    android:textColor="@color/main_color"
+                    android:textAllCaps="false"
+                    app:strokeColor="@color/main_color"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="5dp"
+                    ></com.google.android.material.button.MaterialButton>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_delete"
-                    android:layout_width="120dp"
+                    android:layout_width="0dp"
                     android:layout_height="45dp"
                     android:backgroundTint="@color/white"
                     android:drawableLeft="@drawable/ic_baseline_delete_24"
@@ -91,6 +149,8 @@
                     app:strokeColor="@color/main_color"
                     app:strokeWidth="1dp"
                     app:cornerRadius="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="5dp"
                     ></com.google.android.material.button.MaterialButton>
             </LinearLayout>
         </LinearLayout>
