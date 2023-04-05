@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import android.widget.Toast;
 
 import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentHomeBinding;
-import com.example.blogapp.databinding.ViewBlogItemBinding;
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
@@ -136,6 +136,8 @@ public class HomeFragment extends Fragment {
                 dialog.show();
             }
         });
+
+        binding.btnPersonal.
     }
 
     public void handleFilter(String category) {
@@ -160,6 +162,7 @@ public class HomeFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull BlogHolder holder, int position, @NonNull Blog blog) {
                 holder.binding.setBlog(blog);
+                holder.binding.setContent(Html.fromHtml(blog.getContent()));
                 dbHelper.getUserById(blog.getUserId(), user -> {
                     holder.binding.setUser(user);
                 });

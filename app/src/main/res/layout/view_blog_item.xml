@@ -4,8 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.text.Spanned" />
         <variable name="blog" type="com.example.blogapp.model.Blog"/>
         <variable name="user" type="com.example.blogapp.model.User"/>
+        <variable
+            name="content"
+            type="Spanned" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -88,7 +92,7 @@
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{blog.content}"
+                android:text="@{content}"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:maxLines="3"

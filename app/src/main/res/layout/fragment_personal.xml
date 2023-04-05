@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="30dp"
+    android:padding="15dp"
     android:orientation="vertical"
-    tools:context=".view.ProfileActivity">
-
+    tools:context=".view.PersonalFragment">
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
@@ -169,9 +169,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:backgroundTint="@color/white"
+                android:gravity="center"
                 android:text="LOGOUT"
-                android:textColor="@color/black"
-                android:gravity="center"/>
+                android:textColor="@color/black" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -183,7 +183,6 @@
         android:elevation="5dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
-
         <Button
             android:id="@+id/btn_home"
             android:layout_width="0dp"
@@ -196,7 +195,6 @@
             android:textColor="@color/main_color"
             android:textSize="18sp"
             android:textStyle="bold" />
-
         <Button
             android:id="@+id/btn_personal"
             android:layout_width="0dp"
@@ -209,5 +207,4 @@
             android:textColor="@color/main_color"
             android:textSize="18sp" />
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
