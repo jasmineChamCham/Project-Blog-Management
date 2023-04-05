@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/statistics_nav"
+    app:startDestination="@id/followStatisticsFragment">
+
+    <fragment
+        android:id="@+id/followStatisticsFragment"
+        android:name="com.example.blogapp.view.FollowStatisticsFragment"
+        android:label="fragment_follow_statistics"
+        tools:layout="@layout/fragment_follow_statistics" >
+        <action
+            android:id="@+id/action_followStatisticsFragment_to_postStatisticsFragment"
+            app:destination="@id/postStatisticsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postStatisticsFragment"
+        android:name="com.example.blogapp.view.PostStatisticsFragment"
+        android:label="fragment_post_statistics"
+        tools:layout="@layout/fragment_post_statistics" >
+        <action
+            android:id="@+id/action_postStatisticsFragment_to_followStatisticsFragment"
+            app:destination="@id/followStatisticsFragment" />
+    </fragment>
+</navigation>
