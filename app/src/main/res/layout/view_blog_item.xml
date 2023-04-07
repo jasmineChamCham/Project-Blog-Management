@@ -78,19 +78,21 @@
                 android:layout_height="wrap_content"
                 android:text="@{blog.title}"
                 android:textColor="@color/black"
-                android:textSize="28sp"
+                android:textSize="25sp"
                 android:textStyle="bold"
+                android:maxLines="2"
                 android:layout_marginBottom="7dp"
                 ></TextView>
 
             <TextView
                 android:id="@+id/tv_content"
-                android:maxLines="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{blog.content}"
                 android:textColor="@color/black"
                 android:textSize="20sp"
+                android:maxLines="3"
+                android:ellipsize="end"
                 android:layout_marginBottom="7dp"
                 ></TextView>
 

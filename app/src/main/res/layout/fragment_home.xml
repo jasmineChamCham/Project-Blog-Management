@@ -53,7 +53,6 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/main_color"
                 android:text="Following"
-                android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textSize="17sp"
@@ -93,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="7dp"
+            android:layout_marginBottom="5dp"
             >
             <Button
                 android:id="@+id/category_option"
@@ -106,33 +105,43 @@
                 android:textAllCaps="false"
                 android:textSize="15sp"
                 android:layout_marginHorizontal="7dp"
+                android:visibility="gone"
                 ></Button>
-            <TextView
-                android:id="@+id/tv_start_date"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layout_picked_time"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/main_color"
-                android:textSize="15sp"
-                android:layout_marginHorizontal="5dp"
-                android:layout_weight="1"
-                ></TextView>
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_arrow_forward_24"
-                ></ImageView>
-            <TextView
-                android:id="@+id/tv_end_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/main_color"
-                android:textSize="15sp"
-                android:layout_marginHorizontal="5dp"
-                android:layout_weight="1"
-                ></TextView>
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/main_color"
+                    android:textSize="15sp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    ></TextView>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    ></ImageView>
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/main_color"
+                    android:textSize="15sp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="1"
+                    ></TextView>
+            </LinearLayout>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_blogs"
