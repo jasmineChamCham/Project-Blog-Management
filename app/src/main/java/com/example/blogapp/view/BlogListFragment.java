@@ -50,7 +50,7 @@ import java.util.Date;
 
 public class BlogListFragment extends Fragment {
     FragmentBlogListBinding binding;
-    DBHelper repository;
+    DBHelper dbHelper;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,7 @@ public class BlogListFragment extends Fragment {
         binding = FragmentBlogListBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        repository = new DBHelper(view.getContext());
+        dbHelper = new DBHelper(view.getContext());
 
         binding.rvBlogs.setLayoutManager(new LinearLayoutManager(view.getContext()));
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +75,7 @@ public class BlogListFragment extends Fragment {
         binding.btnPublished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reload(repository.optionPublished);
+                reload(dbHelper.optionPublished);
                 binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.main_color));
                 binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.white));
@@ -87,7 +87,7 @@ public class BlogListFragment extends Fragment {
         binding.btnDrafts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reload(repository.optionDrafts);
+                reload(dbHelper.optionDrafts);
                 binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.main_color));
@@ -99,7 +99,7 @@ public class BlogListFragment extends Fragment {
         binding.btnTrash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reload(repository.optionTrash);
+                reload(dbHelper.optionTrash);
                 binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.main_color));
                 binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.white));
@@ -108,7 +108,7 @@ public class BlogListFragment extends Fragment {
                 binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
             }
         });
-        reload(repository.optionPublished);
+        reload(dbHelper.optionPublished);
         return view;
     }
 
@@ -129,7 +129,7 @@ public class BlogListFragment extends Fragment {
             protected void onBindViewHolder(@NonNull BlogHolder holder, int position, @NonNull Blog model) {
                 holder.binding.setBlog(model);
                 holder.binding.setContent(Html.fromHtml(model.getContent()));
-                if (options == repository.optionTrash){
+                if (options == dbHelper.optionTrash){
                     holder.binding.llEdit.setVisibility(View.GONE);
                     holder.binding.llTrash.setVisibility(View.VISIBLE);
                 }
@@ -174,7 +174,7 @@ public class BlogListFragment extends Fragment {
                                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                repository.updateNote(model.getBlogId(),
+                                dbHelper.updateBlog(model.getBlogId(),
                                         model.getTitle(),
                                         model.getContent(),
                                         model.getCreatedTime(),
@@ -202,7 +202,7 @@ public class BlogListFragment extends Fragment {
                 holder.binding.btnRestore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        repository.updateNote(model.getBlogId(),
+                        dbHelper.updateBlog(model.getBlogId(),
                                 model.getTitle(),
                                 model.getContent(),
                                 model.getCreatedTime(),
@@ -224,7 +224,7 @@ public class BlogListFragment extends Fragment {
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked Yes button
-                                repository.deleteBlog(model.getBlogId());
+                                dbHelper.deleteBlog(model.getBlogId());
                             }
                         });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -292,7 +292,7 @@ public class BlogListFragment extends Fragment {
                                 else
                                     category = "None";
                                 if (model != null)
-                                    repository.updateNote(model.getBlogId(),
+                                    dbHelper.updateBlog(model.getBlogId(),
                                             model.getTitle(),
                                             model.getContent(),
                                             isoFormat.format(new Date()),

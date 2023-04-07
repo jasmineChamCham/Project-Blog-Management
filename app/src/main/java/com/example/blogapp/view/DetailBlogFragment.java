@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,14 @@ public class DetailBlogFragment extends Fragment {
 
     private FragmentDetailBlogBinding binding;
     private DBHelper dbHelper;
+    private User userLogin;
     private Blog blogItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            userLogin = (User) getArguments().getSerializable("userLogin");
             blogItem = (Blog) getArguments().getSerializable("blogItem");
         }
     }
@@ -39,10 +42,12 @@ public class DetailBlogFragment extends Fragment {
         View viewRoot = binding.getRoot();
 
         dbHelper = new DBHelper(viewRoot.getContext());
-        binding.setBlog(blogItem);
         dbHelper.getUserById(blogItem.getUserId(), user -> {
             binding.setUser(user);
         });
+        binding.setBlog(blogItem);
+        binding.tvContent.setText(Html.fromHtml(blogItem.getContent()));
+
         return viewRoot;
     }
 
@@ -53,8 +58,10 @@ public class DetailBlogFragment extends Fragment {
         binding.btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Navigation.findNavController(view).navigate(R.id.commentFragment);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
+                bundle.putSerializable("blogItem", blogItem);
+                Navigation.findNavController(v).navigate(R.id.commentFragment, bundle);
             }
         });
     }

@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
-                android:text="Posts"
+                android:text="Blogs"
                 android:textColor="@color/main_color"
                 android:textAllCaps="false"
                 android:textSize="17sp"
@@ -66,28 +66,25 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
-
             <Button
                 android:id="@+id/but_likes"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:backgroundTint="@color/light_blue"
+                android:layout_marginRight="15dp"
+                android:backgroundTint="#52B8E6"
                 android:text="Likes" />
-
             <Button
                 android:id="@+id/but_views"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:backgroundTint="@color/light_blue"
+                android:backgroundTint="#52B8E6"
                 android:text="Views" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="25dp"
             android:orientation="vertical">
             <TableLayout
                 android:layout_width="match_parent"
@@ -96,29 +93,34 @@
                 >
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Post with most likes : "
-                        android:textSize="20sp"
-                        android:layout_marginRight="10dp"
+                        android:text="The most liked blog"
+                        android:textSize="17sp"
+                        android:textColor="#323232"
+                        android:layout_marginRight="15dp"
                         ></TextView>
                     <TextView
                         android:text="Hamlet"
+                        android:textColor="@color/main_color"
                         android:textSize="20sp"
+                        android:textStyle="bold"
                         ></TextView>
                 </TableRow>
 
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Post with most views : "
-                        android:textSize="20sp"
-                        android:layout_marginRight="10dp"
+                        android:text="The most viewed blog"
+                        android:textSize="17sp"
+                        android:textColor="#323232"
+                        android:layout_marginRight="15dp"
                         ></TextView>
                     <TextView
                         android:text="Work from home"
+                        android:textColor="@color/main_color"
                         android:textSize="20sp"
+                        android:textStyle="bold"
                         ></TextView>
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-
     </LinearLayout>
 </FrameLayout>

@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
-                android:text="Posts"
+                android:text="Blogs"
                 android:textColor="@color/main_color"
                 android:textAllCaps="false"
                 android:textSize="17sp"
@@ -64,29 +64,31 @@
                 android:id="@+id/but_daily"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:backgroundTint="@color/light_blue"
-                android:text="Daily"/>
+                android:layout_marginRight="15dp"
+                android:backgroundTint="#52B8E6"
+                android:text="Daily"
+                android:textAllCaps="false" />
             <Button
                 android:id="@+id/but_monthly"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:backgroundTint="@color/light_blue"
-                android:text="Monthly"/>
+                android:layout_marginRight="15dp"
+                android:backgroundTint="#52B8E6"
+                android:text="Monthly"
+                android:textAllCaps="false" />
             <Button
                 android:id="@+id/but_annually"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:backgroundTint="@color/light_blue"
-                android:text="Annually"/>
+                android:backgroundTint="#52B8E6"
+                android:text="Annually"
+                android:textAllCaps="false" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="25dp"
             android:orientation="vertical">
             <TableLayout
                 android:layout_width="match_parent"
@@ -95,29 +97,33 @@
                 >
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Following : "
-                        android:textSize="20sp"
-                        android:layout_marginRight="10dp"
+                        android:text="Following"
+                        android:textSize="17sp"
+                        android:textColor="#323232"
+                        android:layout_marginRight="15dp"
                         ></TextView>
                     <TextView
                         android:text="100.000 people"
+                        android:textColor="@color/main_color"
                         android:textSize="20sp"
+                        android:textStyle="bold"
                         ></TextView>
                 </TableRow>
-
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Followed by : "
-                        android:textSize="20sp"
-                        android:layout_marginRight="10dp"
+                        android:text="Followed by"
+                        android:textSize="17sp"
+                        android:textColor="#323232"
+                        android:layout_marginRight="15dp"
                         ></TextView>
                     <TextView
                         android:text="100.000 people"
+                        android:textColor="@color/main_color"
                         android:textSize="20sp"
+                        android:textStyle="bold"
                         ></TextView>
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-
     </LinearLayout>
 </FrameLayout>

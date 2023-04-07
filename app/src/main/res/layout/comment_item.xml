@@ -12,7 +12,9 @@
         app:cardElevation="10dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="15dp"
+        android:backgroundTint="#EAEAEA"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,10 +43,10 @@
                     android:layout_gravity="center"
                     android:text="@{user.name}"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     ></TextView>
                 <TextView
                     android:id="@+id/tv_comment_time"
@@ -53,18 +55,58 @@
                     android:layout_gravity="center"
                     android:text="@{comment.createdTime}"
                     android:textSize="13sp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
                     ></TextView>
+                <ImageView
+                    android:id="@+id/btn_modify_comment"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_more_vert_24"
+                    android:layout_weight="0"
+                    android:layout_marginLeft="20dp"
+                    android:visibility="gone"
+                    ></ImageView>
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_comment_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{comment.commentContent}"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textColor="#000000"
                 android:layout_marginLeft="40dp"
+                android:layout_marginBottom="7dp"
+                android:visibility="visible"
                 ></TextView>
+            <LinearLayout
+                android:id="@+id/layout_edit_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+                <EditText
+                    android:id="@+id/et_comment_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{comment.commentContent}"
+                    android:textSize="13sp"
+                    android:textColor="#000000"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_weight="1"
+                    ></EditText>
+                <ImageButton
+                    android:id="@+id/btn_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0"
+                    android:backgroundTint="#EAEAEA"
+                    android:src="@drawable/ic_baseline_blue_done_24">
+                </ImageButton>
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -49,17 +49,22 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
-                dbHelper.authentication(email, password, user -> {
-                    userLogin = user;
-                    if (userLogin != null) {
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("userLogin", userLogin);
-                        Navigation.findNavController(v).navigate(R.id.homeFragment,bundle);
-                    }
-                    else {
-                        Toast.makeText(v.getContext(), "Login fail! Please try again.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (email.equals("") || password.equals("")) {
+                    Toast.makeText(getContext(), "Please enter your email and password.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    dbHelper.authentication(email, password, user -> {
+                        userLogin = user;
+                        if (userLogin != null) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("userLogin", userLogin);
+                            Navigation.findNavController(v).navigate(R.id.homeFragment,bundle);
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Login fail! Your email or password is not correct.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
         });
         return view;
