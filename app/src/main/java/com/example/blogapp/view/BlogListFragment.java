@@ -57,7 +57,7 @@ import java.util.Date;
 
 public class BlogListFragment extends Fragment {
     FragmentBlogListBinding binding;
-    DBHelper repository;
+    DBHelper dbHelper;
     private User userLogin;
     int blogStatus = 1;
     @Override
@@ -82,11 +82,11 @@ public class BlogListFragment extends Fragment {
         binding = FragmentBlogListBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        repository = new DBHelper(view.getContext());
+        dbHelper = new DBHelper(view.getContext());
 
         binding.rvBlogs.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        FirebaseRecyclerOptions<Blog> options = repository.getBlogOptionByUserId(userLogin.getUserId());
+        FirebaseRecyclerOptions<Blog> options = dbHelper.getBlogOptionByUserId(userLogin.getUserId());
         FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(options) {
             @NonNull
             @Override
@@ -160,7 +160,7 @@ public class BlogListFragment extends Fragment {
                                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                     @Override
                                     public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                        repository.updateNote(model.getBlogId(),
+                                        dbHelper.updateBlog(model.getBlogId(),
                                                 model.getTitle(),
                                                 model.getContent(),
                                                 model.getCreatedTime(),
@@ -188,7 +188,7 @@ public class BlogListFragment extends Fragment {
                 holder.binding.btnRestore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        repository.updateNote(model.getBlogId(),
+                        dbHelper.updateBlog(model.getBlogId(),
                                 model.getTitle(),
                                 model.getContent(),
                                 model.getCreatedTime(),
@@ -210,7 +210,7 @@ public class BlogListFragment extends Fragment {
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked Yes button
-                                repository.deleteBlog(model.getBlogId());
+                                dbHelper.deleteBlog(model.getBlogId());
                             }
                         });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -275,7 +275,7 @@ public class BlogListFragment extends Fragment {
                                 } else
                                     category = "None";
                                 if (model != null)
-                                    repository.updateNote(model.getBlogId(),
+                                    dbHelper.updateBlog(model.getBlogId(),
                                             model.getTitle(),
                                             model.getContent(),
                                             isoFormat.format(new Date()),

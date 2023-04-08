@@ -1,6 +1,5 @@
 package com.example.blogapp.view;
 
-import android.icu.util.BuddhistCalendar;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentHomeBinding;
@@ -29,8 +27,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-
-import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -143,7 +139,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("userLogin", userLogin);
-                Navigation.findNavController(view).navigate(R.id.personalFragment, bundle);
+                Navigation.findNavController(v).navigate(R.id.personalFragment, bundle);
             }
         });
     }

@@ -1,5 +1,7 @@
 package com.example.blogapp.model;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+
 public class Comment {
     private String commentId;
     private String commentContent;
@@ -58,4 +60,5 @@ public class Comment {
     public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
+
 }

@@ -164,7 +164,7 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:textAllCaps="false"
-                android:drawableTop="@drawable/ic_baseline_home_24"
+                android:drawableTop="@drawable/ic_home"
                 android:layout_weight="1" />
             <Button
                 android:id="@+id/btn_personal"
@@ -175,7 +175,7 @@
                 android:textColor="@color/main_color"
                 android:textSize="18sp"
                 android:textAllCaps="false"
-                android:drawableTop="@drawable/ic_baseline_person_outline_24"
+                android:drawableTop="@drawable/ic_personal_outline"
                 android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>

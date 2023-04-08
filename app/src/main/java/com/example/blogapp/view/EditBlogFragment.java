@@ -40,11 +40,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.blogapp.R;
-import com.example.blogapp.databinding.FragmentBlogListBinding;
 import com.example.blogapp.databinding.FragmentEditBlogBinding;
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.User;
-import com.example.blogapp.viewmodel.DBHelper;
 import com.example.blogapp.viewmodel.DBHelper;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -271,7 +269,7 @@ public class EditBlogFragment extends Fragment {
                             else
                                 category = "None";
                             if (blog != null)
-                                dbHelper.updateNote(blog.getBlogId(),
+                                dbHelper.updateBlog(blog.getBlogId(),
                                         binding.etTitle.getText().toString(),
                                         Html.toHtml(binding.etContent.getText()),
                                         isoFormat.format(new Date()),

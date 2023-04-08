@@ -35,20 +35,19 @@ public class PersonalFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = FragmentPersonalBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         dbHelper = new DBHelper(getContext());
         binding.setUser(userLogin);
 
-        binding.butStatistics.setOnClickListener(new View.OnClickListener() {
+        binding.btnStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), StatisticsActivity.class);
                 startActivity(intent);
             }
         });
-        binding.butPosts.setOnClickListener(new View.OnClickListener() {
+        binding.btnMyBlogs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), BlogManagerActivity.class);
@@ -58,7 +57,7 @@ public class PersonalFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        binding.butChangePw.setOnClickListener(new View.OnClickListener() {
+        binding.btnChangePw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mDialog = new AlertDialog.Builder(getContext());
@@ -79,7 +78,7 @@ public class PersonalFragment extends Fragment {
                     public void onClick(View v) {
                         if (etCurPw.getText().toString().equals(etNewPw.getText().toString())) {
                             Toast.makeText(getActivity(),
-                                    "New password is the same as the current one",
+                                    "New password is the same as your current password",
                                     Toast.LENGTH_LONG).show();
                             etCurPw.setText("");
                             etNewPw.setText("");
@@ -104,11 +103,19 @@ public class PersonalFragment extends Fragment {
             }
         });
 
-        binding.butLogout.setOnClickListener(new View.OnClickListener() {
+        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                Navigation.findNavController(view).navigate(R.id.loginFragment, bundle);
+                Navigation.findNavController(v).navigate(R.id.loginFragment, bundle);
+            }
+        });
+
+        binding.btnHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                Navigation.findNavController(v).navigate(R.id.homeFragment, bundle);
             }
         });
         return view;
