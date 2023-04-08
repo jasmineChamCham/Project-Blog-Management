@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -32,8 +33,7 @@ import java.util.List;
 
 public class DBHelper {
     private FirebaseDatabase database;
-    public FirebaseRecyclerOptions<Blog> optionAll, optionPublished, optionDrafts, optionTrash,
-                                        optionFollowing, optionExplore, optionLikes, optionWithCategory;
+    public FirebaseRecyclerOptions<Blog> optionFollowing, optionExplore, optionLikes, optionWithCategory;
     public FirebaseRecyclerOptions<Comment> optionComment;
     public FirebaseRecyclerOptions<Follow> followOptions;
     private static DatabaseReference followRef;
@@ -52,21 +52,6 @@ public class DBHelper {
 
         followOptions = new FirebaseRecyclerOptions.Builder<Follow>()
                 .setQuery(followRef, Follow.class)
-                .build();
-        optionAll = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef, Blog.class)
-                .build();
-
-        optionPublished = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef.orderByChild("status").equalTo("Published"), Blog.class)
-                .build();
-
-        optionDrafts = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef.orderByChild("status").equalTo("Drafts"), Blog.class)
-                .build();
-
-        optionTrash = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef.orderByChild("status").equalTo("Trash"), Blog.class)
                 .build();
 
         optionFollowing = new FirebaseRecyclerOptions.Builder<Blog>()
@@ -97,6 +82,14 @@ public class DBHelper {
                         }
                     }
                 });
+    }
+
+    public FirebaseRecyclerOptions<Blog> getBlogOptionByUserId(String userId) {
+        Query query = blogsRef.orderByChild("userId").equalTo(userId);
+        FirebaseRecyclerOptions<Blog> optionBlogByUserId = new FirebaseRecyclerOptions.Builder<Blog>()
+                .setQuery(query, Blog.class)
+                .build();
+        return optionBlogByUserId;
     }
 
     public Blog getBlogById(String id) {
@@ -290,7 +283,6 @@ public class DBHelper {
                     }
                 });
     }
-
 
     public interface FollowsListCallback {
         void onFollowsListReady(ArrayList<Follow> followsList);

@@ -43,6 +43,7 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentBlogListBinding;
 import com.example.blogapp.databinding.FragmentEditBlogBinding;
 import com.example.blogapp.model.Blog;
+import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
 import com.example.blogapp.viewmodel.DBHelper;
 import com.google.android.material.chip.Chip;
@@ -57,12 +58,15 @@ public class EditBlogFragment extends Fragment {
     FragmentEditBlogBinding binding;
     DBHelper dbHelper;
     Blog blog = null;
+    User userLogin = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            userLogin = (User) getArguments().getSerializable("userLogin");
             blog = (Blog) getArguments().getSerializable("blog");
+            Log.d("DEBUG",userLogin.getUserId());
         }
     }
 
@@ -276,15 +280,16 @@ public class EditBlogFragment extends Fragment {
                                         blog.getViewsNumber(),
                                         category,
                                         status);
-                            else
+                            else if (userLogin != null)
                                 dbHelper.addBlog(binding.etTitle.getText().toString(),
                                         Html.toHtml(binding.etContent.getText()),
                                         isoFormat.format(new Date()),
-                                        "123",
+                                        userLogin.getUserId(),
                                         0,
                                         0,
                                         category,
                                         status);
+
                             dialog.dismiss();
                             NavController navController = Navigation.findNavController(view);
                             navController.popBackStack();

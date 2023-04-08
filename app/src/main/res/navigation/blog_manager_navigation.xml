@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_blogListFragment_to_commentFragment2"
             app:destination="@id/commentFragment2" />
+        <action
+            android:id="@+id/action_blogListFragment_to_blogStatisticsFragment"
+            app:destination="@id/blogStatisticsFragment" />
     </fragment>
     <fragment
         android:id="@+id/editBlogFragment"
@@ -28,9 +31,19 @@
     <fragment
         android:id="@+id/commentFragment2"
         android:name="com.example.blogapp.view.CommentFragment"
-        android:label="CommentFragment" >
+        android:label="CommentFragment"
+        tools:layout="@layout/fragment_comment">
         <action
             android:id="@+id/action_commentFragment2_to_blogListFragment"
+            app:destination="@id/blogListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/blogStatisticsFragment"
+        android:name="com.example.blogapp.view.BlogStatisticsFragment"
+        android:label="fragment_blog_statistics"
+        tools:layout="@layout/fragment_blog_statistics" >
+        <action
+            android:id="@+id/action_blogStatisticsFragment_to_blogListFragment"
             app:destination="@id/blogListFragment" />
     </fragment>
 </navigation>

@@ -52,6 +52,9 @@ public class PersonalFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), BlogManagerActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
