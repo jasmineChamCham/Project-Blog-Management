@@ -20,15 +20,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DBHelper {
     private FirebaseDatabase database;
-    public FirebaseRecyclerOptions<Blog> optionAll, optionPublished, optionDrafts, optionTrash,
-                                        optionFollowing, optionExplore, optionWithCategory;
     public FirebaseRecyclerOptions<LikedBlog> optionLikes;
+    public FirebaseRecyclerOptions<Blog> optionFollowing, optionExplore, optionWithCategory;
     public FirebaseRecyclerOptions<Comment> optionComment;
     public FirebaseRecyclerOptions<Follow> followOptions;
     private DatabaseReference blogsRef, usersRef, commentsRef, followRef, likedBlogsRef;
@@ -47,22 +50,6 @@ public class DBHelper {
 
         followOptions = new FirebaseRecyclerOptions.Builder<Follow>()
                 .setQuery(followRef, Follow.class)
-                .build();
-
-        optionAll = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef, Blog.class)
-                .build();
-
-        optionPublished = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef.orderByChild("status").equalTo("Published"), Blog.class)
-                .build();
-
-        optionDrafts = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef.orderByChild("status").equalTo("Drafts"), Blog.class)
-                .build();
-
-        optionTrash = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef.orderByChild("status").equalTo("Trash"), Blog.class)
                 .build();
 
         optionFollowing = new FirebaseRecyclerOptions.Builder<Blog>()
@@ -92,6 +79,14 @@ public class DBHelper {
                         }
                     }
                 });
+    }
+
+    public FirebaseRecyclerOptions<Blog> getBlogOptionByUserId(String userId) {
+        Query query = blogsRef.orderByChild("userId").equalTo(userId);
+        FirebaseRecyclerOptions<Blog> optionBlogByUserId = new FirebaseRecyclerOptions.Builder<Blog>()
+                .setQuery(query, Blog.class)
+                .build();
+        return optionBlogByUserId;
     }
 
     public Blog getBlogById(String id) {
@@ -219,10 +214,7 @@ public class DBHelper {
 
     public void addComment(String commentContent, String userId, String blogId) {
         String commentId = commentsRef.push().getKey();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();  //get current date
-        String createdTime = dateFormat.format(date);
-        commentsRef.child(blogId).child(commentId).setValue(new Comment(commentId, commentContent, userId, blogId, createdTime))
+        commentsRef.child(blogId).child(commentId).setValue(new Comment(commentId, commentContent, userId, blogId, System.currentTimeMillis()))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -258,10 +250,10 @@ public class DBHelper {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d("DEBUG","Update comment successful!");
+                            Log.d("DEBUG","Delete comment successful!");
                         }
                         else {
-                            Log.d("DEBUG","Update comment fail!");
+                            Log.d("DEBUG","Delete comment fail!");
                         }
                     }
                 });
@@ -288,7 +280,6 @@ public class DBHelper {
             }
         });
     }
-
     public interface onOptionListener {
         void onOptionCommentRetrieved(FirebaseRecyclerOptions<Comment> options);
 //        void onOptionLikesRetrieved(FirebaseRecyclerOptions<LikedBlog> options);
@@ -310,6 +301,40 @@ public class DBHelper {
                 });
     }
 
+    public void getCommentCounts(Date startDate, Date endDate, final OnCommentCountsRetrievedListener listener) {
+        commentsRef.orderByChild("created_time")
+                .startAt(startDate.getTime())
+                .endAt(endDate.getTime())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Same onDataChange code as step 3
+                        Map<Date, Integer> commentCounts = new HashMap<>();
+                        for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
+                            Comment comment = commentSnapshot.getValue(Comment.class);
+                            Date createdTime = new Date(comment.getCreatedTime());
+                            Date date = new Date(createdTime.getYear(), createdTime.getMonth(), createdTime.getDate());
+                            if (commentCounts.containsKey(date)) {
+                                commentCounts.put(date, commentCounts.get(date) + 1);
+                            } else {
+                                commentCounts.put(date, 1);
+                            }
+                        }
+
+                        // Pass the comment counts data to the callback listener
+                        listener.onCommentCountsRetrieved(commentCounts);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle error
+                    }
+                });
+    }
+
+    public interface OnCommentCountsRetrievedListener {
+        void onCommentCountsRetrieved(Map<Date, Integer> commentCounts);
+    }
     public void ChangePassword(User user, String newPassword){
         usersRef.child(user.getUserId()).setValue(new User(user.getUserId(),
                 user.getName(),user.getEmail(), newPassword, user.getBirthday()))

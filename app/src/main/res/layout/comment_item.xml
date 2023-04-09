@@ -5,6 +5,9 @@
     <data>
         <variable name="comment" type="com.example.blogapp.model.Comment"/>
         <variable name="user" type="com.example.blogapp.model.User"/>
+        <variable
+            name="createdTime"
+            type="String" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -53,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@{comment.createdTime}"
+                    android:text="@{createdTime}"
                     android:textSize="13sp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"

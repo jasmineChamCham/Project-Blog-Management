@@ -95,7 +95,7 @@ public class HomeFragment extends Fragment {
         binding.btnLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reloadRecyclerView(dbHelper.optionAll);
+                reloadRecyclerView(dbHelper.optionFollowing);
                 binding.btnFollowing.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnExplore.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnLikes.setBackgroundColor(getResources().getColor(R.color.main_color));
