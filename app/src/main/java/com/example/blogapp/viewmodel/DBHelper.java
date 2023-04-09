@@ -19,9 +19,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DBHelper {
     private FirebaseDatabase database;
@@ -187,7 +191,6 @@ public class DBHelper {
                 User user = dataSnapshot.getValue(User.class);
                 listener.onUserRetrieved(user);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("DEBUG", "Database error: " + databaseError.getMessage());
@@ -210,10 +213,7 @@ public class DBHelper {
 
     public void addComment(String commentContent, String userId, String blogId) {
         String commentId = commentsRef.push().getKey();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();  //get current date
-        String createdTime = dateFormat.format(date);
-        commentsRef.child(blogId).child(commentId).setValue(new Comment(commentId, commentContent, userId, blogId, createdTime))
+        commentsRef.child(blogId).child(commentId).setValue(new Comment(commentId, commentContent, userId, blogId, System.currentTimeMillis()))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -279,11 +279,44 @@ public class DBHelper {
             }
         });
     }
-
     public interface onOptionListener {
         void onOptionCommentRetrieved(FirebaseRecyclerOptions<Comment> options);
     }
 
+    public void getCommentCounts(Date startDate, Date endDate, final OnCommentCountsRetrievedListener listener) {
+        commentsRef.orderByChild("created_time")
+                .startAt(startDate.getTime())
+                .endAt(endDate.getTime())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Same onDataChange code as step 3
+                        Map<Date, Integer> commentCounts = new HashMap<>();
+                        for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
+                            Comment comment = commentSnapshot.getValue(Comment.class);
+                            Date createdTime = new Date(comment.getCreatedTime());
+                            Date date = new Date(createdTime.getYear(), createdTime.getMonth(), createdTime.getDate());
+                            if (commentCounts.containsKey(date)) {
+                                commentCounts.put(date, commentCounts.get(date) + 1);
+                            } else {
+                                commentCounts.put(date, 1);
+                            }
+                        }
+
+                        // Pass the comment counts data to the callback listener
+                        listener.onCommentCountsRetrieved(commentCounts);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle error
+                    }
+                });
+    }
+
+    public interface OnCommentCountsRetrievedListener {
+        void onCommentCountsRetrieved(Map<Date, Integer> commentCounts);
+    }
     public void ChangePassword(User user, String newPassword){
         usersRef.child(user.getUserId()).setValue(new User(user.getUserId(),
                 user.getName(),user.getEmail(), newPassword, user.getBirthday()))

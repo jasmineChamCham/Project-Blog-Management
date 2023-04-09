@@ -31,6 +31,9 @@ import com.example.blogapp.viewmodel.DBHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CommentFragment extends Fragment {
 
     private FragmentCommentBinding binding;
@@ -102,6 +105,10 @@ public class CommentFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull CommentFragment.CommentHolder holder, int position, @NonNull Comment comment) {
                 holder.binding.setComment(comment);
+                Date date = new Date(comment.getCreatedTime());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                String dateString = dateFormat.format(date);
+                holder.binding.setCreatedTime(dateString);
                 dbHelper.getUserById(comment.getUserId(), user -> {
                     holder.binding.setUser(user);
                     if (user.getUserId().equals(userLogin.getUserId())) {

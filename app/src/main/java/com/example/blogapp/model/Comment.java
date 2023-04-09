@@ -7,13 +7,13 @@ public class Comment {
     private String commentContent;
     private String userId;
     private String blogId;
-    private String createdTime;
+    private Long createdTime;
 
     public Comment() {
 
     }
 
-    public Comment(String commentId, String commentContent, String userId, String blogId, String createdTime) {
+    public Comment(String commentId, String commentContent, String userId, String blogId, Long createdTime) {
         this.commentId = commentId;
         this.commentContent = commentContent;
         this.userId = userId;
@@ -53,12 +53,11 @@ public class Comment {
         this.blogId = blogId;
     }
 
-    public String getCreatedTime() {
+    public Long getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(Long createdTime) {
         this.createdTime = createdTime;
     }
-
 }

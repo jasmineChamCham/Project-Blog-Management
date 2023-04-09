@@ -176,7 +176,11 @@ public class BlogListFragment extends Fragment {
                                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                     @Override
                                     public boolean onMenuItemClick(@NonNull MenuItem item) {
-                                        return false;
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("userLogin", userLogin);
+                                        bundle.putSerializable("blogItem", model);
+                                        Navigation.findNavController(view).navigate(R.id.blogStatisticsFragment,bundle);
+                                        return true;
                                     }
                                 });
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
