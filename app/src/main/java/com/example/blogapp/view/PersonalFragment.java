@@ -112,6 +112,7 @@ public class PersonalFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
                 Navigation.findNavController(v).navigate(R.id.homeFragment, bundle);
             }
         });

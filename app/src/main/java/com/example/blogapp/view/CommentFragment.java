@@ -144,7 +144,6 @@ public class CommentFragment extends Fragment {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(binding.getRoot().getContext());
                                 builder.setTitle("Confirmation");
                                 builder.setMessage("Are you sure you want to delete this comment?");
-
                                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // User clicked Yes button
@@ -162,6 +161,9 @@ public class CommentFragment extends Fragment {
                                 return false;
                             }
                         });
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            popupMenu.setForceShowIcon(true);
+                        }
                         popupMenu.show();
                     }
                 });
