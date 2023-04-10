@@ -85,7 +85,25 @@ public class BlogListFragment extends Fragment {
         dbHelper = new DBHelper(view.getContext());
 
         binding.rvBlogs.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        if (blogStatus == 1){
+            binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.main_color));
+            binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.white));
+            binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.white));
+            binding.btnPublished.setTextColor(getResources().getColor(R.color.white));
+            binding.btnTrash.setTextColor(getResources().getColor(R.color.main_color));
+            binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
+        }
+        else  if (blogStatus == 2){
+            binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
+            binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.white));
+            binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.main_color));
+            binding.btnPublished.setTextColor(getResources().getColor(R.color.main_color));
+            binding.btnTrash.setTextColor(getResources().getColor(R.color.main_color));
+            binding.btnDrafts.setTextColor(getResources().getColor(R.color.white));
+        }
+        else if (blogStatus == 3){
 
+        }
         FirebaseRecyclerOptions<Blog> options = dbHelper.getBlogOptionByUserId(userLogin.getUserId());
         FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(options) {
             @NonNull
