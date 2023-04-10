@@ -51,6 +51,7 @@ public class HomeFragment extends Fragment {
         dbHelper = new DBHelper(viewRoot.getContext());
 //        dbHelper.addUser("Hoang Nam", "hoangnam@gmail.com", "123456", "19/9/1997");
 //        dbHelper.addComment("Thanks for the great content.", "-NRvCltmrz4IV7fxwLv5", "-NRXKh1SLM6_dKT3bwfY");
+//        dbHelper.addLikedBlog("-NRvCltohTQIOXQ7kY_O", "-NRXKh1SLM6_dKT3bwfY");
 
         binding.setUser(userLogin);
         reloadRecyclerView(dbHelper.optionFollowing);
@@ -94,7 +95,7 @@ public class HomeFragment extends Fragment {
         binding.btnLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reloadRecyclerView(dbHelper.optionLikes);
+                reloadRecyclerView(dbHelper.optionFollowing);
                 binding.btnFollowing.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnExplore.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnLikes.setBackgroundColor(getResources().getColor(R.color.main_color));

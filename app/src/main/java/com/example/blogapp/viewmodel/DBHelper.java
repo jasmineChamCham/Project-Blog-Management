@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.Comment;
 import com.example.blogapp.model.Follow;
+import com.example.blogapp.model.LikedBlog;
 import com.example.blogapp.model.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,11 +30,11 @@ import java.util.Map;
 
 public class DBHelper {
     private FirebaseDatabase database;
-    public FirebaseRecyclerOptions<Blog> optionFollowing, optionExplore, optionLikes, optionWithCategory;
+    public FirebaseRecyclerOptions<LikedBlog> optionLikes;
+    public FirebaseRecyclerOptions<Blog> optionFollowing, optionExplore, optionWithCategory;
     public FirebaseRecyclerOptions<Comment> optionComment;
     public FirebaseRecyclerOptions<Follow> followOptions;
-    private static DatabaseReference followRef;
-    private DatabaseReference blogsRef, usersRef, commentsRef;
+    private DatabaseReference blogsRef, usersRef, commentsRef, followRef, likedBlogsRef;
     public static ArrayList<Follow> followList = new ArrayList<>();
     private Context context;
 
@@ -45,6 +46,7 @@ public class DBHelper {
         usersRef = database.getReference().child("users");
         commentsRef = database.getReference().child("comments");
         followRef = database.getReference().child("follows");
+        likedBlogsRef = database.getReference().child("likedBlogs");
 
         followOptions = new FirebaseRecyclerOptions.Builder<Follow>()
                 .setQuery(followRef, Follow.class)
@@ -58,8 +60,8 @@ public class DBHelper {
                 .setQuery(blogsRef, Blog.class)
                 .build();
 
-        optionLikes = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(blogsRef, Blog.class)
+        optionLikes = new FirebaseRecyclerOptions.Builder<LikedBlog>()
+                .setQuery(likedBlogsRef, LikedBlog.class)
                 .build();
     }
 
@@ -196,12 +198,11 @@ public class DBHelper {
                 Log.d("DEBUG", "Database error: " + databaseError.getMessage());
             }
         });
-
-    }
-
-    public interface onUserListener {
+    }public interface onUserListener {
         void onUserRetrieved(User user);
     }
+
+
 
     public FirebaseRecyclerOptions<Blog> getBlogsByCategory(String category) {
         Query query = blogsRef.orderByChild("category").equalTo(category);
@@ -287,6 +288,23 @@ public class DBHelper {
     }
     public interface onOptionListener {
         void onOptionCommentRetrieved(FirebaseRecyclerOptions<Comment> options);
+//        void onOptionLikesRetrieved(FirebaseRecyclerOptions<LikedBlog> options);
+    }
+
+    public void addLikedBlog(String userId, String blogId) {
+        String likedBlogId = likedBlogsRef.push().getKey();
+        likedBlogsRef.child(blogId).child(likedBlogId).setValue(new LikedBlog(userId, blogId))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("DEBUG","Add liked blog successful!");
+                        }
+                        else {
+                            Log.d("DEBUG","Add liked blog  fail!");
+                        }
+                    }
+                });
     }
 
     public void getCommentCounts(Date startDate, Date endDate, final OnCommentCountsRetrievedListener listener) {
@@ -339,7 +357,7 @@ public class DBHelper {
                 });
     }
 
-    public static ArrayList<Follow> getFollowList(final FollowsListCallback callback){
+    public ArrayList<Follow> getFollowList(final FollowsListCallback callback){
         followRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -361,7 +379,7 @@ public class DBHelper {
         return followList;
     }
 
-    public static void addFollowInstance(String follower, String followed, Long time){
+    public void addFollowInstance(String follower, String followed, Long time){
         String id = followRef.push().getKey();
         followRef.child(id).setValue(new Follow(follower, followed, time))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
