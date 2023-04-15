@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,15 @@ public class HomeFragment extends Fragment {
 //        dbHelper.addUser("Hoang Nam", "hoangnam@gmail.com", "123456", "19/9/1997");
 //        dbHelper.addComment("Thanks for the great content.", "-NRvCltmrz4IV7fxwLv5", "-NRXKh1SLM6_dKT3bwfY");
 //        dbHelper.addLikedBlog("-NRvCltohTQIOXQ7kY_O", "-NRXKh1SLM6_dKT3bwfY");
+//        dbHelper.addLikedBlog("-NRlYm-P-HVbQtt_G2Zm", "-NRXKh1SLM6_dKT3bwfY");
+//        dbHelper.addLikedBlog("-NRvCltmrz4IV7fxwLv6", "-NRXKh1SLM6_dKT3bwfY");
+        String userId = "-NRlYm-P-HVbQtt_G2Zm";
+//        String blogId = "-NRXKftw6VxlUTZ2MFEB";
+        dbHelper.getLikedBlogs(userId, likedBlogIds -> {
+            for(int i = 0; i < likedBlogIds.size(); i++) {
+                Log.d("DEBUG", likedBlogIds.get(i));
+            }
+        });
 
         binding.setUser(userLogin);
         reloadRecyclerView(dbHelper.optionFollowing);
@@ -187,6 +197,14 @@ public class HomeFragment extends Fragment {
                         bundle.putSerializable("userLogin", userLogin);
                         bundle.putSerializable("blogItem", blog);
                         Navigation.findNavController(view).navigate(R.id.commentFragment, bundle);
+                    }
+                });
+                holder.binding.btnLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String blogId = blog.getBlogId();
+                        String userId = userLogin.getUserId();
+                        dbHelper.addLikedBlog(userId, blogId);
                     }
                 });
             }

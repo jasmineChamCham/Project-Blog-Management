@@ -198,11 +198,10 @@ public class DBHelper {
                 Log.d("DEBUG", "Database error: " + databaseError.getMessage());
             }
         });
-    }public interface onUserListener {
+    }
+    public interface onUserListener {
         void onUserRetrieved(User user);
     }
-
-
 
     public FirebaseRecyclerOptions<Blog> getBlogsByCategory(String category) {
         Query query = blogsRef.orderByChild("category").equalTo(category);
@@ -259,7 +258,7 @@ public class DBHelper {
                 });
     }
 
-    public void getCommentsByBlogId(String blogId, onOptionListener listener) {
+    public void getCommentsByBlogId(String blogId, onOptionCommentListener listener) {
         Query query = commentsRef.child(blogId).orderByChild("createdTime").limitToLast(10);
         optionComment = new FirebaseRecyclerOptions.Builder<Comment>()
                 .setQuery(query, Comment.class)
@@ -280,14 +279,12 @@ public class DBHelper {
             }
         });
     }
-    public interface onOptionListener {
+    public interface onOptionCommentListener {
         void onOptionCommentRetrieved(FirebaseRecyclerOptions<Comment> options);
-//        void onOptionLikesRetrieved(FirebaseRecyclerOptions<LikedBlog> options);
     }
 
     public void addLikedBlog(String userId, String blogId) {
-        String likedBlogId = likedBlogsRef.push().getKey();
-        likedBlogsRef.child(blogId).child(likedBlogId).setValue(new LikedBlog(userId, blogId))
+        likedBlogsRef.child(blogId).child(userId).setValue(new LikedBlog(userId, blogId))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -299,6 +296,59 @@ public class DBHelper {
                         }
                     }
                 });
+    }
+
+    public List<String> getLikedBlogs(String userId, onLikedBlogListener listener) {
+        Query query = likedBlogsRef.child(userId).orderByKey();
+        List<String> likedBlogIds = new ArrayList<>();
+        likedBlogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    boolean isExistUser = snapshot.hasChild(userId);
+                    String blogId = snapshot.getKey();
+                    Log.d("DEBUG", Boolean.toString(isExistUser));
+                    likedBlogIds.add(blogId);
+                }
+                listener.onLikedBlogRetrieved(likedBlogIds);
+//                for(int i = 0; i < likedBlogIds.size(); i++) {
+//                    Log.d("DEBUG", likedBlogIds.get(i));
+//                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors here
+            }
+        });
+        return likedBlogIds;
+    }
+    public interface onLikedBlogListener {
+        void onLikedBlogRetrieved(List<String> likedBlogIds);
+    }
+
+//    public void getLikedBlogsByBlogId(String blogId, onOptionLikesListener listener) {
+//        Query query = optionLikes.child();
+//        optionLikes = new FirebaseRecyclerOptions.Builder<LikedBlog>()
+//                .setQuery(query, LikedBlog.class)
+//                .build();
+//        listener.onOptionLikesRetrieved(optionLikes);
+//        commentsRef.child(blogId).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (!snapshot.exists() && snapshot.getChildrenCount() == 0) {
+//                    // Comments not found
+//                    Log.d("DEBUG", "comment not found");
+//                    listener.onOptionLikesRetrieved(null);
+//                }
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.d("DEBUG", "Error retrieving comments for blog post " + blogId, error.toException());
+//            }
+//        });
+//    }
+    public interface onOptionLikesListener {
+        void onOptionLikesRetrieved(FirebaseRecyclerOptions<LikedBlog> options);
     }
 
     public void getCommentCounts(Date startDate, Date endDate, final OnCommentCountsRetrievedListener listener) {

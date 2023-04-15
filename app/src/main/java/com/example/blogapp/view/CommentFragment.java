@@ -58,6 +58,24 @@ public class CommentFragment extends Fragment {
 
         dbHelper = new DBHelper(viewRoot.getContext());
         binding.setUser(userLogin);
+//        dbHelper.getCommentsByBlogId(blogItem.getBlogId(), options -> {
+//            if (options != null) {
+//                binding.layoutNoComment.setVisibility(View.GONE);
+//                binding.rvComments.setVisibility(View.VISIBLE);
+//                reloadRecyclerView(options);
+//            }
+//            else {
+//                binding.layoutNoComment.setVisibility(View.VISIBLE);
+//                binding.rvComments.setVisibility(View.GONE);
+//            }
+//        });
+        return viewRoot;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         dbHelper.getCommentsByBlogId(blogItem.getBlogId(), options -> {
             if (options != null) {
                 binding.layoutNoComment.setVisibility(View.GONE);
@@ -69,12 +87,6 @@ public class CommentFragment extends Fragment {
                 binding.rvComments.setVisibility(View.GONE);
             }
         });
-        return viewRoot;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         binding.rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -174,6 +186,7 @@ public class CommentFragment extends Fragment {
                         popupMenu.show();
                     }
                 });
+
             }
         };
         binding.rvComments.setAdapter(adapter);
