@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/commentFragment2"
         android:name="com.example.blogapp.view.CommentFragment"
-        android:label="CommentFragment"
+        android:label="fragment_comment"
         tools:layout="@layout/fragment_comment">
         <action
             android:id="@+id/action_commentFragment2_to_blogListFragment"

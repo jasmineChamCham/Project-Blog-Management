@@ -58,35 +58,16 @@ public class CommentFragment extends Fragment {
 
         dbHelper = new DBHelper(viewRoot.getContext());
         binding.setUser(userLogin);
-//        dbHelper.getCommentsByBlogId(blogItem.getBlogId(), options -> {
-//            if (options != null) {
-//                binding.layoutNoComment.setVisibility(View.GONE);
-//                binding.rvComments.setVisibility(View.VISIBLE);
-//                reloadRecyclerView(options);
-//            }
-//            else {
-//                binding.layoutNoComment.setVisibility(View.VISIBLE);
-//                binding.rvComments.setVisibility(View.GONE);
-//            }
-//        });
+
+        reloadRecyclerView(dbHelper.getOptionCommentByBlogId(blogItem.getBlogId()));
+        binding.layoutNoComment.setVisibility(View.GONE);
+        binding.rvComments.setVisibility(View.VISIBLE);
         return viewRoot;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        dbHelper.getCommentsByBlogId(blogItem.getBlogId(), options -> {
-            if (options != null) {
-                binding.layoutNoComment.setVisibility(View.GONE);
-                binding.rvComments.setVisibility(View.VISIBLE);
-                reloadRecyclerView(options);
-            }
-            else {
-                binding.layoutNoComment.setVisibility(View.VISIBLE);
-                binding.rvComments.setVisibility(View.GONE);
-            }
-        });
 
         binding.rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -112,6 +93,19 @@ public class CommentFragment extends Fragment {
                         parent,
                         false);
                 return new CommentFragment.CommentHolder(binding);
+            }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                if (getItemCount() == 0){
+                    binding.layoutNoComment.setVisibility(View.VISIBLE);
+                    binding.rvComments.setVisibility(View.GONE);
+                }
+                else {
+                    binding.layoutNoComment.setVisibility(View.GONE);
+                    binding.rvComments.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

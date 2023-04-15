@@ -258,6 +258,14 @@ public class DBHelper {
                 });
     }
 
+    public FirebaseRecyclerOptions<Comment> getOptionCommentByBlogId(String blogId){
+        Query query = commentsRef.child(blogId).orderByChild("createdTime").limitToLast(10);
+        optionComment = new FirebaseRecyclerOptions.Builder<Comment>()
+                .setQuery(query, Comment.class)
+                .build();
+        return optionComment;
+    }
+
     public void getCommentsByBlogId(String blogId, onOptionCommentListener listener) {
         Query query = commentsRef.child(blogId).orderByChild("createdTime").limitToLast(10);
         optionComment = new FirebaseRecyclerOptions.Builder<Comment>()
