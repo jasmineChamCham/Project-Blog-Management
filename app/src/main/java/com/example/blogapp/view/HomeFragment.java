@@ -8,9 +8,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,18 +24,26 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentHomeBinding;
 import com.example.blogapp.databinding.ViewBlogItemBinding;
 import com.example.blogapp.model.Blog;
+import com.example.blogapp.model.LikedBlog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
+import com.example.blogapp.viewmodel.LikedBlogsAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private DBHelper dbHelper;
     private User userLogin;
+
+    private ArrayList<Blog> likedBlogs;
+    private LikedBlogsAdapter likedBlogsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,13 +65,6 @@ public class HomeFragment extends Fragment {
 //        dbHelper.addLikedBlog("-NRvCltohTQIOXQ7kY_O", "-NRXKh1SLM6_dKT3bwfY");
 //        dbHelper.addLikedBlog("-NRlYm-P-HVbQtt_G2Zm", "-NRXKh1SLM6_dKT3bwfY");
 //        dbHelper.addLikedBlog("-NRvCltmrz4IV7fxwLv6", "-NRXKh1SLM6_dKT3bwfY");
-        String userId = "-NRlYm-P-HVbQtt_G2Zm";
-//        String blogId = "-NRXKftw6VxlUTZ2MFEB";
-        dbHelper.getLikedBlogs(userId, likedBlogIds -> {
-            for(int i = 0; i < likedBlogIds.size(); i++) {
-                Log.d("DEBUG", likedBlogIds.get(i));
-            }
-        });
 
         binding.setUser(userLogin);
         reloadRecyclerView(dbHelper.optionFollowing);
@@ -105,7 +108,7 @@ public class HomeFragment extends Fragment {
         binding.btnLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reloadRecyclerView(dbHelper.optionFollowing);
+                reloadLikesRecyclerView();
                 binding.btnFollowing.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnExplore.setBackgroundColor(getResources().getColor(R.color.white));
                 binding.btnLikes.setBackgroundColor(getResources().getColor(R.color.main_color));
@@ -162,6 +165,17 @@ public class HomeFragment extends Fragment {
         // date picker
     }
 
+    public void reloadLikesRecyclerView() {
+        likedBlogs = new ArrayList<>();
+        dbHelper.getLikedBlogs(userLogin.getUserId(), likedBlogList -> {
+            likedBlogs.addAll(likedBlogList);
+            for(int i = 0; i < likedBlogs.size(); i++) {
+                Log.d("DEBUG", "liked blog id: " + likedBlogs.get(i).getBlogId());
+            }
+            likedBlogsAdapter = new LikedBlogsAdapter(likedBlogs, userLogin);
+            binding.rvBlogs.setAdapter(likedBlogsAdapter);
+        });
+    }
     public void reloadRecyclerView(FirebaseRecyclerOptions<Blog> options) {
         FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(options) {
             @NonNull
@@ -180,6 +194,14 @@ public class HomeFragment extends Fragment {
                 holder.binding.setContent(Html.fromHtml(blog.getContent()));
                 dbHelper.getUserById(blog.getUserId(), user -> {
                     holder.binding.setUser(user);
+                });
+                dbHelper.isLiked(userLogin.getUserId(), blog.getBlogId(), isLiked -> {
+                    if (isLiked) {
+                        holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_alt_24, 0, 0, 0);
+                    }
+                    else {
+                        holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
+                    }
                 });
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -202,9 +224,16 @@ public class HomeFragment extends Fragment {
                 holder.binding.btnLike.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String blogId = blog.getBlogId();
-                        String userId = userLogin.getUserId();
-                        dbHelper.addLikedBlog(userId, blogId);
+                        dbHelper.isLiked(userLogin.getUserId(), blog.getBlogId(), isLiked -> {
+                            if (isLiked) {      // if like -> unlike
+                                dbHelper.deleteLikedBlog(new LikedBlog(userLogin.getUserId(), blog.getBlogId()));
+                                holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
+                            }
+                            else {      // if not like -> like
+                                dbHelper.addLikedBlog(userLogin.getUserId(), blog.getBlogId());
+                                holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_alt_24, 0, 0, 0);
+                            }
+                        });
                     }
                 });
             }
@@ -213,7 +242,7 @@ public class HomeFragment extends Fragment {
         adapter.startListening();
     }
 
-    public class BlogHolder extends RecyclerView.ViewHolder {
+    public static class BlogHolder extends RecyclerView.ViewHolder {
         public ViewBlogItemBinding binding;
 
         BlogHolder(ViewBlogItemBinding itemsBinding) {
