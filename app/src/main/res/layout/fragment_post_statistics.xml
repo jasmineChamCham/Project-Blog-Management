@@ -46,19 +46,11 @@
 
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bc_follow"
+            android:id="@+id/bc_overall"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:visibility="gone"/>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lc_follower"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="380dp"/>
+            android:layout_height="400dp"/>
 
         <LinearLayout
             android:id="@+id/section_follow"
@@ -68,7 +60,17 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/but_overall"
+                android:layout_gravity="center"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:backgroundTint="@color/light_blue"
+                android:text="Overall" />
+
+            <Button
                 android:id="@+id/but_likes"
+                android:layout_gravity="center"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
@@ -77,6 +79,7 @@
 
             <Button
                 android:id="@+id/but_views"
+                android:layout_gravity="center"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
@@ -96,25 +99,27 @@
                 >
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Post with most likes : "
-                        android:textSize="20sp"
+                        android:text="Post with most likes"
+                        android:textSize="16sp"
                         android:layout_marginRight="10dp"
                         ></TextView>
                     <TextView
-                        android:text="Hamlet"
-                        android:textSize="20sp"
+                        android:id="@+id/tv_most_likes_post"
+                        android:text=":   Hamlet"
+                        android:textSize="16sp"
                         ></TextView>
                 </TableRow>
 
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Post with most views : "
-                        android:textSize="20sp"
+                        android:text="Post with most views"
+                        android:textSize="16sp"
                         android:layout_marginRight="10dp"
                         ></TextView>
                     <TextView
-                        android:text="Work from home"
-                        android:textSize="20sp"
+                        android:id="@+id/tv_most_views_post"
+                        android:text=":   Wurthering Height"
+                        android:textSize="16sp"
                         ></TextView>
                 </TableRow>
             </TableLayout>

@@ -93,7 +93,6 @@ public class FollowStatisticsFragment extends Fragment {
         butPostChosen.setTextColor(getResources().getColor(R.color.main_color));
 
         butFollowChosen.setOnClickListener(v -> {
-            bcFollow.setVisibility(View.GONE);
             drawInitialBarChart();
         });
 
@@ -195,18 +194,30 @@ public class FollowStatisticsFragment extends Fragment {
                             int countFollower = 0;
                             int countFollowed = 0;
 
+                            for (Long time : groupFolloweds.keySet()){
+                                if (time < fromdate ){
+                                    countFollowed += groupFolloweds.get(time);
+                                }
+                            }
+
+                            for (Long time : groupFollowers.keySet()){
+                                if (time < fromdate ){
+                                    countFollower += groupFollowers.get(time);
+                                }
+                            }
+
                             switch (type) {
                                 case "Daily": {
                                     ArrayList<Long> timeArrLong = new ArrayList<>(listTime);
+
                                     for (Long time : timeArrLong) {
                                         timeArr.add(getDayStrFromMillis(time));
-                                    }
-                                    for (Long time : timeArrLong) {
+
                                         if (groupFolloweds.containsKey(time)){
                                             countFollowed += groupFolloweds.get(time);
                                         }
                                         Log.d("DEBUG", "Group Followeds " + getDayStrFromMillis(time) + " has " + countFollowed + " people.");
-                                        barEntriesFolloweds.add(new BarEntry(timeArr.indexOf(getDayStrFromMillis(time)), countFollowed));
+                                        barEntriesFolloweds.add(new BarEntry(timeArrLong.indexOf(time), countFollowed));
 
                                         if (groupFollowers.containsKey(time)){
                                             countFollower += groupFollowers.get(time);
@@ -323,7 +334,7 @@ public class FollowStatisticsFragment extends Fragment {
                             xAxis.setGranularity(1);
                             bcFollow.setDragEnabled(true);
                             bcFollow.setVisibleXRangeMaximum(14);
-                            bcFollow.setVisibleXRangeMinimum(timeArr.size() + 1);
+                            bcFollow.setVisibleXRangeMinimum(timeArr.size() + 0.5f);
 
                             float barSpace = 0.1f;
                             float groupSpace = 0.5f;

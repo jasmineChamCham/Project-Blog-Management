@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".view.MyProfileActivity">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <androidx.cardview.widget.CardView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:elevation="12dp"
+        android:id="@+id/view2"
+        app:cardCornerRadius="250dp"
+        android:layout_centerHorizontal="true"
+        android:shape="ring"
+        android:thicknessRatio="1.9">
+            <ImageView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/imageView1"
+                android:src="@drawable/image_ava"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+
+        </androidx.cardview.widget.CardView>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|right"
+            android:elevation="15dp"
+            android:src="@drawable/ic_baseline_photo_camera_24"
+            />
+    </FrameLayout>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+        <TableRow>
+            <TextView
+                android:text="Followers"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="15dp"/>
+
+            <TextView
+                android:text="Followeds"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="15dp"/>
+
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/tv_num_follower_mf"
+                android:text="100"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:paddingHorizontal="15dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/tv_num_followed_mf"
+                android:text="100"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:paddingHorizontal="15dp"
+                android:gravity="center"/>
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+        <TableRow>
+            <TextView
+                android:text="Name"
+                android:textSize="20sp"
+                android:layout_width="80dp"/>
+            <EditText
+                android:id="@+id/ed_name_mf"
+                android:layout_width="260dp"
+                android:editable="false"
+                android:gravity="center"
+                android:text="Jasmine"/>
+
+            <ImageButton
+                android:id="@+id/ib_modify_name_mf"
+                style="@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked"
+                android:layout_height="45dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_baseline_create_24" />
+        </TableRow>
+
+
+        <TableRow>
+            <TextView
+                android:text="Birthday"
+                android:textSize="20sp"
+                android:layout_width="80dp"/>
+            <EditText
+                android:id="@+id/ed_birthday_mf"
+                android:layout_width="200dp"
+                android:editable="false"
+                android:gravity="center"
+                android:text="05-07-2002"/>
+            <ImageButton
+                android:id="@+id/ib_modify_birthday_mf"
+                style="@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_baseline_create_24"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="Email"
+                android:textSize="20sp"
+                android:layout_width="80dp"/>
+            <EditText
+                android:id="@+id/ed_email_mf"
+                android:layout_width="260dp"
+                android:editable="false"
+                android:gravity="center"
+                android:text="jasmine@gmail.com"/>
+            <ImageButton
+                android:id="@+id/ib_modify_email_mf"
+                style="@style/MaterialAlertDialog.Material3.Body.Text.CenterStacked"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_baseline_create_24"/>
+        </TableRow>
+
+        <Button
+            android:id="@+id/but_save_mf"
+            android:layout_marginTop="7dp"
+            android:layout_gravity="center"
+            android:text="Save changes"/>
+    </TableLayout>
+</LinearLayout>
