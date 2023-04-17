@@ -102,10 +102,16 @@ public class BlogListFragment extends Fragment {
             binding.btnDrafts.setTextColor(getResources().getColor(R.color.white));
         }
         else if (blogStatus == 3){
-
+            binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
+            binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.main_color));
+            binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.white));
+            binding.btnPublished.setTextColor(getResources().getColor(R.color.main_color));
+            binding.btnTrash.setTextColor(getResources().getColor(R.color.white));
+            binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
         }
-        FirebaseRecyclerOptions<Blog> options = dbHelper.getBlogOptionByUserId(userLogin.getUserId());
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(options) {
+//        FirebaseRecyclerOptions<Blog> options = dbHelper.getBlogOptionByUserId(userLogin.getUserId());
+
+        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(dbHelper.getBlogByLiked()) {
             @NonNull
             @Override
             public BlogHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -80,7 +80,13 @@ public class DBHelper {
                     }
                 });
     }
-
+    public FirebaseRecyclerOptions<Blog> getBlogByLiked(){
+        Query query = blogsRef.orderByChild("liked/" + "456").equalTo(true);
+        FirebaseRecyclerOptions<Blog> optionBlogByUserId = new FirebaseRecyclerOptions.Builder<Blog>()
+                .setQuery(query, Blog.class)
+                .build();
+        return optionBlogByUserId;
+    }
     public FirebaseRecyclerOptions<Blog> getBlogOptionByUserId(String userId) {
         Query query = blogsRef.orderByChild("userId").equalTo(userId);
         FirebaseRecyclerOptions<Blog> optionBlogByUserId = new FirebaseRecyclerOptions.Builder<Blog>()
@@ -307,40 +313,6 @@ public class DBHelper {
                 });
     }
 
-    public void getCommentCounts(Date startDate, Date endDate, final OnCommentCountsRetrievedListener listener) {
-        commentsRef.orderByChild("created_time")
-                .startAt(startDate.getTime())
-                .endAt(endDate.getTime())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Same onDataChange code as step 3
-                        Map<Date, Integer> commentCounts = new HashMap<>();
-                        for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
-                            Comment comment = commentSnapshot.getValue(Comment.class);
-                            Date createdTime = new Date(comment.getCreatedTime());
-                            Date date = new Date(createdTime.getYear(), createdTime.getMonth(), createdTime.getDate());
-                            if (commentCounts.containsKey(date)) {
-                                commentCounts.put(date, commentCounts.get(date) + 1);
-                            } else {
-                                commentCounts.put(date, 1);
-                            }
-                        }
-
-                        // Pass the comment counts data to the callback listener
-                        listener.onCommentCountsRetrieved(commentCounts);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Handle error
-                    }
-                });
-    }
-
-    public interface OnCommentCountsRetrievedListener {
-        void onCommentCountsRetrieved(Map<Date, Integer> commentCounts);
-    }
     public void ChangePassword(User user, String newPassword){
         usersRef.child(user.getUserId()).setValue(new User(user.getUserId(),
                 user.getName(),user.getEmail(), newPassword, user.getBirthday()))

@@ -65,37 +65,63 @@ public class BlogStatisticsFragment extends Fragment {
             blogItem = (Blog) getArguments().getSerializable("blogItem");
         }
     }
-    public class DataPoint{
-        int xValue, yValue;
-        public DataPoint(){}
-        public DataPoint(int xValue, int yValue){
-            this.xValue = xValue;
-            this.yValue = yValue;
-        }
 
-        public int getxValue() {
-            return xValue;
-        }
-
-        public void setxValue(int xValue) {
-            this.xValue = xValue;
-        }
-
-        public int getyValue() {
-            return yValue;
-        }
-
-        public void setyValue(int yValue) {
-            this.yValue = yValue;
-        }
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.fragment_blog_statistics, container, false);
         View viewRoot = binding.getRoot();
-        Log.d("DEBUG",blogItem.getBlogId());
+        binding.btnDays.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.btnDays.setBackgroundColor(getResources().getColor(R.color.main_color));
+                binding.btnYears.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnMonths.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnDays.setTextColor(getResources().getColor(R.color.white));
+                binding.btnYears.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnMonths.setTextColor(getResources().getColor(R.color.main_color));
+            }
+        });
+        binding.btnMonths.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.btnDays.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnYears.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnMonths.setBackgroundColor(getResources().getColor(R.color.main_color));
+                binding.btnDays.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnYears.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnMonths.setTextColor(getResources().getColor(R.color.white));
+            }
+        });
+        binding.btnYears.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.btnDays.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnYears.setBackgroundColor(getResources().getColor(R.color.main_color));
+                binding.btnMonths.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.btnDays.setTextColor(getResources().getColor(R.color.main_color));
+                binding.btnYears.setTextColor(getResources().getColor(R.color.white));
+                binding.btnMonths.setTextColor(getResources().getColor(R.color.main_color));
+            }
+        });
+        binding.cvViews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        binding.cvLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        binding.cvComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 //        dbHelper = new DBHelper(viewRoot.getContext());
 
@@ -113,7 +139,7 @@ public class BlogStatisticsFragment extends Fragment {
         startDate.setTime(endDate.getTime());
         startDate.add(Calendar.DAY_OF_MONTH, -10);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM");
 
         // Use the formatted start and end dates in the Firebase query
         Query query = commentsRef.orderByChild("createdTime").startAt(startDate.getTimeInMillis()).endAt(endDate.getTimeInMillis() + 1);
@@ -124,13 +150,21 @@ public class BlogStatisticsFragment extends Fragment {
                 Log.d("DEBUG", Long.toString(dataSnapshot.getChildrenCount()));
                 // Step 2: Organize comment data into map of dates and comment counts
                 Map<String, Integer> commentCounts = new HashMap<>();
+//                Calendar dates = Calendar.getInstance();
+//                dates.setTime(endDate.getTime());
+//                for (int i = 0; i <10; i++){
+//                    commentCounts.put(dateFormat.format(dates.getTime()), 0);
+//                    Log.d("DEBUG",dateFormat.format(dates.getTime()));
+//                    dates.add(Calendar.DAY_OF_MONTH, -1);
+//                }
                 for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
                     Comment comment = commentSnapshot.getValue(Comment.class);
                     Date date = new Date(comment.getCreatedTime());
                     String dateString = dateFormat.format(date);
                     if (commentCounts.containsKey(dateString)) {
                         commentCounts.put(dateString, commentCounts.get(dateString) + 1);
-                    } else {
+                    }
+                    else {
                         commentCounts.put(dateString, 1);
                     }
                 }
