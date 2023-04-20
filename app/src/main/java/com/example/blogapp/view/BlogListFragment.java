@@ -109,9 +109,9 @@ public class BlogListFragment extends Fragment {
             binding.btnTrash.setTextColor(getResources().getColor(R.color.white));
             binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
         }
-//        FirebaseRecyclerOptions<Blog> options = dbHelper.getBlogOptionByUserId(userLogin.getUserId());
+        FirebaseRecyclerOptions<Blog> options = dbHelper.getBlogOptionByUserId(userLogin.getUserId());
 
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(dbHelper.getBlogByLiked()) {
+        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(options) {
             @NonNull
             @Override
             public BlogHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
