@@ -180,6 +180,7 @@ public class CommentFragment extends Fragment {
                         popupMenu.show();
                     }
                 });
+
             }
         };
         binding.rvComments.setAdapter(adapter);

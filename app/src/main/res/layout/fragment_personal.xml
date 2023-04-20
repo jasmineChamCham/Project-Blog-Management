@@ -86,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:backgroundTint="@color/white"
-                    android:text="My Blogs"
+                    android:text="My blogs"
                     android:textAllCaps="false"
                     android:textColor="#CD000000"
                     android:textSize="16sp" />
@@ -104,11 +104,11 @@
                     android:elevation="10dp"
                     android:src="@drawable/ic_profile" />
                 <Button
-                    android:id="@+id/btn_profile"
+                    android:id="@+id/btn_my_profile"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:backgroundTint="@color/white"
-                    android:text="Profile"
+                    android:text="My profile"
                     android:textAllCaps="false"
                     android:textColor="#CD000000"
                     android:textSize="16sp" />
