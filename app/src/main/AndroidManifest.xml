@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".view.BlogManagerActivity"
+            android:name=".view.StatisticsActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
@@ -36,7 +36,7 @@
         </activity>
 
         <activity
-            android:name=".view.StatisticsActivity"
+            android:name=".view.BlogManagerActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
