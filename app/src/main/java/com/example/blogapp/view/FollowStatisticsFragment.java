@@ -37,8 +37,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -62,7 +60,6 @@ public class FollowStatisticsFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -71,7 +68,6 @@ public class FollowStatisticsFragment extends Fragment{
         binding = FragmentFollowStatisticsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         return view;
-//        return inflater.inflate(R.layout.fragment_follow_statistics, container, false);
     }
 
     @Override
@@ -94,7 +90,7 @@ public class FollowStatisticsFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-        drawBarChart("Annually");
+        drawBarChart("Daily");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

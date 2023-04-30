@@ -46,28 +46,31 @@
 
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bc_follow"
+            android:id="@+id/bc_overall"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:visibility="gone"/>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lc_follower"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="380dp"/>
+            android:layout_height="400dp"/>
 
         <LinearLayout
             android:id="@+id/section_follow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_gravity="center"
             android:orientation="horizontal">
             <Button
+                android:id="@+id/but_overall"
+                android:layout_gravity="center"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:backgroundTint="@color/light_blue"
+                android:text="Overall" />
+
+            <Button
                 android:id="@+id/but_likes"
+                android:layout_gravity="center"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="15dp"
@@ -75,6 +78,7 @@
                 android:text="Likes" />
             <Button
                 android:id="@+id/but_views"
+                android:layout_gravity="center"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:backgroundTint="#52B8E6"
@@ -93,34 +97,33 @@
                 >
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="The most liked blog"
-                        android:textSize="17sp"
+                        android:text="Most likes: "
+                        android:textSize="15sp"
                         android:textColor="#323232"
-                        android:layout_marginRight="15dp"
-                        ></TextView>
+                        android:layout_marginRight="15dp"/>
                     <TextView
+                        android:id="@+id/tv_most_likes_post"
                         android:text="Hamlet"
                         android:textColor="@color/main_color"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        ></TextView>
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
                 </TableRow>
 
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="The most viewed blog"
-                        android:textSize="17sp"
+                        android:text="Most views: "
+                        android:textSize="15sp"
                         android:textColor="#323232"
-                        android:layout_marginRight="15dp"
-                        ></TextView>
+                        android:layout_marginRight="15dp"/>
                     <TextView
+                        android:id="@+id/tv_most_views_post"
                         android:text="Work from home"
                         android:textColor="@color/main_color"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        ></TextView>
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
                 </TableRow>
             </TableLayout>
         </LinearLayout>
     </LinearLayout>
+
 </FrameLayout>

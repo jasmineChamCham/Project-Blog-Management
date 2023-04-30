@@ -1,13 +1,13 @@
 package com.example.blogapp.view;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -15,193 +15,255 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.blogapp.R;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
+import com.example.blogapp.databinding.FragmentPostStatisticsBinding;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PostStatisticsFragment extends Fragment {
+    private FragmentPostStatisticsBinding binding;
+    private final DatabaseReference blogRef;
+    private final DatabaseReference likedBlogRef;
+    private final DatabaseReference commentRef;
 
-    LineChart lcFollower;
-    LineData lineData;
-    LineDataSet lineDataSet;
-    ArrayList lineEntries;
-
-    BarChart bcFollow;
-    BarDataSet bdsFollower, bdsFollowed;
+    BarDataSet bdsOverall;
     ArrayList barEntries;
-    Button butDaily, butMonthly, butAnnually;
-    Button butPostChosen, butFollowChosen;
 
+    private String userId = "-NRvClt0Ahu_stjh3Z5G"; // author
 
     public PostStatisticsFragment(){
-
+        blogRef = FirebaseDatabase.getInstance().getReference("blogs");
+        likedBlogRef = FirebaseDatabase.getInstance().getReference("likedBlogs");
+        commentRef = FirebaseDatabase.getInstance().getReference("comments");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post_statistics, container, false);
+        binding = FragmentPostStatisticsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.butPostChosenP.setBackgroundColor(getResources().getColor(R.color.main_color));
+        binding.butFollowChosenP.setBackgroundColor(getResources().getColor(R.color.white));
+        binding.butPostChosenP.setTextColor(getResources().getColor(R.color.white));
+        binding.butFollowChosenP.setTextColor(getResources().getColor(R.color.main_color));
 
-        butFollowChosen = view.findViewById(R.id.but_follow_chosen_P);
-        butPostChosen = view.findViewById(R.id.but_post_chosen_P);
-
-        butPostChosen.setBackgroundColor(getResources().getColor(R.color.main_color));
-        butFollowChosen.setBackgroundColor(getResources().getColor(R.color.white));
-        butPostChosen.setTextColor(getResources().getColor(R.color.white));
-        butFollowChosen.setTextColor(getResources().getColor(R.color.main_color));
-
-        butFollowChosen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.followStatisticsFragment, null);
-            }
-        });
-
-        butPostChosen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lcFollower.setVisibility(View.VISIBLE);
-                bcFollow.setVisibility(View.GONE);
-                drawInitialBarChart();
-            }
-        });
-
-        lcFollower = view.findViewById(R.id.lc_follower);
-        drawInitialBarChart();
+        binding.butFollowChosenP.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.followStatisticsFragment, null));
+        binding.butPostChosenP.setOnClickListener(v -> drawOverallBarChart());
+        binding.butOverall.setOnClickListener(v -> drawOverallBarChart());
+        binding.butLikes.setOnClickListener(v -> drawLikeBarChart());
     }
 
-    private void drawInitialBarChart(){
-        String[] days = new String[7];
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM");
-        String todate = dateFormat.format(date);
-
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -7);
-        Date fromdateD = cal.getTime();
-        String fromdate = dateFormat.format(fromdateD);
-        Log.d("From date", fromdate);
-        Log.d("To date", todate);
-
-        for (int i=1; i<=7; i++) {
-            cal.add(Calendar.DATE, 1);
-            Date dayD = cal.getTime();
-            String day = dateFormat.format(dayD);
-            days[i-1] = day;
-        }
-
-        lcFollower.getDescription().setEnabled(false);
-
-        XAxis xAxis = lcFollower.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setGranularity(1);
-        lcFollower.setDragEnabled(true);
-        lcFollower.setVisibleXRangeMaximum(days.length);
-
-        lineEntries = getBarEntriesFollower();
-        lineDataSet = new LineDataSet(lineEntries, "Followers");
-        lineData = new LineData(lineDataSet);
-        lcFollower.setData(lineData);
-        lineDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        lineDataSet.setValueTextSize(18f);
+    @Override
+    public void onStart() {
+        super.onStart();
+        drawLikeBarChart();
     }
+
+    private void drawLikeBarChart() {
+        Log.d("DEBUG", "BEFORE BLOGREF");
+
+        blogRef.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String, String> mapBlogsOfUsers = new LinkedHashMap<>();
+                ArrayList<BarEntry> barEntriesPosts = new ArrayList<>();
+                Map<String, Integer> groupPosts = new LinkedHashMap<>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    String blogId = snapshot.child("blogId").getValue(String.class);
+                    String author = snapshot.child("userId").getValue(String.class);
+                    String title = snapshot.child("title").getValue(String.class);
+
+                    Log.d("DEBUG","blogRef snapshot : " + blogId);
+                    Log.d("DEBUG","blogRef snapshot author : " + author);
+                    Log.d("DEBUG","blogRef snapshot title : " + title);
+
+                    if (author.equals(userId)){
+                        mapBlogsOfUsers.putIfAbsent(blogId, title);
+                    }
+                }
+
+                for (Map.Entry<String, String> s : mapBlogsOfUsers.entrySet()){
+                    Log.d("DEBUG", "list title blogs of user : " + s.getValue());
+                }
+
+                likedBlogRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshotLike) {
+                        Log.d("DEBUG", "INTO LIKEREF");
+                        for (DataSnapshot snapshot : dataSnapshotLike.getChildren()) {
+                            String blogId = snapshot.getKey();
+                            if (mapBlogsOfUsers.keySet().contains(blogId)){
+                                groupPosts.put(blogId, (int) snapshot.getChildrenCount());
+                            }
+                        }
+
+                        Log.d("DEBUG", "groupPosts size = " + groupPosts.size());
+                        for (Map.Entry<String, Integer> e : groupPosts.entrySet()){
+                            Log.d("groupPosts", "blogId = " + e.getKey() + ", numLikes = " + e.getValue());
+                        }
+
+                        // sort groupPosts according to value (number of likes)
+                        List<Map.Entry<String, Integer>> list = new ArrayList<>(groupPosts.entrySet());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            list.sort(Map.Entry.comparingByValue());
+                        }
+                        Collections.reverse(list);
+                        groupPosts.clear();
+                        for (Map.Entry<String, Integer> e : list){
+                            groupPosts.put(e.getKey(), e.getValue());
+                        }
+
+                        ArrayList<String> listLikedBlogIds = new ArrayList(groupPosts.keySet());
+                        for (int i = 0; i < listLikedBlogIds.size(); i++) {
+                            Log.d("DEBUG", "blog no." + i + " => id=" + listLikedBlogIds.get(i));
+                            Log.d("DEBUG", "=> likes=" + groupPosts.get(listLikedBlogIds.get(i)));
+                            barEntriesPosts.add(new BarEntry(i, groupPosts.get(listLikedBlogIds.get(i))));
+                        }
+
+                        String titles = shortenTitle(mapBlogsOfUsers.get(listLikedBlogIds.get(0)));
+                        int likeNums = groupPosts.get(listLikedBlogIds.get(0));
+                        String[] listTitles = new String[listLikedBlogIds.size()];
+                        listTitles[0] = mapBlogsOfUsers.get(listLikedBlogIds.get(0));
+
+                        for (int i=1; i<listLikedBlogIds.size(); i++){
+                            listTitles[i] = shortenTitle(mapBlogsOfUsers.get(listLikedBlogIds.get(i)));
+                            if (groupPosts.get(listLikedBlogIds.get(i)) == likeNums) {
+                                titles += (", " + shortenTitle(mapBlogsOfUsers.get(listLikedBlogIds.get(i))));
+                            } else {
+                                break;
+                            }
+                        }
+
+                        for (String t : listTitles){
+                            Log.d("DEBUG", "listTitle : " + t);
+                        }
+
+                        binding.tvMostLikesPost.setText(titles);
+
+                        drawBarChart(listTitles, barEntriesPosts, "Likes", "#edcbd2");
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d("DEBUG", "likeRef cancelled");
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("DEBUG", "CANCELLED BLOGREF");
+
+            }
+        });
+    }
+
     @SuppressLint("RestrictedApi")
-    private void drawBarChart(String[] timeRange) {
-        bdsFollower = new BarDataSet(getBarEntriesFollower(), "Follower");
-        bdsFollower.setColor(getApplicationContext().getResources().getColor(R.color.purple_200));
-        bdsFollowed = new BarDataSet(getBarEntriesFollowed(), "Followed");
-        bdsFollowed.setColor(Color.BLUE);
+    private void drawBarChart(String[] xAxisValues, ArrayList<BarEntry> barEntries, String label, String colorHex) {
+        bdsOverall = new BarDataSet(barEntries, label);
+        bdsOverall.setColor(Color.parseColor(colorHex));
 
-        BarData data = new BarData(bdsFollower, bdsFollowed);
-        bcFollow.setData(data);
+        BarData data = new BarData(bdsOverall);
+        binding.bcOverall.setData(data);
+        binding.bcOverall.getDescription().setEnabled(false);
 
-        bcFollow.getDescription().setEnabled(false);
-        XAxis xAxis = bcFollow.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(timeRange));
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setGranularity(1);
-        bcFollow.setDragEnabled(true);
-        bcFollow.setVisibleXRangeMaximum(timeRange.length);
+        binding.bcOverall.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        binding.bcOverall.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xAxisValues));
+        binding.bcOverall.getXAxis().setLabelRotationAngle(-45f);
+        binding.bcOverall.getAxisLeft().setAxisMinimum(0f);
+        binding.bcOverall.getAxisLeft().setDrawGridLines(false);
+        binding.bcOverall.getAxisRight().setEnabled(false);
+        binding.bcOverall.getDescription().setEnabled(false);
+        binding.bcOverall.setFitBars(true);
+        binding.bcOverall.animateY(1000);
 
-        float barSpace = 0.1f;
-        float groupSpace = 0.5f;
-        data.setBarWidth(0.15f);
-        bcFollow.getXAxis().setAxisMinimum(0);
-        bcFollow.animate();
-        bcFollow.groupBars(0, groupSpace, barSpace);
-        bcFollow.invalidate();
+        Legend legend = binding.bcOverall.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setDrawInside(false);
+        legend.setForm(Legend.LegendForm.SQUARE);
+    }
+
+
+    @SuppressLint("RestrictedApi")
+    private void drawOverallBarChart() {
+        String[] timeArr = new String[]{"", "Mondayhihi", "Tuesdayhihi", "Wednesdayhihi", "Thursday", "Fridaysfd"};
+        int[] colors = new int[]{Color.parseColor("#edcbd2"), Color.parseColor("#80c4b7"), Color.parseColor("#e3856b")};
+        bdsOverall = new BarDataSet(getBarEntriesFollower(), "TOP POSTS");
+        bdsOverall.setColors(colors);
+        bdsOverall.setStackLabels(new String[]{"Likes", "Views", "Comments"});
+
+        BarData data = new BarData(bdsOverall);
+        binding.bcOverall.setData(data);
+        binding.bcOverall.getDescription().setEnabled(false);
+
+        binding.bcOverall.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        binding.bcOverall.getXAxis().setValueFormatter(new IndexAxisValueFormatter(timeArr));
+        binding.bcOverall.getXAxis().setLabelRotationAngle(-45f);
+        binding.bcOverall.getAxisLeft().setAxisMinimum(0f);
+        binding.bcOverall.getAxisLeft().setDrawGridLines(false);
+        binding.bcOverall.getAxisRight().setEnabled(false);
+        binding.bcOverall.getDescription().setEnabled(false);
+        binding.bcOverall.setFitBars(true);
+        binding.bcOverall.animateY(1000);
+
+        Legend legend = binding.bcOverall.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setDrawInside(false);
+        legend.setForm(Legend.LegendForm.SQUARE);
     }
 
     private ArrayList<BarEntry> getBarEntriesFollower() {
         barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1f, 4));
-        barEntries.add(new BarEntry(2f, 6));
-        barEntries.add(new BarEntry(3f, 8));
-        barEntries.add(new BarEntry(4f, 2));
-        barEntries.add(new BarEntry(8f, 5));
-        barEntries.add(new BarEntry(9f, 5));
-        barEntries.add(new BarEntry(10f, 5));
-        barEntries.add(new BarEntry(11f, 5));
-        barEntries.add(new BarEntry(12f, 5));
-        barEntries.add(new BarEntry(5f, 4));
-        barEntries.add(new BarEntry(6f, 1));
-        barEntries.add(new BarEntry(7f, 8));
+        barEntries.add(new BarEntry(1f, new float[]{2, 4.5f, 4}));
+        barEntries.add(new BarEntry(2f, new float[]{5, 7.3f, 3}));
+        barEntries.add(new BarEntry(3f, new float[]{3, 2.3f, 7}));
+        barEntries.add(new BarEntry(4f, new float[]{7, 10.2f, 2}));
+        barEntries.add(new BarEntry(5f, new float[]{16, 8.3f, 2}));
 
         return barEntries;
     }
 
-    private ArrayList<BarEntry> getBarEntriesFollowed() {
-        barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1f, 8));
-        barEntries.add(new BarEntry(2f, 12));
-        barEntries.add(new BarEntry(3f, 4));
-        barEntries.add(new BarEntry(4f, 1));
-        barEntries.add(new BarEntry(8f, 5));
-        barEntries.add(new BarEntry(9f, 5));
-        barEntries.add(new BarEntry(10f, 5));
-        barEntries.add(new BarEntry(11f, 5));
-        barEntries.add(new BarEntry(12f, 5));
-        barEntries.add(new BarEntry(5f, 7));
-        barEntries.add(new BarEntry(6f, 3));
-        barEntries.add(new BarEntry(7f, 7));
-
-        return barEntries;
+    private String shortenTitle(String title){
+        if (title.length() > 25) {
+            return title.substring(0,25) + "...";
+        } else {
+            return title;
+        }
     }
 
 }
