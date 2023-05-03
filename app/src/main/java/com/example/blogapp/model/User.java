@@ -8,6 +8,7 @@ public class User implements Serializable {
     private String email;
     private String password;
     private String birthday;
+    private String ava;
 
     public User() {
 
@@ -59,5 +60,13 @@ public class User implements Serializable {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getAva() {
+        return ava;
+    }
+
+    public void setAva(String ava) {
+        this.ava = ava;
     }
 }

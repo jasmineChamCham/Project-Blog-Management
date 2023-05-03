@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.MyProfileActivity"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_ava_mp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="120dp"
+            android:layout_centerHorizontal="true"
+            android:innerRadius="0dp"
+            android:shape="ring">
+            <ImageView
+                android:id="@+id/iv_ava_mp"
+                android:layout_height="120dp"
+                android:layout_width="120dp"
+                android:src="@drawable/ava"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/but_change_ava_mp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_photo_camera_24"
+            android:elevation="30dp"
+            android:layout_alignRight="@id/cv_ava_mp"
+            android:layout_alignBottom="@id/cv_ava_mp"
+            />
+
+
+    </RelativeLayout>
+
+    <TableLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TableRow>
+            <TextView
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:text="FOLLOWING"
+                android:layout_marginRight="40dp"/>
+            <TextView
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:text="FOLLOWED BY"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/tv_num_follower_mp"
+                android:textSize="20dp"
+                android:text="100.000"
+                android:layout_marginRight="40dp"
+                android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/tv_num_followed_mp"
+                android:textSize="20dp"
+                android:text="100.000"
+                android:textAlignment="center"/>
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TableRow>
+            <TextView
+                android:textSize="20dp"
+                android:text="Name"
+                android:layout_marginRight="30dp"/>
+            <EditText
+                android:id="@+id/et_name_mp"
+                android:text="Ngoc Tram"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:layout_width="200dp"
+                android:textAlignment="center"
+                android:layout_marginRight="10dp"/>
+
+            <ImageButton
+                android:id="@+id/but_modify_name_mp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_mode_edit_24"
+                android:backgroundTint="@color/white"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:textSize="20dp"
+                android:text="Email"
+                android:layout_marginRight="30dp"/>
+            <EditText
+                android:id="@+id/et_email_mp"
+                android:text="ngoctram@gmail.com"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:layout_width="200dp"
+                android:textAlignment="center"
+                android:layout_marginRight="10dp"/>
+            <ImageButton
+                android:id="@+id/but_modify_email_mp"
+                android:src="@drawable/ic_baseline_mode_edit_24"
+                android:backgroundTint="@color/white"
+                android:layout_gravity="center"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:textSize="20dp"
+                android:text="Birthday"
+                android:layout_marginRight="30dp"/>
+            <EditText
+                android:id="@+id/et_birthday_mp"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:text="12/04/2003"
+                android:layout_width="200dp"
+                android:textAlignment="center"
+                android:layout_marginRight="10dp"/>
+            <ImageButton
+                android:id="@+id/but_modify_birthday_mp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_baseline_mode_edit_24"
+                android:layout_gravity="center"/>
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/but_save_mp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save changes"
+        />
+</LinearLayout>

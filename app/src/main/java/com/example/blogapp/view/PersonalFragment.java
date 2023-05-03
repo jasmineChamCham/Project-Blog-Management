@@ -3,10 +3,12 @@ package com.example.blogapp.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +20,22 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentPersonalBinding;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class PersonalFragment extends Fragment {
+    private FirebaseUser userDB;
     private User userLogin;
     FragmentPersonalBinding binding;
     DBHelper dbHelper;
+    EditText etCurPw, etNewPw, etConfirmPw;
+    Button butChangePass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,35 +81,15 @@ public class PersonalFragment extends Fragment {
                 AlertDialog dialog = mDialog.create();
                 dialog.setCancelable(true);
 
-                EditText etCurPw = myView.findViewById(R.id.et_cur_pw);
-                EditText etNewPw = myView.findViewById(R.id.et_new_pw);
-                EditText etConfirmPw = myView.findViewById(R.id.et_confirm_pw);
-                Button butChangePass = myView.findViewById(R.id.but_change_pass);
+                etCurPw = myView.findViewById(R.id.et_cur_pw);
+                etNewPw = myView.findViewById(R.id.et_new_pw);
+                etConfirmPw = myView.findViewById(R.id.et_confirm_pw);
+                butChangePass = myView.findViewById(R.id.but_change_pass);
 
                 butChangePass.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (etCurPw.getText().toString().equals(etNewPw.getText().toString())) {
-                            Toast.makeText(getActivity(),
-                                    "New password is the same as your current password",
-                                    Toast.LENGTH_LONG).show();
-                            etCurPw.setText("");
-                            etNewPw.setText("");
-                            etConfirmPw.setText("");
-                            etCurPw.requestFocus();
-                        } else if (!etConfirmPw.getText().toString().equals(etNewPw.getText().toString())) {
-                            Toast.makeText(getActivity(),
-                                    "Your confirm password is not correct",
-                                    Toast.LENGTH_LONG).show();
-                            etCurPw.setText("");
-                            etNewPw.setText("");
-                            etConfirmPw.setText("");
-                            etCurPw.requestFocus();
-                        } else {
-                            String newPw = etNewPw.getText().toString();
-
-                            dbHelper.ChangePassword(userLogin, newPw);
-                        }
+                        changePwDb();
                     }
                 });
                 dialog.show();
@@ -120,5 +113,75 @@ public class PersonalFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void resetChangePasswordDialog(){
+        etCurPw.setText("");
+        etNewPw.setText("");
+        etConfirmPw.setText("");
+    }
+
+    private void changePwDb(){
+        if (etCurPw.getText().toString().equals(etNewPw.getText().toString())){
+            Toast.makeText(getContext(),
+                    "New password is the same as the current one",
+                    Toast.LENGTH_LONG).show();
+            resetChangePasswordDialog();
+            etCurPw.requestFocus();
+        } else if (!etConfirmPw.getText().toString().equals(etNewPw.getText().toString())){
+            Toast.makeText(getContext(),
+                    "Your confirmation password is not correct",
+                    Toast.LENGTH_LONG).show();
+            resetChangePasswordDialog();
+            etCurPw.requestFocus();
+        } else {
+            // CHANGE PASSWORD IN FIREBASE
+            String email = userLogin.getEmail();
+            String curPw = etCurPw.getText().toString();
+            String newPw = etNewPw.getText().toString();
+
+            AuthCredential credential = EmailAuthProvider.getCredential(email, curPw);
+            userDB = FirebaseAuth.getInstance().getCurrentUser();
+            userDB.reauthenticate(credential)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                userDB.updatePassword(newPw)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> taskUpdatePw) {
+                                                if (taskUpdatePw.isSuccessful()) {
+                                                    Toast.makeText(getContext(),
+                                                            "Update password successfully",
+                                                            Toast.LENGTH_LONG).show();
+//                                                    dialog.dismiss();
+                                                } else {
+                                                    Toast.makeText(getContext(),
+                                                            "Failed to update password",
+                                                            Toast.LENGTH_LONG).show();
+                                                    resetChangePasswordDialog();
+                                                }
+                                            }
+                                        });
+                            }
+                            else {
+                                Toast.makeText(getContext(),
+                                        "Wrong current password",
+                                        Toast.LENGTH_LONG).show();
+                                resetChangePasswordDialog();
+                            }
+                        }
+                    });
+
+        }
+    }
+
+    private void changePwUserLogin(){
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.get().addOnSuccessListener(t -> {
+            Log.d("DEBUG", "into changePwUserLogin");
+        });
+
     }
 }
