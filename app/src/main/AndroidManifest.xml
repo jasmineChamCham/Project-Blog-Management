@@ -21,14 +21,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.StatisticsActivity"
+            android:name=".view.MyProfileActivity"
             android:exported="true" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.MyProfileActivity"
+            android:name=".view.StatisticsActivity"
             android:exported="true" >
             <meta-data
                 android:name="android.app.lib_name"

@@ -77,12 +77,12 @@
                 android:backgroundTint="#52B8E6"
                 android:text="Likes" />
             <Button
-                android:id="@+id/but_views"
+                android:id="@+id/but_comments"
                 android:layout_gravity="center"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:backgroundTint="#52B8E6"
-                android:text="Views" />
+                android:text="Comment" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,12 +111,12 @@
 
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Most views: "
+                        android:text="Most comments: "
                         android:textSize="15sp"
                         android:textColor="#323232"
                         android:layout_marginRight="15dp"/>
                     <TextView
-                        android:id="@+id/tv_most_views_post"
+                        android:id="@+id/tv_most_comments_post"
                         android:text="Work from home"
                         android:textColor="@color/main_color"
                         android:textSize="15sp"
