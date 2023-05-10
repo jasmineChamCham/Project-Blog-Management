@@ -1,6 +1,7 @@
 package com.example.blogapp.view;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentFollowStatisticsBinding;
+import com.example.blogapp.model.User;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -51,15 +53,20 @@ public class FollowStatisticsFragment extends Fragment{
 
     BarDataSet bdsFollower, bdsFollowed;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
     public FollowStatisticsFragment(){
         followRef = FirebaseDatabase.getInstance().getReference("followers");
-        userId = "-NRlYm-P-HVbQtt_G2Zm";
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -73,6 +80,14 @@ public class FollowStatisticsFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if (getActivity().getIntent() != null ){
+            Bundle bundle = getActivity().getIntent().getBundleExtra("userBundle");
+            User userLogin = (User) bundle.getSerializable("userLogin");
+            userId = userLogin.getUserId();
+        } else {
+            userId = "-NRlYm-P-HVbQtt_G2Zm";
+        }
 
         binding.butFollowChosen.setBackgroundColor(getResources().getColor(R.color.main_color));
         binding.butPostChosen.setBackgroundColor(getResources().getColor(R.color.white));

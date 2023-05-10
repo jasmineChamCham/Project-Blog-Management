@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentPostStatisticsBinding;
+import com.example.blogapp.model.User;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -47,17 +47,20 @@ public class PostStatisticsFragment extends Fragment {
     BarDataSet bdsOverall;
     ArrayList<BarEntry> barEntries;
 
-    private final String userId = "-NRvClt0Ahu_stjh3Z5G"; // author
+    private String userId; // author
 
     public PostStatisticsFragment(){
         blogRef = FirebaseDatabase.getInstance().getReference("blogs");
         likedBlogRef = FirebaseDatabase.getInstance().getReference("likedBlogs");
         cmtRef = FirebaseDatabase.getInstance().getReference("comments");
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -70,6 +73,16 @@ public class PostStatisticsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        if (getActivity().getIntent() != null ){
+            Bundle bundle = getActivity().getIntent().getBundleExtra("userBundle");
+            User userLogin = (User) bundle.getSerializable("userLogin");
+            userId = userLogin.getUserId();
+        } else {
+            userId = "-NRlYm-P-HVbQtt_G2Zm";
+        }
+
         binding.butPostChosenP.setBackgroundColor(getResources().getColor(R.color.main_color));
         binding.butFollowChosenP.setBackgroundColor(getResources().getColor(R.color.white));
         binding.butPostChosenP.setTextColor(getResources().getColor(R.color.white));

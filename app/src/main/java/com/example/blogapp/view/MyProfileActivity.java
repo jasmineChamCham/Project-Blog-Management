@@ -20,22 +20,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.blogapp.databinding.ActivityMyProfileBinding;
+import com.example.blogapp.model.User;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -57,7 +50,15 @@ public class MyProfileActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference("users");
         followRef = FirebaseDatabase.getInstance().getReference("followers");
         avaRef = FirebaseDatabase.getInstance().getReference("ava");
-        userId = "-NRlYm-P-HVbQtt_G2Zm";
+        Intent receivedIntent = getIntent();
+        if (receivedIntent != null){
+            Bundle bundle = receivedIntent.getBundleExtra("userBundle");
+            User userLogin = (User) bundle.getSerializable("userLogin");
+            userId = userLogin.getUserId();
+        } else {
+            userId = "-NRlYm-P-HVbQtt_G2Zm";
+        }
+
     }
 
     @Override
@@ -214,7 +215,6 @@ public class MyProfileActivity extends AppCompatActivity {
             );
 
             if (permission != PackageManager.PERMISSION_GRANTED) {
-                // If the app does not have permission, request it
                 ActivityCompat.requestPermissions(
                         this,
                         PERMISSIONS_STORAGE,
