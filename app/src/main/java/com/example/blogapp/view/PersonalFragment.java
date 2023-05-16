@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +22,18 @@ import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentPersonalBinding;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class PersonalFragment extends Fragment {
+    private FirebaseUser userDB;
     private User userLogin;
     FragmentPersonalBinding binding;
     DBHelper dbHelper;
+    EditText etCurPw, etNewPw, etConfirmPw;
+    Button butChangePass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,10 @@ public class PersonalFragment extends Fragment {
         binding.btnStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
                 Intent intent = new Intent(getActivity(), StatisticsActivity.class);
+                intent.putExtra("userBundle", bundle);
                 startActivity(intent);
             }
         });
@@ -73,35 +83,15 @@ public class PersonalFragment extends Fragment {
                 AlertDialog dialog = mDialog.create();
                 dialog.setCancelable(true);
 
-                EditText etCurPw = myView.findViewById(R.id.et_cur_pw);
-                EditText etNewPw = myView.findViewById(R.id.et_new_pw);
-                EditText etConfirmPw = myView.findViewById(R.id.et_confirm_pw);
-                Button butChangePass = myView.findViewById(R.id.but_change_pass);
+                etCurPw = myView.findViewById(R.id.et_cur_pw);
+                etNewPw = myView.findViewById(R.id.et_new_pw);
+                etConfirmPw = myView.findViewById(R.id.et_confirm_pw);
+                butChangePass = myView.findViewById(R.id.but_change_pass);
 
                 butChangePass.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (etCurPw.getText().toString().equals(etNewPw.getText().toString())) {
-                            Toast.makeText(getActivity(),
-                                    "New password is the same as your current password",
-                                    Toast.LENGTH_LONG).show();
-                            etCurPw.setText("");
-                            etNewPw.setText("");
-                            etConfirmPw.setText("");
-                            etCurPw.requestFocus();
-                        } else if (!etConfirmPw.getText().toString().equals(etNewPw.getText().toString())) {
-                            Toast.makeText(getActivity(),
-                                    "Your confirm password is not correct",
-                                    Toast.LENGTH_LONG).show();
-                            etCurPw.setText("");
-                            etNewPw.setText("");
-                            etConfirmPw.setText("");
-                            etCurPw.requestFocus();
-                        } else {
-                            String newPw = etNewPw.getText().toString();
-
-                            dbHelper.ChangePassword(userLogin, newPw);
-                        }
+                        changePwUserLogin(dialog);
                     }
                 });
                 dialog.show();
@@ -124,6 +114,73 @@ public class PersonalFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.homeFragment, bundle);
             }
         });
+
+        binding.btnMyProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
+                Intent intent = new Intent(getActivity(), MyProfileActivity.class);
+                intent.putExtra("userBundle", bundle);
+                startActivity(intent);
+            }
+        });
         return view;
     }
+
+    private void resetChangePasswordDialog(){
+        etCurPw.setText("");
+        etNewPw.setText("");
+        etConfirmPw.setText("");
+    }
+
+    private void changePwUserLogin(AlertDialog dialog){
+        if (etCurPw.getText().toString().equals(etNewPw.getText().toString())){
+            Toast.makeText(getContext(),
+                    "New password is the same as the current one",
+                    Toast.LENGTH_LONG).show();
+            resetChangePasswordDialog();
+            etCurPw.requestFocus();
+        } else if (!etConfirmPw.getText().toString().equals(etNewPw.getText().toString())){
+            Toast.makeText(getContext(),
+                    "Your confirmation password is not correct",
+                    Toast.LENGTH_LONG).show();
+            resetChangePasswordDialog();
+            etCurPw.requestFocus();
+        } else {
+            String email = userLogin.getEmail();
+            String curPw = etCurPw.getText().toString();
+            String newPw = etNewPw.getText().toString();
+
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+
+            userRef.get().addOnCompleteListener(t -> {
+                DataSnapshot ds = t.getResult();
+                for (DataSnapshot snapshot : ds.getChildren()){
+                    String userId = snapshot.getKey();
+                    String rightEmail = snapshot.child("email").getValue(String.class);
+                    if (rightEmail.equals(email)) {
+                        String righPw = snapshot.child("password").getValue(String.class);
+                        if (righPw.equals(curPw)){
+                            userRef.child(userId).child("password").setValue(newPw)
+                                    .addOnCompleteListener(task -> {
+                                        Toast.makeText(getContext(),
+                                                "Update password successfully",
+                                                Toast.LENGTH_LONG).show();
+                                        dialog.dismiss();
+                                    });
+                        } else {
+                            Toast.makeText(getContext(),
+                                    "Wrong current password",
+                                    Toast.LENGTH_LONG).show();
+                            resetChangePasswordDialog();
+                            etCurPw.requestFocus();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+
 }

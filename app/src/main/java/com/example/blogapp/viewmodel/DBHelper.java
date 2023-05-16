@@ -14,6 +14,10 @@ import com.example.blogapp.model.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -656,4 +660,5 @@ public class DBHelper {
     public interface FollowsListCallback {
         void onFollowsListReady(ArrayList<Follow> followsList);
     }
+
 }
