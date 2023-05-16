@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
 //        dbHelper.addLikedBlog("-NRvCltohTQIOXQ7kY_O", "-NRXKh1SLM6_dKT3bwfY");
 
         binding.setUser(userLogin);
-        reloadFollowingRV();
+//        reloadFollowingRV();
 
         return viewRoot;
     }

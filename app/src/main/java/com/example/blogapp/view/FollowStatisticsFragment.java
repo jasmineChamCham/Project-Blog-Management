@@ -412,7 +412,7 @@ public class FollowStatisticsFragment extends Fragment{
                                 String yearTimeStr = timeStr.split("-")[0];
                                 if (Integer.parseInt(yearTimeStr.trim()) == year){
                                     Log.d("timeStr year follower", timeStr);
-                                    Log.d("debug", "groupFollowers.get(timeStr): "+groupFollowers.get(timeStr));
+                                    Log.d("debug", "groupFollowers.get(timeStr): " + groupFollowers.get(timeStr));
                                     countFollower += groupFollowers.get(timeStr);
                                 }
                             }
@@ -423,8 +423,8 @@ public class FollowStatisticsFragment extends Fragment{
                     }
                 }
 
-                binding.tvNumFollower.setText(":    " + countFollower + " people");
-                binding.tvNumFollowed.setText(":    " + countFollowed + " people");
+                binding.tvNumFollower.setText(":    " + countFollowed + " people");
+                binding.tvNumFollowing.setText(":    " + countFollower + " people");
 
                 bdsFollower = new BarDataSet(barEntriesFollowers, "Follower");
                 bdsFollowed = new BarDataSet(barEntriesFolloweds, "Followed");
