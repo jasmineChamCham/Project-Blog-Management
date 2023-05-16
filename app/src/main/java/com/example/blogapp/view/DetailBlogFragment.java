@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.blogapp.R;
 import com.example.blogapp.databinding.FragmentDetailBlogBinding;
 import com.example.blogapp.model.Blog;
+import com.example.blogapp.model.LikedBlog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
 
@@ -47,7 +49,23 @@ public class DetailBlogFragment extends Fragment {
         });
         binding.setBlog(blogItem);
         binding.tvContent.setText(Html.fromHtml(blogItem.getContent()));
-
+        dbHelper.isFollowing(userLogin.getUserId(), blogItem.getUserId(), isFollowing ->  {
+            if (isFollowing) {
+                binding.btnFollow.setText("Following");
+            }
+            else {
+                binding.btnFollow.setText("Follow");
+            }
+        });
+        dbHelper.isLiked(userLogin.getUserId(), blogItem.getBlogId(), isLiked -> {
+            if (isLiked) {
+                binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_alt_24, 0, 0, 0);
+            }
+            else {
+                binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
+            }
+        });
+        binding.tvContent.setMovementMethod(new ScrollingMovementMethod());
         return viewRoot;
     }
 
@@ -55,6 +73,21 @@ public class DetailBlogFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.btnFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.isFollowing(userLogin.getUserId(), blogItem.getUserId(), isFollowing ->  {
+                    if (isFollowing) {      // if follow -> unfollow
+                        binding.btnFollow.setText("Follow");
+                        dbHelper.deleteFollowRecord(userLogin.getUserId(), blogItem.getUserId());
+                    }
+                    else {      // if do not follow -> follow
+                        binding.btnFollow.setText("Following");
+                        dbHelper.addFollowRecord(userLogin.getUserId(), blogItem.getUserId());
+                    }
+                });
+            }
+        });
         binding.btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +95,21 @@ public class DetailBlogFragment extends Fragment {
                 bundle.putSerializable("userLogin", userLogin);
                 bundle.putSerializable("blogItem", blogItem);
                 Navigation.findNavController(v).navigate(R.id.commentFragment, bundle);
+            }
+        });
+        binding.btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.isLiked(userLogin.getUserId(), blogItem.getBlogId(), isLiked -> {
+                    if (isLiked) {      // if like -> unlike
+                        binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
+                        dbHelper.deleteLikedBlog(new LikedBlog(userLogin.getUserId(), blogItem.getBlogId()));
+                    }
+                    else {      // if not like -> like
+                        binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_alt_24, 0, 0, 0);
+                        dbHelper.addLikedBlog(userLogin.getUserId(), blogItem.getBlogId());
+                    }
+                });
             }
         });
     }

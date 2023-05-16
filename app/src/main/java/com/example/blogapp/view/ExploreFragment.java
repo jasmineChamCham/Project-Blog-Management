@@ -21,24 +21,24 @@ import android.widget.Button;
 import android.widget.SearchView;
 
 import com.example.blogapp.R;
-import com.example.blogapp.databinding.FragmentHomeBinding;
+import com.example.blogapp.databinding.FragmentExploreBinding;
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
-import com.example.blogapp.viewmodel.FollowingAdapter;
+import com.example.blogapp.viewmodel.ExploreAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class ExploreFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentExploreBinding binding;
     private DBHelper dbHelper;
     private User userLogin;
 
-    private ArrayList<Blog> followingBlogs;
-    private FollowingAdapter followingAdapter;
+    private ArrayList<Blog> exploreBlogs;
+    private ExploreAdapter exploreAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,16 +52,12 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.fragment_home, container, false);
+        binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.fragment_explore, container, false);
         View viewRoot = binding.getRoot();
 
         dbHelper = new DBHelper(viewRoot.getContext());
-//        dbHelper.addUser("Hoang Nam", "hoangnam@gmail.com", "123456", "19/9/1997");
-//        dbHelper.addComment("Thanks for the great content.", "-NRvCltmrz4IV7fxwLv5", "-NRXKh1SLM6_dKT3bwfY");
-//        dbHelper.addLikedBlog("-NRvCltohTQIOXQ7kY_O", "-NRXKh1SLM6_dKT3bwfY");
-
         binding.setUser(userLogin);
-        reloadFollowingRV();
+        reloadExploreRV();
 
         return viewRoot;
     }
@@ -75,18 +71,18 @@ public class HomeFragment extends Fragment {
         binding.btnFollowing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reloadFollowingRV();
-                binding.categoryOption.setVisibility(View.GONE);
-                binding.layoutNoBlog.setVisibility(View.GONE);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
+                Navigation.findNavController(view).navigate(R.id.homeFragment, bundle);
             }
         });
 
         binding.btnExplore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("userLogin", userLogin);
-                Navigation.findNavController(view).navigate(R.id.exploreFragment, bundle);
+                reloadExploreRV();
+                binding.categoryOption.setVisibility(View.GONE);
+                binding.layoutNoBlog.setVisibility(View.GONE);
             }
         });
 
@@ -138,7 +134,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -156,8 +151,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (followingAdapter != null) {
-                    followingAdapter.getFilter().filter(newText);
+                if (exploreAdapter != null) {
+                    exploreAdapter.getFilter().filter(newText);
                 }
                 return false;
             }
@@ -182,22 +177,22 @@ public class HomeFragment extends Fragment {
         // date picker
     }
 
-    public void reloadFollowingRV() {
-        followingBlogs = new ArrayList<>();
-        dbHelper.getFollowingBlogList(userLogin.getUserId(), blogList -> {
+    public void reloadExploreRV() {
+        exploreBlogs = new ArrayList<>();
+        dbHelper.getExploreBlogList(userLogin.getUserId(), blogList -> {
             if (blogList != null) {
-                followingBlogs.clear();
-                followingBlogs.addAll(blogList);
-                for(int i = 0; i < followingBlogs.size(); i++) {
-                    Log.d("DEBUG", "following blog id: " + followingBlogs.get(i).getBlogId());
+                exploreBlogs.clear();
+                exploreBlogs.addAll(blogList);
+                for(int i = 0; i < exploreBlogs.size(); i++) {
+                    Log.d("DEBUG", "explore blog id: " + exploreBlogs.get(i).getBlogId());
                 }
                 binding.layoutNoBlog.setVisibility(View.GONE);
                 binding.rvBlogs.setVisibility(View.VISIBLE);
-                followingAdapter = new FollowingAdapter(followingBlogs, userLogin);
-                binding.rvBlogs.setAdapter(followingAdapter);
+                exploreAdapter = new ExploreAdapter(exploreBlogs, userLogin);
+                binding.rvBlogs.setAdapter(exploreAdapter);
             }
             else {
-                Log.d("DEBUG", "null following blog");
+                Log.d("DEBUG", "null explore blog");
                 binding.layoutNoBlog.setVisibility(View.VISIBLE);
                 binding.rvBlogs.setVisibility(View.GONE);
             }
@@ -205,25 +200,24 @@ public class HomeFragment extends Fragment {
     }
 
     public void filterByCategory(String category) {
-        followingBlogs = new ArrayList<>();
-        dbHelper.getFollowingBlogList(userLogin.getUserId(), blogList -> {
+        exploreBlogs = new ArrayList<>();
+        dbHelper.getExploreBlogList(userLogin.getUserId(), blogList -> {
             if (blogList != null) {
-                followingBlogs.clear();
                 for (int i = 0; i < blogList.size(); i++) {
                     if (blogList.get(i).getCategory().equals(category)) {
-                        followingBlogs.add(blogList.get(i));
+                        exploreBlogs.add(blogList.get(i));
                     }
                 }
-                for(int i = 0; i < followingBlogs.size(); i++) {
-                    Log.d("DEBUG", "following blog id: " + followingBlogs.get(i).getBlogId());
+                for(int i = 0; i < exploreBlogs.size(); i++) {
+                    Log.d("DEBUG", "explore blog id: " + exploreBlogs.get(i).getBlogId());
                 }
                 binding.layoutNoBlog.setVisibility(View.GONE);
                 binding.rvBlogs.setVisibility(View.VISIBLE);
-                followingAdapter = new FollowingAdapter(followingBlogs, userLogin);
-                binding.rvBlogs.setAdapter(followingAdapter);
+                exploreAdapter = new ExploreAdapter(exploreBlogs, userLogin);
+                binding.rvBlogs.setAdapter(exploreAdapter);
             }
             else {
-                Log.d("DEBUG", "null following blog");
+                Log.d("DEBUG", "null explore blog");
                 binding.layoutNoBlog.setVisibility(View.VISIBLE);
                 binding.rvBlogs.setVisibility(View.GONE);
             }

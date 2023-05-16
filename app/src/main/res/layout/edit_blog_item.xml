@@ -4,20 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.text.Spanned" />
-        <variable
-            name="blog"
-            type="com.example.blogapp.model.Blog" />
+        <variable name="blog" type="com.example.blogapp.model.Blog" />
         <variable
             name="content"
             type="Spanned" />
+        <variable
+            name="createdTime"
+            type="String" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="10dp"
         app:cardElevation="10dp"
+        android:elevation="10dp"
         app:cardCornerRadius="10dp"
-        android:layout_marginBottom="7dp">
+        android:layout_marginBottom="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +57,7 @@
                 android:id="@+id/tv_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{blog.createdTime}"
+                android:text="@{createdTime}"
                 android:paddingHorizontal="10dp"
                 ></TextView>
             <LinearLayout

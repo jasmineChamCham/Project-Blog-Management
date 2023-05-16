@@ -8,11 +8,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,10 +52,6 @@ public class PostStatisticsFragment extends Fragment {
     Button butPostChosen, butFollowChosen;
 
 
-    public PostStatisticsFragment(){
-
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +64,14 @@ public class PostStatisticsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ActionBar actionBar = null;
+        if (getActivity() != null) {
+            actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        }
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         return inflater.inflate(R.layout.fragment_post_statistics, container, false);
     }
 
@@ -204,4 +211,13 @@ public class PostStatisticsFragment extends Fragment {
         return barEntries;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                requireActivity().onBackPressed();
+                break;
+        }
+        return true;
+    }
 }

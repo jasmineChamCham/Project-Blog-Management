@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.Comment;
@@ -23,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +33,10 @@ import java.util.Map;
 
 public class DBHelper {
     private FirebaseDatabase database;
-    public FirebaseRecyclerOptions<LikedBlog> optionLikes;
-    public FirebaseRecyclerOptions<Blog> optionFollowing, optionExplore, optionWithCategory;
+    public FirebaseRecyclerOptions<Blog> optionAllBlogs, optionExplore, optionBlogByUserId;
     public FirebaseRecyclerOptions<Comment> optionComment;
     public FirebaseRecyclerOptions<Follow> followOptions;
-    private DatabaseReference blogsRef, usersRef, commentsRef, followRef, likedBlogsRef;
+    private DatabaseReference blogsRef, usersRef, commentsRef, followRef, likedBlogsRef, followersRef;
     public static ArrayList<Follow> followList = new ArrayList<>();
     private Context context;
 
@@ -47,25 +49,22 @@ public class DBHelper {
         commentsRef = database.getReference().child("comments");
         followRef = database.getReference().child("follows");
         likedBlogsRef = database.getReference().child("likedBlogs");
+        followersRef = database.getReference().child("followers");
 
         followOptions = new FirebaseRecyclerOptions.Builder<Follow>()
                 .setQuery(followRef, Follow.class)
                 .build();
 
-        optionFollowing = new FirebaseRecyclerOptions.Builder<Blog>()
+        optionAllBlogs = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsRef, Blog.class)
                 .build();
 
         optionExplore = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsRef, Blog.class)
                 .build();
-
-        optionLikes = new FirebaseRecyclerOptions.Builder<LikedBlog>()
-                .setQuery(likedBlogsRef, LikedBlog.class)
-                .build();
     }
 
-    public void addBlog(String title, String content, String createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
+    public void addBlog(String title, String content, Long createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
 
         String blogId = blogsRef.push().getKey();
         blogsRef.child(blogId).setValue(new Blog(blogId, title, content, createdTime, userID, likeNumber, viewNumber, category, status))
@@ -81,41 +80,48 @@ public class DBHelper {
                 });
     }
 
-    public FirebaseRecyclerOptions<Blog> getBlogOptionByUserId(String userId) {
+    public FirebaseRecyclerOptions<Blog> getOptionBlogByUserId(String userId) {
         Query query = blogsRef.orderByChild("userId").equalTo(userId);
-        FirebaseRecyclerOptions<Blog> optionBlogByUserId = new FirebaseRecyclerOptions.Builder<Blog>()
+        optionBlogByUserId = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(query, Blog.class)
                 .build();
         return optionBlogByUserId;
     }
 
-    public Blog getBlogById(String id) {
-        DatabaseReference getRef = database.getReference().child("blogs").child(id);
-        final Blog[] data = {null};
-        getRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                data[0] = dataSnapshot.getValue(Blog.class);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Toast.makeText(context,"Id does not exits",Toast.LENGTH_SHORT);
-            }
-        });
-        return data[0];
-    }
+//    public void getBlogsByCategory(String category, onBlogsListener listener) {
+//        List<Blog> blogs = new ArrayList<>();
+//        allBlogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+//                        Blog blog = dataSnapshot1.getValue(Blog.class);
+//                        if (blog.getCategory().equals(category)) {
+//                            Log.d("DEBUG", blog.getCategory());
+//                            blogs.add(blog);
+//                        }
+//                    }
+//                }
+//                listener.onBlogsRetrieved(blogs);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+//            }
+//        });
+//    }
 
-    public void updateBlog(String id, String title, String content, String createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
-        blogsRef.child(id).setValue(new Blog(id, title, content, createdTime, userID, likeNumber, viewNumber, category, status))
+    public void updateBlog(String blogId, String title, String content, Long createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
+        blogsRef.child(blogId).setValue(new Blog(blogId, title, content, createdTime, userID, likeNumber, viewNumber, category, status))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-                        Toast.makeText(context,"Edit blog successful!", Toast.LENGTH_SHORT).show();
+                    if (task.isSuccessful()) {
+                        Log.d("DEBUG","Edit blog successful!");
                     }
-                    else{
-                        Toast.makeText(context,"Edit blog fail!", Toast.LENGTH_SHORT).show();
+                    else {
+                        Log.d("DEBUG","Edit blog fail!");
                     }
                 }
         });
@@ -131,6 +137,95 @@ public class DBHelper {
                 else{
                     Toast.makeText(context,"Delete blog fail!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+
+    public void getBlogById(String blogId, onBlogListener listener) {
+        DatabaseReference oneBlogRef = blogsRef.child(blogId);
+        oneBlogRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Blog blog = dataSnapshot.getValue(Blog.class);
+                listener.onBlogRetrieved(blog);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onBlogListener {
+        void onBlogRetrieved(Blog blog);
+    }
+
+    public void sortBlogByCreatedTime(List<Blog> blogList) {
+        for (int i = 0; i < blogList.size(); i++) {
+            for (int j = i+1; j < blogList.size(); j++) {
+                if (blogList.get(i).getCreatedTime() < blogList.get(j).getCreatedTime()) {
+                    Blog temp = blogList.get(i);
+                    blogList.set(i, blogList.get(j));
+                    blogList.set(j, temp);
+                }
+            }
+        }
+    }
+
+    public void getFollowingBlogList(String userId, onBlogsListener listener) {
+        List<Blog> blogs = new ArrayList<>();
+        blogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    String blogId = dataSnapshot.getKey();
+                    Blog blog = dataSnapshot.getValue(Blog.class);
+                    if (!blog.getUserId().equals(userId) && blog.getStatus().equals("Published")) {     // pass over my blog
+                        isFollowing(userId, blog.getUserId(), isFollowing -> {
+                            Log.d("DEBUG", "userLogin follow " + blog.getUserId() + ": " + isFollowing);
+                            if (isFollowing) {
+                                blogs.add(blog);
+                                sortBlogByCreatedTime(blogs);
+                                listener.onBlogsRetrieved(blogs);
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onBlogsListener {
+        void onBlogsRetrieved(List<Blog> blogList);
+    }
+
+    public void getExploreBlogList(String userId, onBlogsListener listener) {
+        List<Blog> blogs = new ArrayList<>();
+        blogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    String blogId = dataSnapshot.getKey();
+                    Blog blog = dataSnapshot.getValue(Blog.class);
+                    if (!blog.getUserId().equals(userId) && blog.getStatus().equals("Published")) {     // pass over my blog
+                        isFollowing(userId, blog.getUserId(), isFollowing -> {
+                            Log.d("DEBUG", "userLogin follow " + blog.getUserId() + ": " + isFollowing);
+                            if (!isFollowing) {
+                                blogs.add(blog);
+                                sortBlogByCreatedTime(blogs);
+                                listener.onBlogsRetrieved(blogs);
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
             }
         });
     }
@@ -201,14 +296,6 @@ public class DBHelper {
     }
     public interface onUserListener {
         void onUserRetrieved(User user);
-    }
-
-    public FirebaseRecyclerOptions<Blog> getBlogsByCategory(String category) {
-        Query query = blogsRef.orderByChild("category").equalTo(category);
-        optionWithCategory = new FirebaseRecyclerOptions.Builder<Blog>()
-                .setQuery(query, Blog.class)
-                .build();
-        return optionWithCategory;
     }
 
     public void addComment(String commentContent, String userId, String blogId) {
@@ -315,6 +402,12 @@ public class DBHelper {
     }
 
     public void addLikedBlog(String userId, String blogId) {
+        getBlogById(blogId, blog -> {
+            int likeCount = blog.getLikesNumber()+1;    // change likesNumber
+            updateBlog(blog.getBlogId(), blog.getTitle(), blog.getContent(),
+                    blog.getCreatedTime(), blog.getUserId(), likeCount,
+                    blog.getViewsNumber(), blog.getCategory(), blog.getStatus());
+        });
         isLiked(userId, blogId, isLiked -> {
             if (!isLiked) {
                 likedBlogsRef.child(blogId).child(userId).setValue(new LikedBlog(userId, blogId))
@@ -334,6 +427,13 @@ public class DBHelper {
     }
 
     public void deleteLikedBlog(LikedBlog likedBlog) {
+        String blogId = likedBlog.getBlogId();
+        getBlogById(blogId, blog -> {
+            int likeCount = blog.getLikesNumber()-1;    // change likesNumber
+            updateBlog(blog.getBlogId(), blog.getTitle(), blog.getContent(),
+                        blog.getCreatedTime(), blog.getUserId(), likeCount,
+                        blog.getViewsNumber(), blog.getCategory(), blog.getStatus());
+        });
         likedBlogsRef.child(likedBlog.getBlogId()).child(likedBlog.getUserId()).removeValue()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -355,14 +455,20 @@ public class DBHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     boolean isExistUserId = snapshot.hasChild(userId);
-                    Log.d("DEBUG", Boolean.toString(isExistUserId));
+//                    Log.d("DEBUG", Boolean.toString(isExistUserId));
                     if (isExistUserId) {
                         String blogId = snapshot.getKey();
                         likedBlogIds.add(blogId);
                     }
                 }
-                listener.onLikedBlogRetrieved(likedBlogIds);
+                if (likedBlogIds.isEmpty()) {
+                    listener.onLikedBlogRetrieved(null);
+                }
+                else {
+                    listener.onLikedBlogRetrieved(likedBlogIds);
+                }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("DEBUG", "Database error: " + databaseError.getMessage());
@@ -376,26 +482,88 @@ public class DBHelper {
     public void getLikedBlogs(String userId, onLikedBlogsListener listener) {
         List<Blog> likedBlogList = new ArrayList<>();
         getLikedBlogIdsByUserId(userId, likedBlogIds -> {
-            for (int i = 0; i < likedBlogIds.size(); i++) {
-                blogsRef.child(likedBlogIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Blog blog = dataSnapshot.getValue(Blog.class);
-                        likedBlogList.add(blog);
-                        if (likedBlogList.size() == likedBlogIds.size()) {
-                            listener.onLikedBlogsRetrieved(likedBlogList);
+            if (likedBlogIds != null) {
+                for (int i = 0; i < likedBlogIds.size(); i++) {
+                    blogsRef.child(likedBlogIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Blog blog = dataSnapshot.getValue(Blog.class);
+                            if (blog.getStatus().equals("Published")) {
+                                likedBlogList.add(blog);
+                                if (likedBlogList.size() == likedBlogIds.size()) {
+                                    sortBlogByCreatedTime(likedBlogList);
+                                    listener.onLikedBlogsRetrieved(likedBlogList);
+                                }
+                            }
                         }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.d("DEBUG", "Database error: " + databaseError.getMessage());
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+                        }
+                    });
+                }
+            }
+            else {
+                listener.onLikedBlogsRetrieved(null);
             }
         });
     }
     public interface onLikedBlogsListener {
         void onLikedBlogsRetrieved(List<Blog> likedBlogList);
+    }
+
+    public void isFollowing(String followerId, String followedId, onIsFollowingListener listener) {
+        followersRef.child(followerId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean isExistFollowedId = snapshot.hasChild(followedId);
+                if (isExistFollowedId) {
+                    listener.onIsFollowingRetrieved(true);
+                }
+                else {
+                    listener.onIsFollowingRetrieved(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onIsFollowingListener {
+        void onIsFollowingRetrieved(boolean isFollowing);
+    }
+
+    public void addFollowRecord(String followerId, String followedId) {
+        followersRef.child(followerId).child(followedId)
+                .setValue(new Follow(followerId, followedId, System.currentTimeMillis()))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("DEBUG","Add follow record successful!");
+                        }
+                        else {
+                            Log.d("DEBUG","Add follow record fail!");
+                        }
+                    }
+                });
+    }
+
+    public void deleteFollowRecord(String followerId, String followedId) {
+        followersRef.child(followerId).child(followedId).removeValue()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("DEBUG","Delete follow record successful!");
+                                }
+                                else {
+                                    Log.d("DEBUG","Delete follow record fail!");
+                                }
+                            }
+                        });
     }
 
     public void getCommentCounts(Date startDate, Date endDate, final OnCommentCountsRetrievedListener listener) {
@@ -432,6 +600,7 @@ public class DBHelper {
     public interface OnCommentCountsRetrievedListener {
         void onCommentCountsRetrieved(Map<Date, Integer> commentCounts);
     }
+
     public void ChangePassword(User user, String newPassword){
         usersRef.child(user.getUserId()).setValue(new User(user.getUserId(),
                 user.getName(),user.getEmail(), newPassword, user.getBirthday()))

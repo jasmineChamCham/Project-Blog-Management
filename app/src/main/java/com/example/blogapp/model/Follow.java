@@ -1,36 +1,34 @@
 package com.example.blogapp.model;
 
-import java.util.Date;
-
 public class Follow {
-    private String follower;
-    private String followed;
+    private String followerId;
+    private String followedId;
     private Long time;
 
     public Follow() {
 
     }
 
-    public Follow(String follower, String followed, Long time) {
-        this.follower = follower;
-        this.followed = followed;
+    public Follow(String followerId, String followedId, Long time) {
+        this.followerId = followerId;
+        this.followedId = followedId;
         this.time = time;
     }
 
-    public String getFollower() {
-        return follower;
+    public String getFollowerId() {
+        return followerId;
     }
 
-    public void setFollower(String follower) {
-        this.follower = follower;
+    public void setFollowerId(String followerId) {
+        this.followerId = followerId;
     }
 
-    public String getFollowed() {
-        return followed;
+    public String getFollowedId() {
+        return followedId;
     }
 
-    public void setFollowed(String followed) {
-        this.followed = followed;
+    public void setFollowedId(String followedId) {
+        this.followedId = followedId;
     }
 
     public Long getTime() {
@@ -44,8 +42,8 @@ public class Follow {
     @Override
     public String toString() {
         return "Follow{" +
-                "follower='" + follower + '\'' +
-                ", followed='" + followed + '\'' +
+                "follower='" + followerId + '\'' +
+                ", followed='" + followedId + '\'' +
                 ", time=" + time +
                 '}';
     }

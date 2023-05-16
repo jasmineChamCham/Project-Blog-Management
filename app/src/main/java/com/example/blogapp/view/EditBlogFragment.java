@@ -253,7 +253,6 @@ public class EditBlogFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             String category, status;
-                            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                             int checkedStatusId = radioGroup.getCheckedRadioButtonId();
                             if (checkedStatusId != -1) {
                                 RadioButton checkedRadioButton = dialog.findViewById(checkedStatusId);
@@ -272,7 +271,7 @@ public class EditBlogFragment extends Fragment {
                                 dbHelper.updateBlog(blog.getBlogId(),
                                         binding.etTitle.getText().toString(),
                                         Html.toHtml(binding.etContent.getText()),
-                                        isoFormat.format(new Date()),
+                                        blog.getCreatedTime(),
                                         blog.getUserId(),
                                         blog.getLikesNumber(),
                                         blog.getViewsNumber(),
@@ -281,7 +280,7 @@ public class EditBlogFragment extends Fragment {
                             else if (userLogin != null)
                                 dbHelper.addBlog(binding.etTitle.getText().toString(),
                                         Html.toHtml(binding.etContent.getText()),
-                                        isoFormat.format(new Date()),
+                                        new Date().getTime(),
                                         userLogin.getUserId(),
                                         0,
                                         0,
@@ -299,13 +298,13 @@ public class EditBlogFragment extends Fragment {
                     dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                     dialog.getWindow().setGravity(Gravity.BOTTOM);
                 }
-                else if (item.getItemId() == android.R.id.home){
+                else if (item.getItemId() == android.R.id.home) {
                     getActivity().onBackPressed();
                     return true;
                 }
                 return false;
             }
-        },getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         return view;
     }
 }

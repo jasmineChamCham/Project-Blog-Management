@@ -3,11 +3,15 @@ package com.example.blogapp.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,6 +41,7 @@ public class PersonalFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentPersonalBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
         dbHelper = new DBHelper(getContext());
         binding.setUser(userLogin);
 

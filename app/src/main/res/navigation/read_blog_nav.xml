@@ -19,14 +19,24 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_detailBlogFragment"
-            app:destination="@id/detailBlogFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
+            android:id="@+id/action_homeFragment_to_exploreFragment"
+            app:destination="@id/exploreFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_likesFragment"
+            app:destination="@id/likesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailBlogFragment"
+            app:destination="@id/detailBlogFragment" />
+        <action
             android:id="@+id/action_homeFragment_to_personalFragment"
             app:destination="@id/personalFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/personalFragment"
@@ -34,11 +44,17 @@
         android:label="fragment_personal"
         tools:layout="@layout/fragment_personal" >
         <action
+            android:id="@+id/action_personalFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
             android:id="@+id/action_personalFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
-            android:id="@+id/action_personalFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_personalFragment_to_exploreFragment"
+            app:destination="@id/exploreFragment" />
+        <action
+            android:id="@+id/action_personalFragment_to_likesFragment"
+            app:destination="@id/likesFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailBlogFragment"
@@ -48,6 +64,12 @@
         <action
             android:id="@+id/action_detailBlogFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_detailBlogFragment_to_exploreFragment"
+            app:destination="@id/exploreFragment" />
+        <action
+            android:id="@+id/action_detailBlogFragment_to_likesFragment"
+            app:destination="@id/likesFragment" />
         <action
             android:id="@+id/action_detailBlogFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
@@ -60,5 +82,53 @@
         <action
             android:id="@+id/action_commentFragment_to_detailBlogFragment"
             app:destination="@id/detailBlogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/likesFragment"
+        android:name="com.example.blogapp.view.LikesFragment"
+        android:label="fragment_likes"
+        tools:layout="@layout/fragment_likes" >
+        <action
+            android:id="@+id/action_likesFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_likesFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_likesFragment_to_exploreFragment"
+            app:destination="@id/exploreFragment" />
+        <action
+            android:id="@+id/action_likesFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_likesFragment_to_detailBlogFragment"
+            app:destination="@id/detailBlogFragment" />
+        <action
+            android:id="@+id/action_likesFragment_to_personalFragment"
+            app:destination="@id/personalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.example.blogapp.view.ExploreFragment"
+        android:label="fragment_explore"
+        tools:layout="@layout/fragment_explore" >
+        <action
+            android:id="@+id/action_exploreFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_exploreFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_exploreFragment_to_likesFragment"
+            app:destination="@id/likesFragment" />
+        <action
+            android:id="@+id/action_exploreFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_exploreFragment_to_detailBlogFragment"
+            app:destination="@id/detailBlogFragment" />
+        <action
+            android:id="@+id/action_exploreFragment_to_personalFragment"
+            app:destination="@id/personalFragment" />
     </fragment>
 </navigation>

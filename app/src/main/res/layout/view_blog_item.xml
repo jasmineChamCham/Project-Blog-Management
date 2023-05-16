@@ -10,6 +10,9 @@
         <variable
             name="content"
             type="Spanned" />
+        <variable
+            name="createdTime"
+            type="String" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -30,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="13dp"
                 >
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_avatar"
@@ -58,13 +61,14 @@
                     android:layout_gravity="center"
                     android:backgroundTint="@color/white"
                     app:cornerRadius="15dp"
-                    android:text="Following"
+                    android:text="Follow"
                     android:textSize="11sp"
                     android:textAllCaps="false"
                     android:textColor="@color/main_color"
                     app:strokeColor="@color/main_color"
                     app:strokeWidth="1dp"
                     android:layout_marginLeft="10dp"
+                    android:visibility="visible"
                     ></com.google.android.material.button.MaterialButton>
             </LinearLayout>
 
@@ -72,8 +76,8 @@
                 android:id="@+id/tv_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{blog.createdTime}"
-                android:paddingHorizontal="10dp"
+                android:text="@{createdTime}"
+                android:layout_marginBottom="7dp"
                 ></TextView>
 
             <TextView

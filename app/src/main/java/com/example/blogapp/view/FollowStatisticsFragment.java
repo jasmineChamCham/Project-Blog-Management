@@ -9,11 +9,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -67,6 +70,14 @@ public class FollowStatisticsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ActionBar actionBar = null;
+        if (getActivity() != null) {
+            actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        }
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         return inflater.inflate(R.layout.fragment_follow_statistics, container, false);
     }
 
@@ -315,4 +326,13 @@ public class FollowStatisticsFragment extends Fragment {
         return dateFormat.format(new Date(millis));
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                requireActivity().onBackPressed();
+                break;
+        }
+        return true;
+    }
 }
