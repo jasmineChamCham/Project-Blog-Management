@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:id="@+id/horizontal_dropdown_icon_menu_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:chipSpacingHorizontal="0dp">
+            <com.google.android.material.chip.Chip
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:chipIcon="@drawable/ic_baseline_format_align_left_24"
+                app:chipBackgroundColor="@color/fui_transparent"
+                app:chipIconTint="@color/gray"
+                app:checkedIconTint="@color/main_color"
+                app:checkedIcon="@drawable/ic_baseline_format_align_left_24"
+                app:checkedIconEnabled="true"
+                android:checked="true">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:chipIcon="@drawable/ic_baseline_format_align_center_24"
+                app:chipBackgroundColor="@color/fui_transparent"
+                app:chipIconTint="@color/gray"
+                app:checkedIconTint="@color/main_color"
+                app:checkedIcon="@drawable/ic_baseline_format_align_center_24"
+                app:checkedIconEnabled="true">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:chipIcon="@drawable/ic_baseline_format_align_right_24"
+                app:chipBackgroundColor="@color/fui_transparent"
+                app:chipIconTint="@color/gray"
+                app:checkedIconTint="@color/main_color"
+                app:checkedIcon="@drawable/ic_baseline_format_align_right_24"
+                app:checkedIconEnabled="true">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:chipIcon="@drawable/ic_baseline_format_align_justify_24"
+                app:chipBackgroundColor="@color/fui_transparent"
+                app:chipIconTint="@color/gray"
+                app:checkedIconTint="@color/main_color"
+                app:checkedIcon="@drawable/ic_baseline_format_align_justify_24"
+                app:checkedIconEnabled="true">
+            </com.google.android.material.chip.Chip>
+        </com.google.android.material.chip.ChipGroup>
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_align_left"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@color/white"-->
+<!--            android:paddingVertical="5dp"-->
+<!--            android:paddingHorizontal="1dp"-->
+<!--            android:src="@drawable/ic_baseline_format_align_left_24" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_align_center"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:paddingVertical="5dp"-->
+<!--            android:background="@color/white"-->
+<!--            android:paddingHorizontal="1dp"-->
+<!--            android:src="@drawable/ic_baseline_format_align_center_24" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_align_right"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@color/white"-->
+<!--            android:paddingVertical="5dp"-->
+<!--            android:paddingHorizontal="1dp"-->
+<!--            android:src="@drawable/ic_baseline_format_align_right_24" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_align_justify"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@color/white"-->
+<!--            android:paddingVertical="5dp"-->
+<!--            android:paddingHorizontal="1dp"-->
+<!--            android:src="@drawable/ic_baseline_format_align_justify_24"/>-->
+    </LinearLayout>
+</LinearLayout>

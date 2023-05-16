@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
@@ -22,6 +25,7 @@ import androidx.navigation.Navigation;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
@@ -35,7 +39,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -49,6 +55,9 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 
@@ -85,30 +94,41 @@ public class EditBlogFragment extends Fragment {
         binding.btnTextJustify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-                popupMenu.getMenuInflater().inflate(R.menu.align_menu, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.align_left:
-                                // handle align left
-                                return true;
-                            case R.id.align_center:
-                                // handle align center
-                                return true;
-                            case R.id.align_right:
-                                // handle align right
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    popupMenu.setForceShowIcon(true);
-                }
-                popupMenu.show();
+                View popupView = getLayoutInflater().inflate(R.layout.align_dialog, null);
+//                ImageButton btnAlignLeft = popupView.findViewById(R.id.btn_align_left)           ;
+//                ImageButton btnAlignCenter = popupView.findViewById(R.id.btn_align_center);
+//                ImageButton btnAlignRight = popupView.findViewById(R.id.btn_align_right);
+//                ImageButton btnAlignJustify = popupView.findViewById(R.id.btn_align_justify);
+                PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+//                btnAlignLeft.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_left_24);
+//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.black), PorterDuff.Mode.SRC_IN);
+//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_center_24);
+//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
+//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_justify_24);
+//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
+//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_right_24);
+//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
+//                        binding.btnTextJustify.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_format_align_left_24),null,getResources().getDrawable(R.drawable.ic_baseline_arrow_drop_down_24),null);
+//                    }
+//                });
+//                btnAlignCenter.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_center_24);
+//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.black), PorterDuff.Mode.SRC_IN);
+//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_left_24);
+//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
+//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_right_24);
+//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
+//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_justify_24);
+//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
+//                        binding.btnTextJustify.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_format_align_center_24),null,getResources().getDrawable(R.drawable.ic_baseline_arrow_drop_down_24),null);
+//                    }
+//                });
+                popupWindow.showAsDropDown(v);
             }
         });
         binding.btnFontColor.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +137,34 @@ public class EditBlogFragment extends Fragment {
                 int start = binding.etContent.getSelectionStart();
                 int end = binding.etContent.getSelectionEnd();
 
-                AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(v.getContext(), Color.BLACK, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                Map<Integer, Integer> colorCounts = new HashMap<>();
+                CharSequence selectedText = binding.etContent.getText().subSequence(start, end);
+                for (int i = 0; i < selectedText.length(); i++) {
+                    if (selectedText.charAt(i) == '\n') {
+                        // Skip newline characters
+                        continue;
+                    }
+                    ForegroundColorSpan[] spans = ((Spanned) selectedText).getSpans(i, i + 1, ForegroundColorSpan.class);
+                    if (spans.length > 0) {
+                        int color = spans[0].getForegroundColor();
+                        int count = 0;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                            count = colorCounts.getOrDefault(color, 0) + 1;
+                        }
+                        colorCounts.put(color, count);
+                    }
+                }
+
+                // Find the color with the highest frequency
+                int defaultColor = Color.BLACK;
+                int maxCount = 0;
+                for (Map.Entry<Integer, Integer> entry : colorCounts.entrySet()) {
+                    if (entry.getValue() > maxCount) {
+                        defaultColor = entry.getKey();
+                        maxCount = entry.getValue();
+                    }
+                }
+                AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(v.getContext(), defaultColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
                     @Override
                     public void onOk(AmbilWarnaDialog dialog, int color) {
                         // Apply the selected color to the selected text
