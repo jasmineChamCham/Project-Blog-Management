@@ -193,6 +193,7 @@ public class DBHelper {
                             }
                         });
                     }
+                    listener.onBlogsRetrieved(null);
                 }
             }
 
@@ -224,6 +225,7 @@ public class DBHelper {
                             }
                         });
                     }
+                    listener.onBlogsRetrieved(null);
                 }
             }
 
@@ -459,7 +461,7 @@ public class DBHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     boolean isExistUserId = snapshot.hasChild(userId);
-//                    Log.d("DEBUG", Boolean.toString(isExistUserId));
+                    Log.d("DEBUG", Boolean.toString(isExistUserId));
                     if (isExistUserId) {
                         String blogId = snapshot.getKey();
                         likedBlogIds.add(blogId);
@@ -494,10 +496,12 @@ public class DBHelper {
                             Blog blog = dataSnapshot.getValue(Blog.class);
                             if (blog.getStatus().equals("Published")) {
                                 likedBlogList.add(blog);
-                                if (likedBlogList.size() == likedBlogIds.size()) {
-                                    sortBlogByCreatedTime(likedBlogList);
-                                    listener.onLikedBlogsRetrieved(likedBlogList);
+                                for (int i = 0; i < likedBlogList.size(); i++) {
+                                    Log.d("DEBUG", "dbHelper_liked blog id: " + likedBlogList.get(i).getBlogId());
                                 }
+                                sortBlogByCreatedTime(likedBlogList);
+                                listener.onLikedBlogsRetrieved(likedBlogList);
+
                             }
                         }
                         @Override

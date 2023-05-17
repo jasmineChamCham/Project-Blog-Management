@@ -426,8 +426,8 @@ public class FollowStatisticsFragment extends Fragment{
                 binding.tvNumFollower.setText(":    " + countFollowed + " people");
                 binding.tvNumFollowing.setText(":    " + countFollower + " people");
 
-                bdsFollower = new BarDataSet(barEntriesFollowers, "Follower");
-                bdsFollowed = new BarDataSet(barEntriesFolloweds, "Followed");
+                bdsFollower = new BarDataSet(barEntriesFollowers, "Following");
+                bdsFollowed = new BarDataSet(barEntriesFolloweds, "Follower");
 
                 if (type.trim().equals("Daily")) {
                     bdsFollower.setColor(Color.parseColor("#F18A85"));
