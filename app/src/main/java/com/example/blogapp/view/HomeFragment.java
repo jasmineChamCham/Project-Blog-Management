@@ -65,12 +65,6 @@ public class HomeFragment extends Fragment {
         binding.setUser(userLogin);
         reloadFollowingRV();
 
-//        dbHelper.getBlogsByUserId(userLogin.getUserId(), blogList -> {
-//            for (int i = 0; i < blogList.size(); i++) {
-//                Log.d("DEBUG", "main " + blogList.get(i).getBlogId());
-//            }
-//        });
-
         return viewRoot;
     }
 

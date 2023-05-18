@@ -51,7 +51,7 @@ public class MyProfileActivity extends AppCompatActivity {
         followRef = FirebaseDatabase.getInstance().getReference("followers");
         avaRef = FirebaseDatabase.getInstance().getReference("ava");
         Intent receivedIntent = getIntent();
-        if (receivedIntent != null){
+        if (receivedIntent != null) {
             Bundle bundle = receivedIntent.getBundleExtra("userBundle");
             User userLogin = (User) bundle.getSerializable("userLogin");
             userId = userLogin.getUserId();

@@ -166,5 +166,29 @@
         <action
             android:id="@+id/action_authorProfileFragment_to_exploreFragment"
             app:destination="@id/exploreFragment" />
+        <action
+            android:id="@+id/action_authorProfileFragment_to_authorFollowerFragment"
+            app:destination="@id/authorFollowerFragment" />
+        <action
+            android:id="@+id/action_authorProfileFragment_to_authorFollowingFragment"
+            app:destination="@id/authorFollowingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/authorFollowerFragment"
+        android:name="com.example.blogapp.view.AuthorFollowerFragment"
+        android:label="fragment_author_follower"
+        tools:layout="@layout/fragment_author_follower" >
+        <action
+            android:id="@+id/action_authorFollowerFragment_to_authorProfileFragment"
+            app:destination="@id/authorProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/authorFollowingFragment"
+        android:name="com.example.blogapp.view.AuthorFollowingFragment"
+        android:label="fragment_author_following"
+        tools:layout="@layout/fragment_author_following" >
+        <action
+            android:id="@+id/action_authorFollowingFragment_to_authorProfileFragment"
+            app:destination="@id/authorProfileFragment" />
     </fragment>
 </navigation>

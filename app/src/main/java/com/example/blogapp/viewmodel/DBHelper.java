@@ -498,10 +498,10 @@ public class DBHelper {
                     }
                 }
                 if (likedBlogIds.isEmpty()) {
-                    listener.onLikedBlogRetrieved(null);
+                    listener.onLikedBlogIdsRetrieved(null);
                 }
                 else {
-                    listener.onLikedBlogRetrieved(likedBlogIds);
+                    listener.onLikedBlogIdsRetrieved(likedBlogIds);
                 }
             }
 
@@ -512,7 +512,7 @@ public class DBHelper {
         });
     }
     public interface onLikedBlogIdsListener {
-        void onLikedBlogRetrieved(List<String> likedBlogIds);
+        void onLikedBlogIdsRetrieved(List<String> likedBlogIds);
     }
 
     public void getLikedBlogs(String userId, onLikedBlogsListener listener) {
@@ -531,7 +531,6 @@ public class DBHelper {
                                 }
                                 sortBlogByCreatedTime(likedBlogList);
                                 listener.onLikedBlogsRetrieved(likedBlogList);
-
                             }
                         }
                         @Override
@@ -548,6 +547,125 @@ public class DBHelper {
     }
     public interface onLikedBlogsListener {
         void onLikedBlogsRetrieved(List<Blog> likedBlogList);
+    }
+
+    public void getFollowedIdsByFollowerId(String followerId, onFollowedIdsListener listener) {
+        List<String> followedIdsList = new ArrayList<>();
+        followersRef.child(followerId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Log.d("DEBUG", "followed id: " + dataSnapshot.getKey());
+                    followedIdsList.add(dataSnapshot.getKey());
+                }
+                if (followedIdsList.isEmpty()) {
+                    listener.onFollowedIdsRetrieved(null);
+                }
+                else {
+                    listener.onFollowedIdsRetrieved(followedIdsList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onFollowedIdsListener {
+        void onFollowedIdsRetrieved(List<String> followedIds);
+    }
+
+    public void getFollowingListOfUser(String userId, onUserListListener listener) {
+        List<User> followingList = new ArrayList<>();
+        getFollowedIdsByFollowerId(userId, followedIds -> {
+            if (followedIds != null) {
+                for (int i = 0; i < followedIds.size(); i++) {
+                    usersRef.child(followedIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            followingList.add(user);
+                            for (int i = 0; i < followingList.size(); i++) {
+                                Log.d("DEBUG", "dbHelper_following user id: " + followingList.get(i).getUserId());
+                            }
+                            listener.onUserListRetrieved(followingList);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+                        }
+                    });
+                }
+            }
+            else {
+                listener.onUserListRetrieved(null);
+            }
+        });
+    }
+    public interface onUserListListener {
+        void onUserListRetrieved(List<User> userList);
+    }
+
+    public void getFollowerIdsByFollowedId(String followedId, onFollowerIdsListener listener) {
+        List<String> followerIdsList = new ArrayList<>();
+        followersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        if (dataSnapshot1.getKey().equals(followedId)) {
+                            Log.d("DEBUG", "follower id: " + dataSnapshot.getKey());
+                            followerIdsList.add(dataSnapshot.getKey());
+                        }
+                    }
+                }
+                if (followerIdsList.isEmpty()) {
+                    listener.onFollowerIdsRetrieved(null);
+                }
+                else {
+                    listener.onFollowerIdsRetrieved(followerIdsList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onFollowerIdsListener {
+        void onFollowerIdsRetrieved(List<String> followerIds);
+    }
+
+    public void getFollowerListOfUser(String userId, onUserListListener listener) {
+        List<User> followerList = new ArrayList<>();
+        getFollowerIdsByFollowedId(userId, followerIds -> {
+            if (followerIds != null) {
+                for (int i = 0; i < followerIds.size(); i++) {
+                    usersRef.child(followerIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            followerList.add(user);
+                            for (int i = 0; i < followerList.size(); i++) {
+                                Log.d("DEBUG", "dbHelper_follower user id: " + followerList.get(i).getUserId());
+                            }
+                            listener.onUserListRetrieved(followerList);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+                        }
+                    });
+                }
+            }
+            else {
+                listener.onUserListRetrieved(null);
+            }
+        });
     }
 
     public void isFollowing(String followerId, String followedId, onIsFollowingListener listener) {

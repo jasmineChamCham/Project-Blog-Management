@@ -86,6 +86,25 @@ public class AuthorProfileFragment extends Fragment {
             binding.tvFollowingCount.setText(String.valueOf(count));
         });
 
+        binding.tvFollowerCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("authorId", authorId);
+                bundle.putSerializable("userLogin", userLogin);
+                Navigation.findNavController(v).navigate(R.id.authorFollowerFragment, bundle);
+            }
+        });
+        binding.tvFollowingCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("authorId", authorId);
+                bundle.putSerializable("userLogin", userLogin);
+                Navigation.findNavController(v).navigate(R.id.authorFollowingFragment, bundle);
+            }
+        });
+
         binding.btnFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +133,6 @@ public class AuthorProfileFragment extends Fragment {
         menuHost.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.search_menu, menu);
                 if (getActivity() != null) {
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);

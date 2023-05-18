@@ -95,7 +95,7 @@
                             android:textStyle="bold"
                             android:layout_gravity="center"
                             android:layout_height="wrap_content"
-                            android:text="100"
+                            android:text="0"
                             android:textSize="20sp"
                             android:textColor="#6A6A6A"
                             ></TextView>
@@ -121,7 +121,7 @@
                             android:textStyle="bold"
                             android:layout_gravity="center"
                             android:layout_height="wrap_content"
-                            android:text="100"
+                            android:text="0"
                             android:textSize="20sp"
                             android:textColor="#6A6A6A"
                             ></TextView>
@@ -147,7 +147,7 @@
                             android:textStyle="bold"
                             android:layout_gravity="center"
                             android:layout_height="wrap_content"
-                            android:text="100"
+                            android:text="0"
                             android:textSize="20sp"
                             android:textColor="#6A6A6A"
                             ></TextView>

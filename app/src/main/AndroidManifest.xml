@@ -23,12 +23,6 @@
         android:theme="@style/Theme.BlogApp"
         tools:targetApi="31">
         <activity
-            android:name=".AuthorManagementActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AuthorProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.StatisticsActivity"
             android:exported="false">
             <meta-data
@@ -48,7 +42,6 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,5 +56,4 @@
                 android:value="" />
         </activity>
     </application>
-
 </manifest>

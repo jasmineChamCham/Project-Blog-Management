@@ -73,6 +73,15 @@ public class DetailBlogFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.tvUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
+                bundle.putSerializable("authorId", blogItem.getUserId());
+                Navigation.findNavController(view).navigate(R.id.authorProfileFragment, bundle);
+            }
+        });
         binding.btnFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
