@@ -1,5 +1,6 @@
 package com.example.blogapp.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -36,7 +38,6 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private DBHelper dbHelper;
     private User userLogin;
-
     private ArrayList<Blog> followingBlogs;
     private FollowingAdapter followingAdapter;
 

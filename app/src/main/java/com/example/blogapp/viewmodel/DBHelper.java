@@ -268,6 +268,29 @@ public class DBHelper {
         });
     }
 
+    public void isExistAccount(String email, onIsExistAccountListener listener) {
+        usersRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+                    Log.d("DEBUG", "isExistAccount: " + String.valueOf(dataSnapshot.hasChildren()));
+                    listener.onIsExistAccountRetrieved(true);
+                }
+                else {
+                    Log.d("DEBUG", "isExistAccount: " + String.valueOf(dataSnapshot.hasChildren()));
+                    listener.onIsExistAccountRetrieved(false);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onIsExistAccountListener {
+        void onIsExistAccountRetrieved(boolean isExist);
+    }
+
     public void addUser(String name, String email, String pass, String birthday) {
         String id = usersRef.push().getKey();
         usersRef.child(id).setValue(new User(id, name, email, pass, birthday))

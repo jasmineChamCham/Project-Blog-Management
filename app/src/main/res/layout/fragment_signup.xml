@@ -4,12 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.LoginFragment">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:src="@drawable/login_background"
-        ></ImageView>
+    tools:context=".view.SignupFragment">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="Create new account"
+        android:textSize="25sp"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:paddingHorizontal="30dp"
+        android:paddingTop="25dp"
+        android:paddingBottom="50dp"
+        ></TextView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +30,30 @@
             android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_baseline_person_24"
+            android:layout_marginRight="10dp"
+            ></ImageView>
+        <EditText
+            android:id="@+id/et_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full name"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:inputType="textEmailAddress"
+            ></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="30dp"
+        >
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/baseline_email_24"
             android:layout_marginRight="10dp"
             ></ImageView>
         <EditText
@@ -38,8 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="15dp"
-        android:paddingBottom="5dp"
+        android:paddingVertical="15dp"
         android:paddingHorizontal="30dp"
         >
         <ImageView
@@ -59,22 +90,36 @@
             android:inputType="textPassword"
             ></EditText>
     </LinearLayout>
-    <TextView
-        android:id="@+id/tv_forgot_password"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="Forgot password?"
-        android:textSize="13sp"
-        android:textColor="#E65279F4"
-        android:layout_marginEnd="30dp"
-        ></TextView>
+        android:orientation="horizontal"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="30dp"
+        >
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_key_24"
+            android:layout_marginRight="10dp"
+            ></ImageView>
+        <EditText
+            android:id="@+id/et_confirm_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Confirm password"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:inputType="textPassword"
+            ></EditText>
+    </LinearLayout>
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_sign_up"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Login"
+        android:text="Sign up"
         android:textSize="20sp"
         android:textAllCaps="false"
         android:backgroundTint="@color/main_color"
@@ -90,16 +135,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't have an account?"
+            android:text="Already have an account?"
             android:textSize="16sp"
             android:textColor="#676767"
             android:layout_marginEnd="10dp"
             ></TextView>
         <TextView
-            android:id="@+id/tv_signup"
+            android:id="@+id/tv_log_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign up"
+            android:text="Log in"
             android:textSize="16sp"
             android:textColor="@color/main_color"
             android:textStyle="bold"

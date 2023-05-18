@@ -4,7 +4,6 @@ package com.example.blogapp.viewmodel;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Foll
     private List<Blog> followingBlogs;
     private List<Blog> copyOfFollowingBlogs;
     private User userLogin;
+
 
     public FollowingAdapter(List<Blog> followingBlogs, User userLogin) {
         this.followingBlogs = followingBlogs;
@@ -69,6 +69,15 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Foll
             }
             else {
                 holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
+            }
+        });
+        holder.binding.tvUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
+                bundle.putSerializable("userAuthor", blog.getUserId());
+                Navigation.findNavController(view).navigate(R.id.authorProfileFragment, bundle);
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {

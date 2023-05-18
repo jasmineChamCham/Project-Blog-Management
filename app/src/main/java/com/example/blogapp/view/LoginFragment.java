@@ -1,5 +1,6 @@
 package com.example.blogapp.view;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.blogapp.R;
@@ -19,11 +21,10 @@ import com.example.blogapp.viewmodel.DBHelper;
 public class LoginFragment extends Fragment {
 
     private DBHelper dbHelper;
-
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
-
+    private TextView tvSignup;
     private User userLogin = new User();
 
     @Override
@@ -43,6 +44,7 @@ public class LoginFragment extends Fragment {
         etEmail = view.findViewById(R.id.et_email);
         etPassword = view.findViewById(R.id.et_password);
         btnLogin = view.findViewById(R.id.btn_login);
+        tvSignup = view.findViewById(R.id.tv_signup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +67,14 @@ public class LoginFragment extends Fragment {
                         }
                     });
                 }
+            }
+        });
+
+        tvSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                Navigation.findNavController(view).navigate(R.id.signupFragment, bundle);
             }
         });
         return view;
