@@ -28,6 +28,7 @@ import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
 import com.example.blogapp.viewmodel.FollowingAdapter;
+import com.example.blogapp.viewmodel.LikesAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 

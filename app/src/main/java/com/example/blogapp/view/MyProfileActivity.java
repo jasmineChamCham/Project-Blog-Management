@@ -117,20 +117,20 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void getUserInfo(){
-        Log.d("DEBUG", "userRef: "+userRef);
+        Log.d("DEBUG", "userRef: " + userRef);
 
         userRef.get().addOnCompleteListener(t->{
-            if (t.isSuccessful()){
+            if (t.isSuccessful()) {
                 DataSnapshot dataSnapshot = t.getResult();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Log.d("DEBUG", "snapshot user info : "+ snapshot.getKey());
+                    Log.d("DEBUG", "snapshot user info : " + snapshot.getKey());
                     if (snapshot.getKey().equals(userId)){
                         String name = snapshot.child("name").getValue(String.class);
                         String email = snapshot.child("email").getValue(String.class);
                         String birthday = snapshot.child("birthday").getValue(String.class);
-                        Log.d("DEBUG", "name: "+name);
-                        Log.d("DEBUG", "email: "+email);
-                        Log.d("DEBUG", "birthday: "+birthday);
+                        Log.d("DEBUG", "name: " + name);
+                        Log.d("DEBUG", "email: " + email);
+                        Log.d("DEBUG", "birthday: " + birthday);
 
                         binding.etNameMp.setText(name);
                         binding.etEmailMp.setText(email);
@@ -150,24 +150,24 @@ public class MyProfileActivity extends AppCompatActivity {
         followRef.get().addOnCompleteListener(t -> {
            if (t.isSuccessful()){
                DataSnapshot dataSnapshot = t.getResult();
-               long countPeopleFollowingUser;
-               long countUserFollowing = 0;
+               long countPeopleFollowingUser = 0;
+               long countUserFollowing;
 
                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                    String followerId = snapshot.getKey();
-                   if (followerId.equals(userId)){
-                       countPeopleFollowingUser = snapshot.getChildrenCount();
-                       Log.d("DEBUG", "countPeopleFollowingUser = "  + countPeopleFollowingUser);
-                       binding.tvNumFollowedMp.setText(""+countPeopleFollowingUser);
+                   if (followerId.equals(userId)) {
+                       countUserFollowing = snapshot.getChildrenCount();
+                       Log.d("DEBUG", "countUserFollowing = "  + countUserFollowing);
+                       binding.tvNumFollowingMp.setText("" + countUserFollowing);
                    }
 
-                   for (DataSnapshot i : snapshot.getChildren()){
+                   for (DataSnapshot i : snapshot.getChildren()) {
                        String followedId = i.getKey();
                        if (followedId.equals(userId)){
-                           countUserFollowing++;
+                           countPeopleFollowingUser++;
                        }
                    }
-                   binding.tvNumFollowerMp.setText("" + countUserFollowing);
+                   binding.tvNumFollowerMp.setText("" + countPeopleFollowingUser);
                }
            }
         });

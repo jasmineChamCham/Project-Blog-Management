@@ -49,12 +49,12 @@
             <TextView
                 android:textStyle="bold"
                 android:textSize="20dp"
-                android:text="FOLLOWING"
+                android:text="Follower"
                 android:layout_marginRight="40dp"/>
             <TextView
                 android:textStyle="bold"
                 android:textSize="20dp"
-                android:text="FOLLOWED BY"/>
+                android:text="Following"/>
         </TableRow>
 
         <TableRow>
@@ -65,7 +65,7 @@
                 android:layout_marginRight="40dp"
                 android:textAlignment="center"/>
             <TextView
-                android:id="@+id/tv_num_followed_mp"
+                android:id="@+id/tv_num_following_mp"
                 android:textSize="20dp"
                 android:text="100.000"
                 android:textAlignment="center"/>

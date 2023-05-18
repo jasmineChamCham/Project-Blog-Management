@@ -313,8 +313,6 @@ public class PostStatisticsFragment extends Fragment {
                             }
                         }
 
-
-
                         cmtRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshotComment) {
@@ -387,7 +385,6 @@ public class PostStatisticsFragment extends Fragment {
 
     }
 
-
     @SuppressLint("RestrictedApi")
     private void drawBarChart(String[] xAxisValues, ArrayList<BarEntry> barEntries, String[] label, int ...colorHex) {
         if (label.length == 1){
@@ -404,7 +401,6 @@ public class PostStatisticsFragment extends Fragment {
         BarData data = new BarData(bdsOverall);
         binding.bcOverall.setData(data);
         binding.bcOverall.getDescription().setEnabled(false);
-
         binding.bcOverall.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         binding.bcOverall.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xAxisValues));
         binding.bcOverall.getXAxis().setLabelRotationAngle(-45f);
@@ -453,24 +449,22 @@ public class PostStatisticsFragment extends Fragment {
               String titleOfMostLikesBlog = shortenTitle(title, true);
               binding.tvMostLikesPost.setText(titleOfMostLikesBlog);
            });
-
-
-            cmtRef.get().addOnCompleteListener(tComments -> {
-                DataSnapshot rsLikes = tComments.getResult();
-                long max = Long.MIN_VALUE;
-                String title = "";
-                for (DataSnapshot ds : rsLikes.getChildren()){
-                    String blogId = ds.getKey();
-                    if (mapBlogs.containsKey(blogId)){
-                        long numLikes = ds.child(blogId).getChildrenCount();
-                        if (numLikes > max){
-                            max = numLikes;
-                            title = mapBlogs.get(blogId);
-                        }
-                    }
-                }
-                String titleOfMostCommentsBlog = shortenTitle(title, true);
-                binding.tvMostCommentsPost.setText(titleOfMostCommentsBlog);
+           cmtRef.get().addOnCompleteListener(tComments -> {
+               DataSnapshot rsLikes = tComments.getResult();
+               long max = Long.MIN_VALUE;
+               String title = "";
+               for (DataSnapshot ds : rsLikes.getChildren()){
+                   String blogId = ds.getKey();
+                   if (mapBlogs.containsKey(blogId)) {
+                       long numLikes = ds.child(blogId).getChildrenCount();
+                       if (numLikes > max){
+                           max = numLikes;
+                           title = mapBlogs.get(blogId);
+                       }
+                   }
+               }
+               String titleOfMostCommentsBlog = shortenTitle(title, true);
+               binding.tvMostCommentsPost.setText(titleOfMostCommentsBlog);
             });
 
         });

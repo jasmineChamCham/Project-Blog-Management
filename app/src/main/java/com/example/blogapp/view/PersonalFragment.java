@@ -160,8 +160,8 @@ public class PersonalFragment extends Fragment {
                     String userId = snapshot.getKey();
                     String rightEmail = snapshot.child("email").getValue(String.class);
                     if (rightEmail.equals(email)) {
-                        String righPw = snapshot.child("password").getValue(String.class);
-                        if (righPw.equals(curPw)){
+                        String rightPw = snapshot.child("password").getValue(String.class);
+                        if (rightPw.equals(curPw)){
                             userRef.child(userId).child("password").setValue(newPw)
                                     .addOnCompleteListener(task -> {
                                         Toast.makeText(getContext(),

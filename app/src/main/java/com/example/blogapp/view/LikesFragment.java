@@ -181,9 +181,10 @@ public class LikesFragment extends Fragment {
         likedBlogs = new ArrayList<>();
         dbHelper.getLikedBlogs(userLogin.getUserId(), likedBlogList -> {
             if (likedBlogList != null) {
+                likedBlogs.clear();
                 likedBlogs.addAll(likedBlogList);
                 for(int i = 0; i < likedBlogs.size(); i++) {
-                    Log.d("DEBUG", "liked blog id: " + likedBlogs.get(i).getBlogId());
+                    Log.d("DEBUG", "likesFragment_liked blog id: " + likedBlogs.get(i).getBlogId());
                 }
                 binding.layoutNoBlog.setVisibility(View.GONE);
                 binding.rvBlogs.setVisibility(View.VISIBLE);
