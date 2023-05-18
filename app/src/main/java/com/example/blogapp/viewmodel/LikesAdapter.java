@@ -78,6 +78,15 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesAdapter.LikedBlogHol
                 holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
             }
         });
+        holder.binding.tvUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("userLogin", userLogin);
+                bundle.putSerializable("authorId", blog.getUserId());
+                Navigation.findNavController(view).navigate(R.id.authorProfileFragment, bundle);
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

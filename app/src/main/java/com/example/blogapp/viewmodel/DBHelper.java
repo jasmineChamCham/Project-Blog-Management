@@ -92,29 +92,36 @@ public class DBHelper {
         return optionBlogByUserId;
     }
 
-//    public void getBlogsByCategory(String category, onBlogsListener listener) {
-//        List<Blog> blogs = new ArrayList<>();
-//        allBlogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                        Blog blog = dataSnapshot1.getValue(Blog.class);
-//                        if (blog.getCategory().equals(category)) {
-//                            Log.d("DEBUG", blog.getCategory());
-//                            blogs.add(blog);
-//                        }
-//                    }
-//                }
-//                listener.onBlogsRetrieved(blogs);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
-//            }
-//        });
-//    }
+    public void getBlogsByUserId(String userId, onBlogsListener listener) {
+        List<Blog> blogs = new ArrayList<>();
+        blogsRef.orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChildren()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                        Log.d("DEBUG", dataSnapshot.getKey());
+                        Blog blog = dataSnapshot.getValue(Blog.class);
+                        if (blog.getStatus().equals("Published")) {
+                            blogs.add(blog);
+                        }
+                    }
+                    sortBlogByCreatedTime(blogs);
+                    for (int i = 0; i < blogs.size(); i++) {
+                        Log.d("DEBUG", "sorted author's blog: " + blogs.get(i).getBlogId());
+                    }
+                    listener.onBlogsRetrieved(blogs);
+                }
+                else {
+                    listener.onBlogsRetrieved(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
 
     public void updateBlog(String blogId, String title, String content, Long createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
         blogsRef.child(blogId).setValue(new Blog(blogId, title, content, createdTime, userID, likeNumber, viewNumber, category, status))

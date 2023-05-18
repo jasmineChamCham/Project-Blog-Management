@@ -26,34 +26,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.FollowingHolder> implements Filterable {
+public class AuthorBlogAdapter extends RecyclerView.Adapter<AuthorBlogAdapter.AuthorBlogHolder> {
     private DBHelper dbHelper;
-    private List<Blog> followingBlogs;
-    private List<Blog> copyOfFollowingBlogs;
+    private List<Blog> authorBlogs;
     private User userLogin;
 
 
-    public FollowingAdapter(List<Blog> followingBlogs, User userLogin) {
-        this.followingBlogs = followingBlogs;
-        this.copyOfFollowingBlogs = followingBlogs;
+    public AuthorBlogAdapter(List<Blog> authorBlogs, User userLogin) {
+        this.authorBlogs = authorBlogs;
         this.userLogin = userLogin;
     }
 
     @Override
-    public FollowingAdapter.FollowingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AuthorBlogAdapter.AuthorBlogHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewBlogItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.view_blog_item,
                 parent,
                 false);
         dbHelper = new DBHelper(parent.getContext());
-        return new FollowingHolder(binding);
+        return new AuthorBlogHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FollowingHolder holder, @SuppressLint("RecyclerView") int position) {
-
-        holder.binding.btnFollow.setText("Following");
-        Blog blog = followingBlogs.get(position);
+    public void onBindViewHolder(@NonNull AuthorBlogHolder holder, @SuppressLint("RecyclerView") int position) {
+        Blog blog = authorBlogs.get(position);
         Date date = new Date(blog.getCreatedTime());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         String dateString = dateFormat.format(date);
@@ -71,15 +67,6 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Foll
                 holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
             }
         });
-        holder.binding.tvUsername.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("userLogin", userLogin);
-                bundle.putSerializable("authorId", blog.getUserId());
-                Navigation.findNavController(view).navigate(R.id.authorProfileFragment, bundle);
-            }
-        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,22 +76,7 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Foll
                 Navigation.findNavController(view).navigate(R.id.detailBlogFragment, bundle);
             }
         });
-        holder.binding.btnFollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbHelper.deleteFollowRecord(userLogin.getUserId(), blog.getUserId());
-                dbHelper.getFollowingBlogList(userLogin.getUserId(), blogList -> {
-                    if (blogList != null) {
-                        followingBlogs.clear();
-                        followingBlogs.addAll(blogList);
-                        notifyDataSetChanged();
-                    }
-                    else {
-                        followingBlogs.clear();
-                        notifyDataSetChanged();
-                    }
-                });
-            }});
+        holder.binding.btnFollow.setVisibility(View.GONE);
         holder.binding.btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,12 +91,12 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Foll
             public void onClick(View v) {
                 dbHelper.isLiked(userLogin.getUserId(), blog.getBlogId(), isLiked -> {
                     if (isLiked) {      // if like -> unlike
-                        holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
                         dbHelper.deleteLikedBlog(new LikedBlog(userLogin.getUserId(), blog.getBlogId()));
+                        holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_off_alt_24, 0, 0, 0);
                     }
                     else {      // if not like -> like
-                        holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_alt_24, 0, 0, 0);
                         dbHelper.addLikedBlog(userLogin.getUserId(), blog.getBlogId());
+                        holder.binding.btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_thumb_up_alt_24, 0, 0, 0);
                     }
                 });
             }
@@ -133,44 +105,12 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Foll
 
     @Override
     public int getItemCount() {
-        return followingBlogs.size();
+        return authorBlogs.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String searchString = constraint.toString().toLowerCase();
-                List<Blog> filteredList = new ArrayList<>();
-                if (searchString.isEmpty()) {
-                    filteredList.addAll(copyOfFollowingBlogs);
-                }
-                else {
-                    for (Blog blog : copyOfFollowingBlogs) {
-                        if (blog.getTitle().toLowerCase().contains(searchString)
-                                || blog.getContent().toLowerCase().contains(searchString))
-                        {
-                            filteredList.add(blog);
-                        }
-                    }
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = filteredList;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                followingBlogs = (List<Blog>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
-    public static class FollowingHolder extends RecyclerView.ViewHolder {
+    public static class AuthorBlogHolder extends RecyclerView.ViewHolder {
         public ViewBlogItemBinding binding;
-        public FollowingHolder(ViewBlogItemBinding itemsBinding) {
+        public AuthorBlogHolder(ViewBlogItemBinding itemsBinding) {
             super(itemsBinding.getRoot());
             this.binding = itemsBinding;
         }
