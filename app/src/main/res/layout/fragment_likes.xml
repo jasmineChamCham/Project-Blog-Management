@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".view.HomeFragment">
+        tools:context=".view.LikesFragment">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,9 +50,9 @@
                 android:id="@+id/btn_following"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/main_color"
+                android:backgroundTint="@color/white"
                 android:text="Following"
-                android:textColor="@color/white"
+                android:textColor="@color/main_color"
                 android:textAllCaps="false"
                 android:textSize="17sp"
                 ></Button>
@@ -70,9 +70,9 @@
                 android:id="@+id/btn_likes"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/main_color"
                 android:text="Likes"
-                android:textColor="@color/main_color"
+                android:textColor="@color/white"
                 android:textSize="17sp"
                 android:textAllCaps="false"
                 ></Button>

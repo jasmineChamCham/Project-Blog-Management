@@ -17,13 +17,11 @@ import androidx.core.view.MenuProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +34,6 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.example.blogapp.R;
 import com.example.blogapp.databinding.EditBlogItemBinding;
@@ -46,11 +43,8 @@ import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.firebase.database.DatabaseReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -77,8 +71,7 @@ public class BlogListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBlogListBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
@@ -93,7 +86,7 @@ public class BlogListFragment extends Fragment {
             binding.btnTrash.setTextColor(getResources().getColor(R.color.main_color));
             binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
         }
-        else  if (blogStatus == 2){
+        else if (blogStatus == 2){
             binding.btnPublished.setBackgroundColor(getResources().getColor(R.color.white));
             binding.btnTrash.setBackgroundColor(getResources().getColor(R.color.white));
             binding.btnDrafts.setBackgroundColor(getResources().getColor(R.color.main_color));
@@ -109,8 +102,7 @@ public class BlogListFragment extends Fragment {
             binding.btnTrash.setTextColor(getResources().getColor(R.color.white));
             binding.btnDrafts.setTextColor(getResources().getColor(R.color.main_color));
         }
-        FirebaseRecyclerOptions<Blog> options = dbHelper.getBlogOptionByUserId(userLogin.getUserId());
-
+        FirebaseRecyclerOptions<Blog> options = dbHelper.getOptionBlogByUserId(userLogin.getUserId());
         FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<Blog, BlogHolder>(options) {
             @NonNull
             @Override
@@ -125,11 +117,15 @@ public class BlogListFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull BlogHolder holder, int position, @NonNull Blog model) {
+                Date date = new Date(model.getCreatedTime());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                String dateString = dateFormat.format(date);
+                holder.binding.setCreatedTime(dateString);
                 if ((blogStatus == 1 && model.getStatus().equals("Published")) ||
                         (blogStatus == 2 && model.getStatus().equals("Drafts"))  ||
-                        (blogStatus == 3 && model.getStatus().equals("Trash"))){
-                        holder.itemView.setVisibility(View.VISIBLE);
-                        holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        (blogStatus == 3 && model.getStatus().equals("Trash"))) {
+                    holder.itemView.setVisibility(View.VISIBLE);
+                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 }
                 else {
                     holder.itemView.setVisibility(View.GONE);
@@ -288,7 +284,6 @@ public class BlogListFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 String category, status;
-                                SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                                 int checkedStatusId = radioGroup.getCheckedRadioButtonId();
                                 if (checkedStatusId != -1) {
                                     RadioButton checkedRadioButton = dialog.findViewById(checkedStatusId);
@@ -306,7 +301,7 @@ public class BlogListFragment extends Fragment {
                                     dbHelper.updateBlog(model.getBlogId(),
                                             model.getTitle(),
                                             model.getContent(),
-                                            isoFormat.format(new Date()),
+                                            model.getCreatedTime(),
                                             model.getUserId(),
                                             model.getLikesNumber(),
                                             model.getViewsNumber(),
@@ -381,7 +376,7 @@ public class BlogListFragment extends Fragment {
         menuHost.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.main_menu, menu);
+                menuInflater.inflate(R.menu.search_menu, menu);
                 if (getActivity() != null) {
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
@@ -396,7 +391,7 @@ public class BlogListFragment extends Fragment {
                 }
                 return false;
             }
-        },getViewLifecycleOwner(), Lifecycle.State.RESUMED);;
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);;
         return view;
     }
 

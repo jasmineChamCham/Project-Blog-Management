@@ -23,9 +23,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.text.Html;
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
@@ -95,39 +97,54 @@ public class EditBlogFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 View popupView = getLayoutInflater().inflate(R.layout.align_dialog, null);
-//                ImageButton btnAlignLeft = popupView.findViewById(R.id.btn_align_left)           ;
-//                ImageButton btnAlignCenter = popupView.findViewById(R.id.btn_align_center);
-//                ImageButton btnAlignRight = popupView.findViewById(R.id.btn_align_right);
-//                ImageButton btnAlignJustify = popupView.findViewById(R.id.btn_align_justify);
+                ChipGroup chipGroup = popupView.findViewById(R.id.cg_align);
+                SpannableStringBuilder stringBuilder = new SpannableStringBuilder(binding.etContent.getText());
+                AlignmentSpan[] alignmentSpans = stringBuilder.getSpans(0, stringBuilder.length(), AlignmentSpan.class);
+                if (alignmentSpans.length > 0) {
+                    // Retrieve the alignment from the first alignment span
+                    Layout.Alignment alignment = alignmentSpans[0].getAlignment();
+                    if (alignment == Layout.Alignment.ALIGN_CENTER) {
+                        Chip chip = (Chip) chipGroup.getChildAt(1);
+                        chip.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_center_24_clicked));
+                    } else if (alignment == Layout.Alignment.ALIGN_NORMAL) {
+                        Chip chip = (Chip) chipGroup.getChildAt(0);
+                        chip.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_left_24_clicked));
+                    } else if (alignment == Layout.Alignment.ALIGN_OPPOSITE){
+                        Chip chip = (Chip) chipGroup.getChildAt(2);
+                        chip.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_right_24_clicked));
+                    }
+                }
                 PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-//                btnAlignLeft.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_left_24);
-//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.black), PorterDuff.Mode.SRC_IN);
-//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_center_24);
-//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
-//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_justify_24);
-//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
-//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_right_24);
-//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
-//                        binding.btnTextJustify.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_format_align_left_24),null,getResources().getDrawable(R.drawable.ic_baseline_arrow_drop_down_24),null);
-//                    }
-//                });
-//                btnAlignCenter.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_center_24);
-//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.black), PorterDuff.Mode.SRC_IN);
-//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_left_24);
-//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
-//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_right_24);
-//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
-//                        drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_format_align_justify_24);
-//                        drawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.gray), PorterDuff.Mode.SRC_IN);
-//                        binding.btnTextJustify.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_format_align_center_24),null,getResources().getDrawable(R.drawable.ic_baseline_arrow_drop_down_24),null);
-//                    }
-//                });
+                Chip cLeft = (Chip) chipGroup.getChildAt(0);
+                Chip cCenter = (Chip) chipGroup.getChildAt(1);
+                Chip cRight = (Chip) chipGroup.getChildAt(2);
+                cLeft.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cLeft.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_left_24_clicked));
+                        cRight.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_right_24));
+                        cCenter.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_center_24));
+                        binding.btnTextJustify.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_format_align_left_24), null, getResources().getDrawable(R.drawable.ic_baseline_arrow_drop_down_24), null);
+                    }
+                });
+                cRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cLeft.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_left_24));
+                        cRight.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_right_24_clicked));
+                        cCenter.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_center_24));
+                        binding.btnTextJustify.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_format_align_right_24), null, getResources().getDrawable(R.drawable.ic_baseline_arrow_drop_down_24),null);
+                    }
+                });
+                cCenter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cLeft.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_left_24));
+                        cRight.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_right_24));
+                        cCenter.setChipIcon(getResources().getDrawable(R.drawable.ic_baseline_format_align_center_24_clicked));
+                        binding.btnTextJustify.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_baseline_format_align_center_24), null, getResources().getDrawable(R.drawable.ic_baseline_arrow_drop_down_24),null);
+                    }
+                });
                 popupWindow.showAsDropDown(v);
             }
         });
@@ -300,7 +317,6 @@ public class EditBlogFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
                             String category, status;
-                            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                             int checkedStatusId = radioGroup.getCheckedRadioButtonId();
                             if (checkedStatusId != -1) {
                                 RadioButton checkedRadioButton = dialog.findViewById(checkedStatusId);
@@ -319,7 +335,7 @@ public class EditBlogFragment extends Fragment {
                                 dbHelper.updateBlog(blog.getBlogId(),
                                         binding.etTitle.getText().toString(),
                                         Html.toHtml(binding.etContent.getText()),
-                                        isoFormat.format(new Date()),
+                                        blog.getCreatedTime(),
                                         blog.getUserId(),
                                         blog.getLikesNumber(),
                                         blog.getViewsNumber(),
@@ -328,7 +344,7 @@ public class EditBlogFragment extends Fragment {
                             else if (userLogin != null)
                                 dbHelper.addBlog(binding.etTitle.getText().toString(),
                                         Html.toHtml(binding.etContent.getText()),
-                                        isoFormat.format(new Date()),
+                                        new Date().getTime(),
                                         userLogin.getUserId(),
                                         0,
                                         0,
@@ -346,13 +362,13 @@ public class EditBlogFragment extends Fragment {
                     dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                     dialog.getWindow().setGravity(Gravity.BOTTOM);
                 }
-                else if (item.getItemId() == android.R.id.home){
+                else if (item.getItemId() == android.R.id.home) {
                     getActivity().onBackPressed();
                     return true;
                 }
                 return false;
             }
-        },getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         return view;
     }
 }

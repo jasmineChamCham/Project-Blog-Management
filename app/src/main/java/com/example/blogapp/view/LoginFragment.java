@@ -58,7 +58,7 @@ public class LoginFragment extends Fragment {
                         if (userLogin != null) {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("userLogin", userLogin);
-                            Navigation.findNavController(v).navigate(R.id.homeFragment,bundle);
+                            Navigation.findNavController(v).navigate(R.id.homeFragment, bundle);
                         }
                         else {
                             Toast.makeText(getContext(), "Login fail! Your email or password is not correct.", Toast.LENGTH_LONG).show();

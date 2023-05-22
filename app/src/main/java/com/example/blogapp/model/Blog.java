@@ -6,7 +6,7 @@ public class Blog implements Serializable {
     private String blogId;
     private String title;
     private String content;
-    private String createdTime;
+    private Long createdTime;
     private String userId;
     private int likesNumber;
     private int viewsNumber;
@@ -17,7 +17,7 @@ public class Blog implements Serializable {
 
     }
 
-    public Blog(String blogId, String title, String content, String createdTime, String userId, int likesNumber, int viewsNumber, String category, String status) {
+    public Blog(String blogId, String title, String content, Long createdTime, String userId, int likesNumber, int viewsNumber, String category, String status) {
         this.blogId = blogId;
         this.title = title;
         this.content = content;
@@ -53,11 +53,11 @@ public class Blog implements Serializable {
         this.content = content;
     }
 
-    public String getCreatedTime() {
+    public Long getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(Long createdTime) {
         this.createdTime = createdTime;
     }
 
