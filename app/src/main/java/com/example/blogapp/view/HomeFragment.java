@@ -1,5 +1,6 @@
 package com.example.blogapp.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -26,6 +28,7 @@ import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
 import com.example.blogapp.viewmodel.FollowingAdapter;
+import com.example.blogapp.viewmodel.LikesAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -36,7 +39,6 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private DBHelper dbHelper;
     private User userLogin;
-
     private ArrayList<Blog> followingBlogs;
     private FollowingAdapter followingAdapter;
 

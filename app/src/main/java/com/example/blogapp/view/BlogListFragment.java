@@ -391,7 +391,7 @@ public class BlogListFragment extends Fragment {
                 }
                 return false;
             }
-        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);;
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         return view;
     }
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".view.AuthorFollowingFragment">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Following"
+            android:textSize="27sp"
+            android:textColor="@color/main_color"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:paddingHorizontal="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="10dp"
+            ></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:id="@+id/layout_no_person"
+            android:layout_weight="1"
+            android:visibility="visible">
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:src="@drawable/no_person"
+                android:layout_marginBottom="17dp"
+                ></ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="You don't follow anyone"
+                android:textSize="18sp"
+                android:textColor="#AAAAAA"
+                ></TextView>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_followings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            ></androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+</layout>

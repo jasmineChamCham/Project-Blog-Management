@@ -92,29 +92,36 @@ public class DBHelper {
         return optionBlogByUserId;
     }
 
-//    public void getBlogsByCategory(String category, onBlogsListener listener) {
-//        List<Blog> blogs = new ArrayList<>();
-//        allBlogsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                        Blog blog = dataSnapshot1.getValue(Blog.class);
-//                        if (blog.getCategory().equals(category)) {
-//                            Log.d("DEBUG", blog.getCategory());
-//                            blogs.add(blog);
-//                        }
-//                    }
-//                }
-//                listener.onBlogsRetrieved(blogs);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
-//            }
-//        });
-//    }
+    public void getBlogsByUserId(String userId, onBlogsListener listener) {
+        List<Blog> blogs = new ArrayList<>();
+        blogsRef.orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChildren()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                        Log.d("DEBUG", dataSnapshot.getKey());
+                        Blog blog = dataSnapshot.getValue(Blog.class);
+                        if (blog.getStatus().equals("Published")) {
+                            blogs.add(blog);
+                        }
+                    }
+                    sortBlogByCreatedTime(blogs);
+                    for (int i = 0; i < blogs.size(); i++) {
+                        Log.d("DEBUG", "sorted author's blog: " + blogs.get(i).getBlogId());
+                    }
+                    listener.onBlogsRetrieved(blogs);
+                }
+                else {
+                    listener.onBlogsRetrieved(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
 
     public void updateBlog(String blogId, String title, String content, Long createdTime, String userID, int likeNumber, int viewNumber, String category, String status) {
         blogsRef.child(blogId).setValue(new Blog(blogId, title, content, createdTime, userID, likeNumber, viewNumber, category, status))
@@ -193,6 +200,7 @@ public class DBHelper {
                             }
                         });
                     }
+                    listener.onBlogsRetrieved(null);
                 }
             }
 
@@ -224,6 +232,7 @@ public class DBHelper {
                             }
                         });
                     }
+                    listener.onBlogsRetrieved(null);
                 }
             }
 
@@ -266,6 +275,29 @@ public class DBHelper {
                 Log.d("DEBUG", "Database error: " + databaseError.getMessage());
             }
         });
+    }
+
+    public void isExistAccount(String email, onIsExistAccountListener listener) {
+        usersRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+                    Log.d("DEBUG", "isExistAccount: " + String.valueOf(dataSnapshot.hasChildren()));
+                    listener.onIsExistAccountRetrieved(true);
+                }
+                else {
+                    Log.d("DEBUG", "isExistAccount: " + String.valueOf(dataSnapshot.hasChildren()));
+                    listener.onIsExistAccountRetrieved(false);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onIsExistAccountListener {
+        void onIsExistAccountRetrieved(boolean isExist);
     }
 
     public void addUser(String name, String email, String pass, String birthday) {
@@ -459,17 +491,17 @@ public class DBHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     boolean isExistUserId = snapshot.hasChild(userId);
-//                    Log.d("DEBUG", Boolean.toString(isExistUserId));
+                    Log.d("DEBUG", Boolean.toString(isExistUserId));
                     if (isExistUserId) {
                         String blogId = snapshot.getKey();
                         likedBlogIds.add(blogId);
                     }
                 }
                 if (likedBlogIds.isEmpty()) {
-                    listener.onLikedBlogRetrieved(null);
+                    listener.onLikedBlogIdsRetrieved(null);
                 }
                 else {
-                    listener.onLikedBlogRetrieved(likedBlogIds);
+                    listener.onLikedBlogIdsRetrieved(likedBlogIds);
                 }
             }
 
@@ -480,7 +512,7 @@ public class DBHelper {
         });
     }
     public interface onLikedBlogIdsListener {
-        void onLikedBlogRetrieved(List<String> likedBlogIds);
+        void onLikedBlogIdsRetrieved(List<String> likedBlogIds);
     }
 
     public void getLikedBlogs(String userId, onLikedBlogsListener listener) {
@@ -494,10 +526,11 @@ public class DBHelper {
                             Blog blog = dataSnapshot.getValue(Blog.class);
                             if (blog.getStatus().equals("Published")) {
                                 likedBlogList.add(blog);
-                                if (likedBlogList.size() == likedBlogIds.size()) {
-                                    sortBlogByCreatedTime(likedBlogList);
-                                    listener.onLikedBlogsRetrieved(likedBlogList);
+                                for (int i = 0; i < likedBlogList.size(); i++) {
+                                    Log.d("DEBUG", "dbHelper_liked blog id: " + likedBlogList.get(i).getBlogId());
                                 }
+                                sortBlogByCreatedTime(likedBlogList);
+                                listener.onLikedBlogsRetrieved(likedBlogList);
                             }
                         }
                         @Override
@@ -514,6 +547,125 @@ public class DBHelper {
     }
     public interface onLikedBlogsListener {
         void onLikedBlogsRetrieved(List<Blog> likedBlogList);
+    }
+
+    public void getFollowedIdsByFollowerId(String followerId, onFollowedIdsListener listener) {
+        List<String> followedIdsList = new ArrayList<>();
+        followersRef.child(followerId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Log.d("DEBUG", "followed id: " + dataSnapshot.getKey());
+                    followedIdsList.add(dataSnapshot.getKey());
+                }
+                if (followedIdsList.isEmpty()) {
+                    listener.onFollowedIdsRetrieved(null);
+                }
+                else {
+                    listener.onFollowedIdsRetrieved(followedIdsList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onFollowedIdsListener {
+        void onFollowedIdsRetrieved(List<String> followedIds);
+    }
+
+    public void getFollowingListOfUser(String userId, onUserListListener listener) {
+        List<User> followingList = new ArrayList<>();
+        getFollowedIdsByFollowerId(userId, followedIds -> {
+            if (followedIds != null) {
+                for (int i = 0; i < followedIds.size(); i++) {
+                    usersRef.child(followedIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            followingList.add(user);
+                            for (int i = 0; i < followingList.size(); i++) {
+                                Log.d("DEBUG", "dbHelper_following user id: " + followingList.get(i).getUserId());
+                            }
+                            listener.onUserListRetrieved(followingList);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+                        }
+                    });
+                }
+            }
+            else {
+                listener.onUserListRetrieved(null);
+            }
+        });
+    }
+    public interface onUserListListener {
+        void onUserListRetrieved(List<User> userList);
+    }
+
+    public void getFollowerIdsByFollowedId(String followedId, onFollowerIdsListener listener) {
+        List<String> followerIdsList = new ArrayList<>();
+        followersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        if (dataSnapshot1.getKey().equals(followedId)) {
+                            Log.d("DEBUG", "follower id: " + dataSnapshot.getKey());
+                            followerIdsList.add(dataSnapshot.getKey());
+                        }
+                    }
+                }
+                if (followerIdsList.isEmpty()) {
+                    listener.onFollowerIdsRetrieved(null);
+                }
+                else {
+                    listener.onFollowerIdsRetrieved(followerIdsList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onFollowerIdsListener {
+        void onFollowerIdsRetrieved(List<String> followerIds);
+    }
+
+    public void getFollowerListOfUser(String userId, onUserListListener listener) {
+        List<User> followerList = new ArrayList<>();
+        getFollowerIdsByFollowedId(userId, followerIds -> {
+            if (followerIds != null) {
+                for (int i = 0; i < followerIds.size(); i++) {
+                    usersRef.child(followerIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user = snapshot.getValue(User.class);
+                            followerList.add(user);
+                            for (int i = 0; i < followerList.size(); i++) {
+                                Log.d("DEBUG", "dbHelper_follower user id: " + followerList.get(i).getUserId());
+                            }
+                            listener.onUserListRetrieved(followerList);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+                        }
+                    });
+                }
+            }
+            else {
+                listener.onUserListRetrieved(null);
+            }
+        });
     }
 
     public void isFollowing(String followerId, String followedId, onIsFollowingListener listener) {
@@ -570,7 +722,72 @@ public class DBHelper {
                         });
     }
 
-    public void getCommentCounts(Date startDate, Date endDate, final OnCommentCountsRetrievedListener listener) {
+    public void getBlogCountOfUser(String userId, onCountListener listener) {
+        blogsRef.orderByChild("userId").equalTo(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Log.d("DEBUG", "total " + String.valueOf(snapshot.getChildrenCount()));
+                int count = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Blog blog = dataSnapshot.getValue(Blog.class);
+                    if (blog.getStatus().equals("Published")) {
+                        count++;
+                    }
+                }
+                Log.d("DEBUG", "count blog: " + count);
+                listener.onCountRetrieved(count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+    public interface onCountListener {
+        void onCountRetrieved(int count);
+    }
+
+    public void getFollowingCountOfUser(String userId, onCountListener listener) {
+        followersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Log.d("DEBUG", "count following: " + snapshot.getChildrenCount());
+                int count = (int) snapshot.getChildrenCount();
+                listener.onCountRetrieved(count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public void getFollowerCountOfUser(String userId, onCountListener listener) {
+        followersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int count = 0;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+//                        Log.d("DEBUG", dataSnapshot1.getKey());
+                        if (dataSnapshot1.getKey().equals(userId)) {
+                            count++;
+                        }
+                    }
+                }
+                listener.onCountRetrieved(count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("DEBUG", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public void getCommentCounts(Date startDate, Date endDate, final OnCommentCountsListener listener) {
         commentsRef.orderByChild("created_time")
                 .startAt(startDate.getTime())
                 .endAt(endDate.getTime())
@@ -601,7 +818,7 @@ public class DBHelper {
                 });
     }
 
-    public interface OnCommentCountsRetrievedListener {
+    public interface OnCommentCountsListener {
         void onCommentCountsRetrieved(Map<Date, Integer> commentCounts);
     }
 

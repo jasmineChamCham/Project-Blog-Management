@@ -101,7 +101,7 @@
                         android:layout_marginRight="15dp"
                         ></TextView>
                     <TextView
-                        android:id="@+id/tv_num_followed"
+                        android:id="@+id/tv_num_following"
                         android:text="100.000 people"
                         android:textColor="@color/main_color"
                         android:textSize="20sp"
@@ -110,7 +110,7 @@
                 </TableRow>
                 <TableRow android:gravity="center">
                     <TextView
-                        android:text="Followed by"
+                        android:text="Follower"
                         android:textSize="17sp"
                         android:textColor="#323232"
                         android:layout_marginRight="15dp"

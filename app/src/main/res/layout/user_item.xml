@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="userName"
+            type="String" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:cardElevation="10dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginBottom="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp"
+            >
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/person_avatar"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                android:layout_marginLeft="7dp"
+                ></com.google.android.material.imageview.ShapeableImageView>
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{userName}"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                ></TextView>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_follow"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+                app:cornerRadius="15dp"
+                android:text="Follow"
+                android:textSize="11sp"
+                android:textAllCaps="false"
+                android:textColor="@color/main_color"
+                app:strokeColor="@color/main_color"
+                app:strokeWidth="1dp"
+                android:layout_marginLeft="10dp"
+                ></com.google.android.material.button.MaterialButton>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
