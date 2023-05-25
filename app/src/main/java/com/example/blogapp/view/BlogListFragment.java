@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -68,6 +69,8 @@ public class BlogListFragment extends Fragment {
         else {
             userLogin = new User("-NRvClt0Ahu_stjh3Z5G", "Ngoc Linh", "ngoclinh@gmail.com", "123456", "1/2/1999");
         }
+
+        Log.d("DEBUG", "UserLogin = " + userLogin.getUserId() + " - " + userLogin.getName());
     }
 
     @Override

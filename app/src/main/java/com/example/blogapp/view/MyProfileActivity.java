@@ -50,15 +50,15 @@ public class MyProfileActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference("users");
         followRef = FirebaseDatabase.getInstance().getReference("followers");
         avaRef = FirebaseDatabase.getInstance().getReference("ava");
-        Intent receivedIntent = getIntent();
-        if (receivedIntent != null) {
-            Bundle bundle = receivedIntent.getBundleExtra("userBundle");
-            User userLogin = (User) bundle.getSerializable("userLogin");
-            userId = userLogin.getUserId();
-        } else {
-            userId = "-NRlYm-P-HVbQtt_G2Zm";
-        }
-
+//        Intent receivedIntent = getIntent();
+//        if (receivedIntent != null) {
+//            Bundle bundle = receivedIntent.getBundleExtra("userBundle");
+//            User userLogin = (User) bundle.getSerializable("userLogin");
+//            userId = userLogin.getUserId();
+//        } else {
+//            userId = "-NRlYm-P-HVbQtt_G2Zm";
+//        }
+        userId = "-NRlYm-P-HVbQtt_G2Zm";
     }
 
     @Override
@@ -69,11 +69,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
         binding.butChangeAvaMp.setOnClickListener(v -> {
             Log.d("DEBUG", "CLICK ON AVA");
-            // Create a new intent with ACTION_GET_CONTENT
             Intent intent = new Intent(Intent.ACTION_PICK);
-            // Set the type of the content to any file
             intent.setType("*/*");
-            // Start the activity with the intent and a request code
             startActivityForResult(Intent.createChooser(intent, "Choose File"), 1);
         });
 
@@ -121,6 +118,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
         userRef.get().addOnCompleteListener(t->{
             if (t.isSuccessful()) {
+                Log.d("DEBUG", "into userRef");
                 DataSnapshot dataSnapshot = t.getResult();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Log.d("DEBUG", "snapshot user info : " + snapshot.getKey());
@@ -158,7 +156,7 @@ public class MyProfileActivity extends AppCompatActivity {
                    if (followerId.equals(userId)) {
                        countUserFollowing = snapshot.getChildrenCount();
                        Log.d("DEBUG", "countUserFollowing = "  + countUserFollowing);
-                       binding.tvNumFollowingMp.setText("" + countUserFollowing);
+                       binding.tvNumFollowerMp.setText("" + countUserFollowing);
                    }
 
                    for (DataSnapshot i : snapshot.getChildren()) {
