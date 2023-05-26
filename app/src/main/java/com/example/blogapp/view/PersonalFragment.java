@@ -121,7 +121,7 @@ public class PersonalFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("userLogin", userLogin);
                 Intent intent = new Intent(getActivity(), MyProfileActivity.class);
-                intent.putExtra("userBundle", bundle);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

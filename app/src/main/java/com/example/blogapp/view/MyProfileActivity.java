@@ -37,6 +37,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private DatabaseReference userRef;
     private DatabaseReference followRef;
     private DatabaseReference avaRef;
+    private User userLogin;
     private String userId;
     private String imgPath;
 
@@ -46,26 +47,45 @@ public class MyProfileActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-    public MyProfileActivity(){
-        userRef = FirebaseDatabase.getInstance().getReference("users");
-        followRef = FirebaseDatabase.getInstance().getReference("followers");
-        avaRef = FirebaseDatabase.getInstance().getReference("ava");
-        Intent receivedIntent = getIntent();
-        if (receivedIntent != null) {
-            Bundle bundle = receivedIntent.getBundleExtra("userBundle");
-            User userLogin = (User) bundle.getSerializable("userLogin");
-            userId = userLogin.getUserId();
-        }
-        else {
-            userId = "-NRlYm-P-HVbQtt_G2Zm";
-        }
+    public MyProfileActivity() {
+//        userRef = FirebaseDatabase.getInstance().getReference("users");
+//        followRef = FirebaseDatabase.getInstance().getReference("followers");
+//        avaRef = FirebaseDatabase.getInstance().getReference("ava");
+//        Intent receivedIntent = getIntent();
+//        Bundle receivedBundle = receivedIntent.getExtras();
+//        if (receivedIntent != null) {
+//            if (receivedBundle != null) {
+//                Log.d("DEBUG", "ok");
+//                userLogin = (User) receivedBundle.getSerializable("userLogin");
+//                userId = userLogin.getUserId();
+//            }
+//        }
+//        else {
+//            userId = "-NRlYm-P-HVbQtt_G2Zm";
+//        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMyProfileBinding.inflate(getLayoutInflater());
-        setContentView( binding.getRoot());
+        setContentView(binding.getRoot());
+
+        userRef = FirebaseDatabase.getInstance().getReference("users");
+        followRef = FirebaseDatabase.getInstance().getReference("followers");
+        avaRef = FirebaseDatabase.getInstance().getReference("ava");
+        Intent receivedIntent = getIntent();
+        Bundle receivedBundle = receivedIntent.getExtras();
+        if (receivedIntent != null) {
+            if (receivedBundle != null) {
+                Log.d("DEBUG", "ok");
+                userLogin = (User) receivedBundle.getSerializable("userLogin");
+                userId = userLogin.getUserId();
+            }
+        }
+        else {
+            userId = "-NRlYm-P-HVbQtt_G2Zm";
+        }
 
         binding.butChangeAvaMp.setOnClickListener(v -> {
             Log.d("DEBUG", "CLICK ON AVA");
