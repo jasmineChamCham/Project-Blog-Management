@@ -39,40 +39,5 @@
                 app:chipBackgroundColor="@color/white">
             </com.google.android.material.chip.Chip>
         </com.google.android.material.chip.ChipGroup>
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_align_left"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@color/white"-->
-<!--            android:paddingVertical="5dp"-->
-<!--            android:paddingHorizontal="1dp"-->
-<!--            android:src="@drawable/ic_baseline_format_align_left_24" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_align_center"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:paddingVertical="5dp"-->
-<!--            android:background="@color/white"-->
-<!--            android:paddingHorizontal="1dp"-->
-<!--            android:src="@drawable/ic_baseline_format_align_center_24" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_align_right"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@color/white"-->
-<!--            android:paddingVertical="5dp"-->
-<!--            android:paddingHorizontal="1dp"-->
-<!--            android:src="@drawable/ic_baseline_format_align_right_24" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_align_justify"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="@color/white"-->
-<!--            android:paddingVertical="5dp"-->
-<!--            android:paddingHorizontal="1dp"-->
-<!--            android:src="@drawable/ic_baseline_format_align_justify_24"/>-->
     </LinearLayout>
 </LinearLayout>

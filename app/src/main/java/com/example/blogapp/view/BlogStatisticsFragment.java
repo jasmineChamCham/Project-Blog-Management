@@ -65,8 +65,8 @@ public class BlogStatisticsFragment extends Fragment {
             userLogin = (User) getArguments().getSerializable("userLogin");
             blogItem = (Blog) getArguments().getSerializable("blogItem");
         }
-        userId = "-NRlYm-P-HVbQtt_G2Zm";
-        blogId = "-NRWzGau3B5daz75wUxS";
+        userId = userLogin.getUserId();
+        blogId = blogItem.getBlogId();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

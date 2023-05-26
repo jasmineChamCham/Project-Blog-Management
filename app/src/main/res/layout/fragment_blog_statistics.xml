@@ -101,7 +101,6 @@
                     android:layout_gravity="center"
                     android:elevation="8dp"
                     android:layout_marginBottom="5dp">
-
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cv_views"
                         android:layout_width="0dp"
@@ -158,7 +157,6 @@
                             </TextView>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
-
                     </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

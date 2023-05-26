@@ -50,15 +50,15 @@ public class MyProfileActivity extends AppCompatActivity {
         userRef = FirebaseDatabase.getInstance().getReference("users");
         followRef = FirebaseDatabase.getInstance().getReference("followers");
         avaRef = FirebaseDatabase.getInstance().getReference("ava");
-//        Intent receivedIntent = getIntent();
-//        if (receivedIntent != null) {
-//            Bundle bundle = receivedIntent.getBundleExtra("userBundle");
-//            User userLogin = (User) bundle.getSerializable("userLogin");
-//            userId = userLogin.getUserId();
-//        } else {
-//            userId = "-NRlYm-P-HVbQtt_G2Zm";
-//        }
-        userId = "-NRlYm-P-HVbQtt_G2Zm";
+        Intent receivedIntent = getIntent();
+        if (receivedIntent != null) {
+            Bundle bundle = receivedIntent.getBundleExtra("userBundle");
+            User userLogin = (User) bundle.getSerializable("userLogin");
+            userId = userLogin.getUserId();
+        }
+        else {
+            userId = "-NRlYm-P-HVbQtt_G2Zm";
+        }
     }
 
     @Override
@@ -156,7 +156,7 @@ public class MyProfileActivity extends AppCompatActivity {
                    if (followerId.equals(userId)) {
                        countUserFollowing = snapshot.getChildrenCount();
                        Log.d("DEBUG", "countUserFollowing = "  + countUserFollowing);
-                       binding.tvNumFollowerMp.setText("" + countUserFollowing);
+                       binding.tvNumFollowingMp.setText("" + countUserFollowing);
                    }
 
                    for (DataSnapshot i : snapshot.getChildren()) {

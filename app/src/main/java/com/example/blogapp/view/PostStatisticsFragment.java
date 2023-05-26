@@ -61,8 +61,6 @@ public class PostStatisticsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -76,12 +74,13 @@ public class PostStatisticsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userId = "-NRlYm-P-HVbQtt_G2Zm";
-//        if (getActivity().getIntent() != null ){
-//            Bundle bundle = getActivity().getIntent().getBundleExtra("userBundle");
-//            User userLogin = (User) bundle.getSerializable("userLogin");
-//            userId = userLogin.getUserId();
-//        } else {
+//        userId = "-NRlYm-P-HVbQtt_G2Zm";
+        if (getActivity().getIntent() != null ){
+            Bundle bundle = getActivity().getIntent().getBundleExtra("userBundle");
+            User userLogin = (User) bundle.getSerializable("userLogin");
+            userId = userLogin.getUserId();
+        }
+//        else {
 //            userId = "-NRlYm-P-HVbQtt_G2Zm";
 //        }
 
