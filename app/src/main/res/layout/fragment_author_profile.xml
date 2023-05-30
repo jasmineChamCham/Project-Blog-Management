@@ -31,7 +31,7 @@
                     android:paddingVertical="10dp"
                     android:orientation="horizontal">
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/iv_avatar"
+                        android:id="@+id/iv_author_avatar"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/person_avatar"

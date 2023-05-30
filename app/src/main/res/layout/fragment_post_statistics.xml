@@ -66,7 +66,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="15dp"
                 android:backgroundTint="@color/light_blue"
-                android:text="Overall" />
+                android:text="Overall"
+                android:textAllCaps="false"/>
 
             <Button
                 android:id="@+id/but_likes"
@@ -75,14 +76,16 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="15dp"
                 android:backgroundTint="#52B8E6"
-                android:text="Likes" />
+                android:text="Likes"
+                android:textAllCaps="false"/>
             <Button
                 android:id="@+id/but_comments"
                 android:layout_gravity="center"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:backgroundTint="#52B8E6"
-                android:text="Comment" />
+                android:text="Comments"
+                android:textAllCaps="false"/>
         </LinearLayout>
 
         <LinearLayout

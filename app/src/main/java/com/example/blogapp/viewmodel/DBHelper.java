@@ -300,9 +300,9 @@ public class DBHelper {
         void onIsExistAccountRetrieved(boolean isExist);
     }
 
-    public void addUser(String name, String email, String pass, String birthday) {
+    public void addUser(String name, String email, String pass, String birthday, String ava) {
         String id = usersRef.push().getKey();
-        usersRef.child(id).setValue(new User(id, name, email, pass, birthday))
+        usersRef.child(id).setValue(new User(id, name, email, pass, birthday, ava))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -332,6 +332,22 @@ public class DBHelper {
     }
     public interface onUserListener {
         void onUserRetrieved(User user);
+    }
+
+    public void updateUser(String userId, String name, String email, String password,
+                           String birthday, String ava) {
+        usersRef.child(userId).setValue(new User(userId, name, email, password, birthday, ava))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("DEBUG","Update user successful!");
+                        }
+                        else {
+                            Log.d("DEBUG","Update user fail!");
+                        }
+                    }
+                });
     }
 
     public void addComment(String commentContent, String userId, String blogId) {
@@ -824,7 +840,7 @@ public class DBHelper {
 
     public void ChangePassword(User user, String newPassword){
         usersRef.child(user.getUserId()).setValue(new User(user.getUserId(),
-                user.getName(),user.getEmail(), newPassword, user.getBirthday()))
+                user.getName(),user.getEmail(), newPassword, user.getBirthday(), user.getAva()))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

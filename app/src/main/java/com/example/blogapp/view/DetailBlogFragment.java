@@ -1,5 +1,8 @@
 package com.example.blogapp.view;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +13,8 @@ import androidx.navigation.Navigation;
 
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +25,9 @@ import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.LikedBlog;
 import com.example.blogapp.model.User;
 import com.example.blogapp.viewmodel.DBHelper;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 public class DetailBlogFragment extends Fragment {
 
@@ -44,8 +52,21 @@ public class DetailBlogFragment extends Fragment {
         View viewRoot = binding.getRoot();
 
         dbHelper = new DBHelper(viewRoot.getContext());
+
         dbHelper.getUserById(blogItem.getUserId(), user -> {
             binding.setUser(user);
+            String imgString = user.getAva();
+            if (imgString != null && !imgString.equals("")) {
+                File imgFile = new File(imgString);
+                Log.d("DEBUG", "Start file existed: " + imgFile.exists());
+                Log.d("DEBUG", "Start image file: " + imgFile.getAbsoluteFile());
+
+                Picasso.get().load(imgFile.getAbsoluteFile()).into(binding.ivAvatar);
+            }
+            else {
+                Drawable drawable = getResources().getDrawable(R.drawable.person_avatar);
+                binding.ivAvatar.setImageDrawable(drawable);
+            }
         });
         binding.setBlog(blogItem);
         binding.tvContent.setText(Html.fromHtml(blogItem.getContent()));

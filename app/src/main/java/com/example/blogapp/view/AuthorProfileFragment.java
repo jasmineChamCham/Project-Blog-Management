@@ -1,5 +1,8 @@
 package com.example.blogapp.view;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,7 +39,9 @@ import com.example.blogapp.viewmodel.DBHelper;
 import com.example.blogapp.viewmodel.FollowingAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,6 +73,18 @@ public class AuthorProfileFragment extends Fragment {
 
         dbHelper.getUserById(authorId, user -> {
             binding.setUser(user);
+            String imgString = user.getAva();
+            if (imgString != null && !imgString.equals("")) {
+                File imgFile = new File(imgString);
+                Log.d("DEBUG", "Start file existed: " + imgFile.exists());
+                Log.d("DEBUG", "Start image file: " + imgFile.getAbsoluteFile());
+
+                Picasso.get().load(imgFile.getAbsoluteFile()).into(binding.ivAuthorAvatar);
+            }
+            else {
+                Drawable drawable = getResources().getDrawable(R.drawable.person_avatar);
+                binding.ivAuthorAvatar.setImageDrawable(drawable);
+            }
         });
         dbHelper.isFollowing(userLogin.getUserId(), authorId, isFollowing ->  {
             if (isFollowing) {

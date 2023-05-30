@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_personalFragment_to_likesFragment"
             app:destination="@id/likesFragment" />
+        <action
+            android:id="@+id/action_personalFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailBlogFragment"
@@ -190,5 +193,14 @@
         <action
             android:id="@+id/action_authorFollowingFragment_to_authorProfileFragment"
             app:destination="@id/authorProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.example.blogapp.view.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_myProfileFragment_to_personalFragment"
+            app:destination="@id/personalFragment" />
     </fragment>
 </navigation>

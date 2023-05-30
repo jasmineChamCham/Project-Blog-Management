@@ -67,7 +67,7 @@ public class BlogListFragment extends Fragment {
         }
         // temporarily for faster testing, will delete later when complete
         else {
-            userLogin = new User("-NRvClt0Ahu_stjh3Z5G", "Ngoc Linh", "ngoclinh@gmail.com", "123456", "1/2/1999");
+            userLogin = new User("-NRvClt0Ahu_stjh3Z5G", "Ngoc Linh", "ngoclinh@gmail.com", "123456", "1/2/1999", "");
         }
 
         Log.d("DEBUG", "UserLogin = " + userLogin.getUserId() + " - " + userLogin.getName());
@@ -379,7 +379,6 @@ public class BlogListFragment extends Fragment {
         menuHost.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.search_menu, menu);
                 if (getActivity() != null) {
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);

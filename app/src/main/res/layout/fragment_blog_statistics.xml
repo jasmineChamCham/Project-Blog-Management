@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/main_color"
-                android:text="DAYS"
+                android:text="Daily"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textSize="17sp"
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
-                android:text="MONTHS"
+                android:text="Monthly"
                 android:textColor="@color/main_color"
                 android:textAllCaps="false"
                 android:textSize="17sp"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
-                android:text="YEARS"
+                android:text="Yearly"
                 android:textColor="@color/main_color"
                 android:textAllCaps="false"
                 android:textSize="17sp"
@@ -52,113 +52,79 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:elevation="10dp"
             android:padding="5dp"
             app:cardElevation="5dp"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="5dp"
+            android:layout_marginVertical="10dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <TextView
                     android:id="@+id/tv_blog_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Time"
+                    android:layout_gravity="center"
+                    android:text="Title"
                     android:layout_marginHorizontal="10dp"
                     android:textStyle="bold"
-                    android:textSize="20dp">
-                </TextView>
-
+                    android:textSize="20dp"
+                    ></TextView>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Likes"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="20dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/tv_likes_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_weight="2"
+                android:text="0"
+                ></TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="20dp"
+                ></TextView>
+            <TextView
+                android:id="@+id/tv_cmt_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_weight="2"
+                android:text="0"
+                ></TextView>
+        </LinearLayout>
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bc_blog"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_margin="5dp"
-            android:elevation="10dp"
-            android:padding="5dp"
-            app:cardElevation="5dp"
-            app:cardCornerRadius="10dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/bc_blog"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                </com.github.mikephil.charting.charts.BarChart>
-                <LinearLayout
-                    android:id="@+id/tv_comment_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center"
-                    android:elevation="8dp"
-                    android:layout_marginBottom="5dp">
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cv_views"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:gravity="center"
-                                android:layout_weight="1"
-                                android:text="Comments">
-                            </TextView>
-                            <TextView
-                                android:id="@+id/tv_cmt_count"
-                                android:layout_width="match_parent"
-                                android:textSize="20dp"
-                                android:gravity="center"
-                                android:layout_height="0dp"
-                                android:textStyle="bold"
-                                android:layout_weight="2"
-                                android:text="100">
-                            </TextView>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cv_likes"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:gravity="center"
-                                android:layout_weight="1"
-                                android:text="Likes">
-                            </TextView>
-                            <TextView
-                                android:id="@+id/tv_likes_count"
-                                android:layout_width="match_parent"
-                                android:textSize="20dp"
-                                android:gravity="center"
-                                android:layout_height="0dp"
-                                android:textStyle="bold"
-                                android:layout_weight="2"
-                                android:text="100">
-                            </TextView>
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            android:layout_weight="1">
+        </com.github.mikephil.charting.charts.BarChart>
     </LinearLayout>
 </layout>

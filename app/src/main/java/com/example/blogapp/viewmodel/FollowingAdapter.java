@@ -2,8 +2,12 @@ package com.example.blogapp.viewmodel;
 
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +24,9 @@ import com.example.blogapp.databinding.ViewBlogItemBinding;
 import com.example.blogapp.model.Blog;
 import com.example.blogapp.model.LikedBlog;
 import com.example.blogapp.model.User;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,6 +68,17 @@ public class FollowingAdapter extends RecyclerView.Adapter<FollowingAdapter.Foll
         holder.binding.setContent(Html.fromHtml(blog.getContent()));
         dbHelper.getUserById(blog.getUserId(), user -> {
             holder.binding.setUser(user);
+            String imgString = user.getAva();
+            if (imgString != null && !imgString.equals("")) {
+                File imgFile = new File(imgString);
+                Log.d("DEBUG", "Start file existed: " + imgFile.exists());
+                Log.d("DEBUG", "Start image file: " + imgFile.getAbsoluteFile());
+
+                Picasso.get().load(imgFile.getAbsoluteFile()).into(holder.binding.ivAvatar);
+            }
+            else {
+                holder.binding.ivAvatar.setImageResource(R.drawable.person_avatar);
+            }
         });
         dbHelper.isLiked(userLogin.getUserId(), blog.getBlogId(), isLiked -> {
             if (isLiked) {

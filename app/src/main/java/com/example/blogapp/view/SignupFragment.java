@@ -71,7 +71,7 @@ public class SignupFragment extends Fragment {
                             Toast.makeText(getContext(), "You already have an account.", Toast.LENGTH_LONG).show();
                         }
                         else {
-                            dbHelper.addUser(fullname, email, confirmPw, "01/01/1997");
+                            dbHelper.addUser(fullname, email, confirmPw, "01/01/1997", "");
                             dbHelper.authentication(email, confirmPw, user -> {
                                 userLogin = user;
                                 if (userLogin != null) {

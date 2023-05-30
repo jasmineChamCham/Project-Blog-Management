@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp"
+            android:padding="15dp"
             >
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_avatar"
@@ -27,18 +27,32 @@
                 android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/circleImageView"
                 ></com.google.android.material.imageview.ShapeableImageView>
-            <TextView
-                android:id="@+id/tv_username"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@{user.name}"
-                android:textColor="@color/main_color"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:fontFamily="serif"
-                android:layout_marginLeft="8dp"
-                ></TextView>
+                android:orientation="vertical"
+                android:layout_marginLeft="15dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome back"
+                    android:textColor="@color/main_color"
+                    android:textSize="18sp"
+                    android:fontFamily="serif"
+                    ></TextView>
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{user.name}"
+                    android:textColor="@color/main_color"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:fontFamily="serif"
+                    android:layout_marginTop="3dp"
+                    ></TextView>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -77,22 +91,21 @@
                 android:textAllCaps="false"
                 ></Button>
         </LinearLayout>
-        <Button
-            android:id="@+id/btn_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:drawableLeft="@drawable/ic_baseline_filter_list_24"
-            android:text="Filter"
-            android:textColor="@color/main_color"
-            android:textAllCaps="false"
-            ></Button>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
             >
+            <Button
+                android:id="@+id/btn_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@drawable/ic_baseline_filter_list_24"
+                android:text="Filter"
+                android:textColor="@color/main_color"
+                android:textAllCaps="false"
+                ></Button>
             <Button
                 android:id="@+id/category_option"
                 android:layout_width="wrap_content"
@@ -106,42 +119,8 @@
                 android:layout_marginHorizontal="7dp"
                 android:visibility="gone"
                 ></Button>
-            <LinearLayout
-                android:id="@+id/layout_picked_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                >
-                <TextView
-                    android:id="@+id/tv_start_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="@color/main_color"
-                    android:textSize="15sp"
-                    android:layout_marginHorizontal="5dp"
-                    android:layout_weight="1"
-                    ></TextView>
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_arrow_forward_24"
-                    ></ImageView>
-                <TextView
-                    android:id="@+id/tv_end_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="@color/main_color"
-                    android:textSize="15sp"
-                    android:layout_marginHorizontal="5dp"
-                    android:layout_weight="1"
-                    ></TextView>
-            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

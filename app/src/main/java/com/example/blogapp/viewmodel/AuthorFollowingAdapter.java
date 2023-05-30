@@ -2,7 +2,11 @@ package com.example.blogapp.viewmodel;
 
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.blogapp.R;
 import com.example.blogapp.databinding.UserItemBinding;
 import com.example.blogapp.model.User;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
 public class AuthorFollowingAdapter extends RecyclerView.Adapter<AuthorFollowingAdapter.UserHolder> {
@@ -43,6 +49,18 @@ public class AuthorFollowingAdapter extends RecyclerView.Adapter<AuthorFollowing
     public void onBindViewHolder(@NonNull UserHolder holder, @SuppressLint("RecyclerView") int position) {
 
         User user = authorFollowings.get(position);
+        String imgString = user.getAva();
+        if (imgString != null && !imgString.equals("")) {
+            File imgFile = new File(imgString);
+            Log.d("DEBUG", "Start file existed: " + imgFile.exists());
+            Log.d("DEBUG", "Start image file: " + imgFile.getAbsoluteFile());
+
+            Picasso.get().load(imgFile.getAbsoluteFile()).into(holder.binding.ivAvatar);
+        }
+        else {
+            holder.binding.ivAvatar.setImageResource(R.drawable.person_avatar);
+        }
+
         if (user.getUserId().equals(userLogin.getUserId())) {
             holder.binding.setUserName("You");
             holder.binding.btnFollow.setVisibility(View.GONE);

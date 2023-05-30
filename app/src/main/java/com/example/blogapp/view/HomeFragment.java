@@ -1,6 +1,9 @@
 package com.example.blogapp.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +35,9 @@ import com.example.blogapp.viewmodel.FollowingAdapter;
 import com.example.blogapp.viewmodel.LikesAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
@@ -63,8 +69,20 @@ public class HomeFragment extends Fragment {
 //        dbHelper.addLikedBlog("-NRvCltohTQIOXQ7kY_O", "-NRXKh1SLM6_dKT3bwfY");
 
         binding.setUser(userLogin);
-        reloadFollowingRV();
+        String imgString = userLogin.getAva();
+        if (imgString != null && !imgString.equals("")) {
+            File imgFile = new File(imgString);
+            Log.d("DEBUG", "Start file existed: " + imgFile.exists());
+            Log.d("DEBUG", "Start image file: " + imgFile.getAbsoluteFile());
 
+            Picasso.get().load(imgFile.getAbsoluteFile()).into(binding.ivAvatar);
+        }
+        else {
+            Drawable drawable = getResources().getDrawable(R.drawable.person_avatar);
+            binding.ivAvatar.setImageDrawable(drawable);
+        }
+
+        reloadFollowingRV();
         return viewRoot;
     }
 
@@ -168,20 +186,13 @@ public class HomeFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_logout:
-                Bundle bundle = new Bundle();
-                Navigation.findNavController(getView()).navigate(R.id.loginFragment, bundle);;
-                break;
-        }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     public void handleFilter(String category) {
         binding.categoryOption.setVisibility(View.VISIBLE);
         binding.categoryOption.setText(category);
         filterByCategory(category);
-        // date picker
     }
 
     public void reloadFollowingRV() {

@@ -1,6 +1,9 @@
 package com.example.blogapp.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,6 +30,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 public class PersonalFragment extends Fragment {
     private FirebaseUser userDB;
@@ -34,6 +41,7 @@ public class PersonalFragment extends Fragment {
     DBHelper dbHelper;
     EditText etCurPw, etNewPw, etConfirmPw;
     Button butChangePass;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,18 @@ public class PersonalFragment extends Fragment {
 
         dbHelper = new DBHelper(getContext());
         binding.setUser(userLogin);
+        String imgString = userLogin.getAva();
+        if (imgString != null && !imgString.equals("")) {
+            File imgFile = new File(imgString);
+            Log.d("DEBUG", "Start file existed: " + imgFile.exists());
+            Log.d("DEBUG", "Start image file: " + imgFile.getAbsoluteFile());
+
+            Picasso.get().load(imgFile.getAbsoluteFile()).into(binding.ivAvatar);
+        }
+        else {
+            Drawable drawable = getResources().getDrawable(R.drawable.person_avatar);
+            binding.ivAvatar.setImageDrawable(drawable);
+        }
 
         binding.btnStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,9 +140,10 @@ public class PersonalFragment extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("userLogin", userLogin);
-                Intent intent = new Intent(getActivity(), MyProfileActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                Navigation.findNavController(v).navigate(R.id.myProfileFragment, bundle);
+//                Intent intent = new Intent(getActivity(), MyProfileActivity.class);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
             }
         });
         return view;

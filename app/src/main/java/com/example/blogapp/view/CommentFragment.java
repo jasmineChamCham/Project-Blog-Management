@@ -3,8 +3,11 @@ package com.example.blogapp.view;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -25,6 +28,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,7 +54,9 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -89,6 +96,19 @@ public class CommentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        String imgString = userLogin.getAva();
+        if (imgString != null && !imgString.equals("")) {
+            File imgFile = new File(imgString);
+            Log.d("DEBUG", "Start file existed: " + imgFile.exists());
+            Log.d("DEBUG", "Start image file: " + imgFile.getAbsoluteFile());
+
+            Picasso.get().load(imgFile.getAbsoluteFile()).into(binding.ivAvatar);
+        }
+        else {
+            Drawable drawable = getResources().getDrawable(R.drawable.person_avatar);
+            binding.ivAvatar.setImageDrawable(drawable);
+        }
 
         binding.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,12 +150,25 @@ public class CommentFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull CommentFragment.CommentHolder holder, int position, @NonNull Comment comment) {
                 holder.binding.setComment(comment);
+
                 Date date = new Date(comment.getCreatedTime());
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 String dateString = dateFormat.format(date);
                 holder.binding.setCreatedTime(dateString);
                 dbHelper.getUserById(comment.getUserId(), user -> {
                     holder.binding.setUser(user);
+                    String imgString = user.getAva();
+                    if (imgString != null && !imgString.equals("")) {
+                        File imgFile = new File(imgString);
+                        Log.d("DEBUG", "Start file existed: " + imgFile.exists());
+                        Log.d("DEBUG", "Start image file: " + imgFile.getAbsoluteFile());
+
+                        Picasso.get().load(imgFile.getAbsoluteFile()).into(holder.binding.ivCommentAvatar);
+                    }
+                    else {
+                        Drawable drawable = getResources().getDrawable(R.drawable.person_avatar);
+                        holder.binding.ivCommentAvatar.setImageDrawable(drawable);
+                    }
                     if (user.getUserId().equals(userLogin.getUserId())) {
                         holder.binding.btnModifyComment.setVisibility(View.VISIBLE);
                     }
